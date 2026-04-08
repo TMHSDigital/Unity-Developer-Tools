@@ -1,6 +1,6 @@
 # Unity Developer Tools
 
-![Version](https://img.shields.io/badge/version-0.1.0-blue)
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
 AI-powered development toolkit for Unity. Scaffold scripts, look up APIs, write shaders, and build games with best-practice rules for C#, Visual Scripting, and HLSL.
