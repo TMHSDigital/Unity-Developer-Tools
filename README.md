@@ -1,22 +1,42 @@
-# Unity Developer Tools
+<p align="center">
+  <img src="assets/logo.png" alt="Unity Developer Tools" width="150" />
+</p>
 
-**AI-powered development toolkit for Unity game development in Cursor IDE.**
+<h1 align="center">Unity Developer Tools</h1>
 
-![License: CC BY-NC-ND 4.0](https://img.shields.io/badge/license-CC%20BY--NC--ND%204.0-lightgrey)
-![Version](https://img.shields.io/badge/version-1.2.0-blue)
-![GitHub stars](https://img.shields.io/github/stars/TMHSDigital/Unity-Developer-Tools)
+<p align="center">
+  <strong>AI-powered development toolkit for Unity game development in Cursor IDE.</strong>
+</p>
 
-[**Getting Started**](docs/GETTING-STARTED.md) | [Features](#features) | [Quick Start](#quick-start) | [MCP Server](#mcp-server) | [Skills](#skills-18) | [Rules](#rules-8) | [Roadmap](#roadmap)
+<p align="center">
+  <img src="https://img.shields.io/badge/license-CC%20BY--NC--ND%204.0-lightgrey" alt="License: CC BY-NC-ND 4.0" />
+  <img src="https://img.shields.io/badge/version-1.2.0-blue" alt="Version" />
+  <img src="https://img.shields.io/github/stars/TMHSDigital/Unity-Developer-Tools" alt="GitHub stars" />
+</p>
+
+<p align="center">
+  <a href="docs/GETTING-STARTED.md"><strong>Getting Started</strong></a> &bull;
+  <a href="#features">Features</a> &bull;
+  <a href="#quick-start">Quick Start</a> &bull;
+  <a href="#mcp-server">MCP Server</a> &bull;
+  <a href="#skills-18">Skills</a> &bull;
+  <a href="#rules-8">Rules</a> &bull;
+  <a href="#roadmap">Roadmap</a>
+</p>
 
 ---
 
-> 18 skills - 8 rules - 4 MCP tools - 20 snippets - 5 templates
+<p align="center">
+  18 skills &nbsp;&bull;&nbsp; 8 rules &nbsp;&bull;&nbsp; 4 MCP tools &nbsp;&bull;&nbsp; 20 snippets &nbsp;&bull;&nbsp; 5 templates
+</p>
 
 Scaffold Unity scripts, look up APIs, generate shader patterns, detect render pipelines, and write optimized C# -- all from within Cursor's AI chat. Covers the full Unity development lifecycle from project setup to platform deployment.
 
-[**Getting Started Guide**](docs/GETTING-STARTED.md)
+<p align="center">
+  <a href="docs/GETTING-STARTED.md"><img src="https://img.shields.io/badge/%F0%9F%8E%AE_GETTING_STARTED_GUIDE-blue?style=for-the-badge" alt="Getting Started Guide" /></a>
+</p>
 
-> **First time here?** The **Getting Started guide** walks you through every step -- from installing prerequisites to building your first Unity project with AI assistance. No prior Cursor plugin experience required.
+> **First time here?** The **[Getting Started guide](docs/GETTING-STARTED.md)** walks you through every step -- from installing prerequisites to building your first Unity project with AI assistance. No prior Cursor plugin experience required.
 
 ## How It Works
 
@@ -45,7 +65,7 @@ cd mcp-server && pip install -r requirements.txt
 
 Then ask the AI agent to scaffold a MonoBehaviour, look up an API, or generate a shader effect.
 
-> **Need more detail?** The [**Getting Started guide**](docs/GETTING-STARTED.md) covers installing prerequisites, troubleshooting, and building your first project step by step.
+> **Need more detail?** The **[Getting Started guide](docs/GETTING-STARTED.md)** covers installing prerequisites, troubleshooting, and building your first project step by step.
 
 ## Features
 
@@ -61,8 +81,10 @@ Then ask the AI agent to scaffold a MonoBehaviour, look up an API, or generate a
 <details>
 <summary><strong>Supported Workflows</strong></summary>
 
+&nbsp;
+
 | Workflow | Description |
-|----------|-------------|
+|:---------|:------------|
 | MonoBehaviour | Classic Unity scripting with lifecycle methods |
 | ScriptableObject Architecture | Data-driven design with events, variables, runtime sets |
 | ECS/DOTS | High-performance data-oriented tech stack |
@@ -74,8 +96,10 @@ Then ask the AI agent to scaffold a MonoBehaviour, look up an API, or generate a
 <details>
 <summary><strong>Supported Render Pipelines</strong></summary>
 
+&nbsp;
+
 | Pipeline | Status |
-|----------|--------|
+|:---------|:-------|
 | **URP** (Universal) | Primary -- recommended for all new projects |
 | **HDRP** (High Definition) | Supported -- maintenance mode guidance |
 | **Built-in** (Legacy) | Migration guidance -- deprecated in Unity 6.5 |
@@ -85,8 +109,10 @@ Then ask the AI agent to scaffold a MonoBehaviour, look up an API, or generate a
 <details>
 <summary><strong>Supported Platforms</strong></summary>
 
+&nbsp;
+
 | Platform | Backend |
-|----------|---------|
+|:---------|:--------|
 | Windows | IL2CPP or Mono |
 | macOS | IL2CPP or Mono |
 | Linux | IL2CPP or Mono |
@@ -100,7 +126,7 @@ Then ask the AI agent to scaffold a MonoBehaviour, look up an API, or generate a
 ## Skills (18)
 
 | Skill | What it does |
-|-------|-------------|
+|:------|:-------------|
 | **Project Setup** | Unity project configuration, folder structure, assembly definitions, package management |
 | **MonoBehaviour Patterns** | Lifecycle methods, Awaitable async, FindFirstObjectByType, design patterns |
 | **ScriptableObjects** | Data-driven architecture with events, variables, and runtime sets |
@@ -123,12 +149,12 @@ Then ask the AI agent to scaffold a MonoBehaviour, look up an API, or generate a
 ## Rules (8)
 
 | Rule | What it enforces |
-|------|-----------------|
+|:-----|:-----------------|
 | **C# Unity Conventions** | SerializeField, Awaitable over coroutines, modern API usage |
 | **MonoBehaviour Lifecycle** | Correct initialization order, Update vs FixedUpdate usage |
 | **Performance Rules** | No FindObjectOfType, no Resources.Load, allocation warnings |
 | **Naming Conventions** | PascalCase methods, _camelCase privates, Unity-standard naming |
-| **Serialization Rules** | Proper [SerializeField], [field: SerializeField] for events |
+| **Serialization Rules** | Proper `[SerializeField]`, `[field: SerializeField]` for events |
 | **Shader Conventions** | HLSLPROGRAM over CGPROGRAM, URP-first shader patterns |
 | **Visual Scripting Conventions** | Graph naming, Subgraph usage, variable scoping |
 | **Security and Builds** | No credentials in code, IL2CPP stripping, signed packages |
@@ -138,51 +164,57 @@ Then ask the AI agent to scaffold a MonoBehaviour, look up an API, or generate a
 <details>
 <summary><strong>C# (15)</strong></summary>
 
+&nbsp;
+
 | Snippet | Description |
-|---------|-------------|
-| monobehaviour-template.cs | Complete MonoBehaviour with lifecycle methods |
-| singleton-pattern.cs | Thread-safe singleton using FindFirstObjectByType |
-| object-pool.cs | Generic object pool with warm-up and auto-expand |
-| scriptableobject-template.cs | ScriptableObject with custom editor support |
-| coroutine-pattern.cs | Coroutine patterns with cancellation |
-| async-await-pattern.cs | Awaitable async with single-await pooling rule |
-| event-system.cs | C# event system with UnityEvent integration |
-| state-machine.cs | Finite state machine pattern |
-| custom-inspector.cs | Custom inspector with UI Toolkit |
-| editor-window.cs | Editor window with UI Toolkit |
-| property-drawer.cs | Custom property drawer |
-| input-system-actions.cs | New Input System with Action Assets |
-| raycast-patterns.cs | Physics.Raycast and NonAlloc patterns |
-| interface-component.cs | Interface-based component communication |
-| save-load-json.cs | JSON save/load with Application.persistentDataPath |
+|:--------|:------------|
+| `monobehaviour-template.cs` | Complete MonoBehaviour with lifecycle methods |
+| `singleton-pattern.cs` | Thread-safe singleton using FindFirstObjectByType |
+| `object-pool.cs` | Generic object pool with warm-up and auto-expand |
+| `scriptableobject-template.cs` | ScriptableObject with custom editor support |
+| `coroutine-pattern.cs` | Coroutine patterns with cancellation |
+| `async-await-pattern.cs` | Awaitable async with single-await pooling rule |
+| `event-system.cs` | C# event system with UnityEvent integration |
+| `state-machine.cs` | Finite state machine pattern |
+| `custom-inspector.cs` | Custom inspector with UI Toolkit |
+| `editor-window.cs` | Editor window with UI Toolkit |
+| `property-drawer.cs` | Custom property drawer |
+| `input-system-actions.cs` | New Input System with Action Assets |
+| `raycast-patterns.cs` | Physics.Raycast and NonAlloc patterns |
+| `interface-component.cs` | Interface-based component communication |
+| `save-load-json.cs` | JSON save/load with Application.persistentDataPath |
 
 </details>
 
 <details>
 <summary><strong>Shaders (4)</strong></summary>
 
+&nbsp;
+
 | Snippet | Description |
-|---------|-------------|
-| unlit-basic.shader | Basic unlit shader for URP (HLSLPROGRAM) |
-| urp-lit-template.shader | PBR lit shader template for URP |
-| hlsl-vertex-fragment.shader | Custom vertex/fragment with URP lighting |
-| surface-basic.shader | Legacy surface shader (Built-in only) |
+|:--------|:------------|
+| `unlit-basic.shader` | Basic unlit shader for URP (HLSLPROGRAM) |
+| `urp-lit-template.shader` | PBR lit shader template for URP |
+| `hlsl-vertex-fragment.shader` | Custom vertex/fragment with URP lighting |
+| `surface-basic.shader` | Legacy surface shader (Built-in only) |
 
 </details>
 
 <details>
 <summary><strong>Visual Scripting (1)</strong></summary>
 
+&nbsp;
+
 | File | Description |
-|------|-------------|
-| README.md | Graph architecture patterns and Subgraph conventions |
+|:-----|:------------|
+| `README.md` | Graph architecture patterns and Subgraph conventions |
 
 </details>
 
 ## Templates (5)
 
 | Template | Description |
-|----------|-------------|
+|:---------|:------------|
 | **2D Platformer** | Player controller with new Input System, camera follow, game manager |
 | **3D FPS** | First-person controller, weapon system, game manager |
 | **UI Menu System** | UI Toolkit menus with settings persistence |
@@ -205,16 +237,21 @@ The server starts automatically when Cursor invokes an MCP tool.
 <details>
 <summary><strong>Available Tools (4)</strong></summary>
 
+&nbsp;
+
 | Tool | Description |
-|------|-------------|
-| **scaffold_script** | Generate C# scripts following Unity 6 conventions. Supports MonoBehaviour, ScriptableObject, Editor, and ECS templates. |
-| **lookup_api** | Search the Unity API reference database by name, namespace, or category. Returns signatures, descriptions, and examples. |
-| **shader_helper** | Get shader code patterns for common effects (dissolve, outline, hologram, etc.) with HLSL and Shader Graph guidance. |
-| **platform_info** | Get platform-specific defines, capabilities, limitations, and build recommendations. |
+|:-----|:------------|
+| `scaffold_script` | Generate C# scripts following Unity 6 conventions. Supports MonoBehaviour, ScriptableObject, Editor, and ECS templates. |
+| `lookup_api` | Search the Unity API reference database by name, namespace, or category. Returns signatures, descriptions, and examples. |
+| `shader_helper` | Get shader code patterns for common effects (dissolve, outline, hologram, etc.) with HLSL and Shader Graph guidance. |
+| `platform_info` | Get platform-specific defines, capabilities, limitations, and build recommendations. |
 
 </details>
 
-**Usage Examples**
+<details>
+<summary><strong>Usage Examples</strong></summary>
+
+&nbsp;
 
 **Scaffold a script:**
 ```
@@ -236,6 +273,8 @@ Show me a dissolve effect shader for URP with edge glow
 What are the WebGL limitations and recommended settings?
 ```
 
+</details>
+
 ## Project Structure
 
 ```
@@ -248,6 +287,7 @@ Unity-Developer-Tools/
   templates/           Starter project templates (5 sets)
   mcp-server/          Python MCP server (4 tools) and data files
   docs/                Architecture, roadmap, contributing guide
+  assets/              Logo and images
   .github/             CI/CD workflows (5 workflows)
 ```
 
@@ -258,8 +298,10 @@ See [docs/ROADMAP.md](docs/ROADMAP.md) for the full project roadmap.
 <details>
 <summary><strong>Release Plan</strong></summary>
 
+&nbsp;
+
 | Version | Milestone | Status |
-|---------|-----------|--------|
+|:--------|:----------|:-------|
 | **v0.1.0** | Foundation -- skills, rules, snippets, templates, MCP server, CI/CD | Done |
 | **v1.0.0** | M1 Complete -- 18 skills, 8 rules, 20 snippets, 5 templates, 4 MCP tools | Done |
 | **v1.1.0** | CI/CD overhaul -- 8-job validation, zip releases, auto-labeling, data refresh | Done |
@@ -275,7 +317,7 @@ See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) for guidelines on adding skills
 
 ## Support
 
-If this plugin is useful to you, consider starring the repository or [sponsoring the project](https://github.com/sponsors/TMHSDigital).
+If this plugin is useful to you, consider [sponsoring the project](https://github.com/sponsors/TMHSDigital).
 
 ## License
 
@@ -283,6 +325,8 @@ CC BY-NC-ND 4.0 -- see [LICENSE](LICENSE) for details.
 
 <details>
 <summary><strong>Unity Reference Links</strong></summary>
+
+&nbsp;
 
 - [Unity Manual](https://docs.unity3d.com/Manual/)
 - [Unity Scripting API](https://docs.unity3d.com/ScriptReference/)
@@ -294,4 +338,6 @@ CC BY-NC-ND 4.0 -- see [LICENSE](LICENSE) for details.
 
 ---
 
-**Built by [TMHSDigital](https://github.com/TMHSDigital)**
+<p align="center">
+  <strong>Built by <a href="https://github.com/TMHSDigital">TMHSDigital</a></strong>
+</p>
