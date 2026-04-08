@@ -1,0 +1,23 @@
+---
+title: C# Unity conventions
+description: C# coding conventions for Unity development
+globs: ["**/*.cs"]
+alwaysApply: false
+---
+
+# C# Unity conventions
+
+- Use `[SerializeField] private` instead of `public` for inspector-exposed fields
+- Cache component references in Awake, never call GetComponent in Update
+- Use `CompareTag("tag")` instead of `gameObject.tag == "tag"`
+- Use `TryGetComponent<T>(out var component)` when the component might not exist
+- Prefer `[RequireComponent]` to enforce component dependencies
+- Use regions sparingly; prefer small, focused classes
+- Mark editor-only code with `#if UNITY_EDITOR`
+- Use `nameof()` for string references to fields and methods
+- Always null-check Unity objects with implicit bool: `if (myObject)` not `if (myObject != null)`
+- Prefer async/await with Awaitable (Unity 6+) over IEnumerator coroutines for new code
+- An Awaitable instance must never be awaited more than once (it is pooled)
+- Use `FindFirstObjectByType<T>()` instead of the deprecated `FindObjectOfType<T>()`
+- Use file-scoped namespaces to reduce nesting
+- Prefer primary constructors for simple data types

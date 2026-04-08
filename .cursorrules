@@ -1,17 +1,17 @@
-You are working on CFX Developer Tools, a Cursor IDE plugin for FiveM and RedM resource development.
+You are working on Unity Developer Tools, a Cursor IDE plugin for Unity game development.
 
 ## Repo structure
 
-- `.cursor-plugin/plugin.json` -- plugin manifest (version is auto-managed by CI)
-- `skills/` -- 9 SKILL.md files (resource scaffolding, natives, fxmanifest, client-server, framework detection, performance, NUI, database, state bags)
-- `rules/` -- 6 .mdc rule files (Lua, JS, C# conventions, fxmanifest standards, security, performance)
-- `snippets/` -- 20 code snippets organized by language (lua, javascript, csharp)
-- `templates/` -- 7 resource templates (standalone, esx, qbcore, oxcore, javascript, csharp, nui-vite)
-- `mcp-server/` -- Python FastAPI MCP server with 4 tools and JSON data files
-- `docs/` -- architecture, roadmap, contributing, getting started
-- `.github/workflows/` -- validate, release, update-natives, stale
-- `AGENTS.md` -- full workflow and contribution guide for AI agents
-- `CHANGELOG.md` -- manually maintained release history
+- `.cursor-plugin/plugin.json` - plugin manifest (version is auto-managed by CI)
+- `skills/` - 18 SKILL.md files (project setup, MonoBehaviour, ScriptableObjects, physics, UI, shaders, animation, audio, input, networking, editor scripting, performance, render pipelines, ECS/DOTS, visual scripting, testing, addressables, platform targeting)
+- `rules/` - 8 .mdc rule files (C# conventions, lifecycle, performance, naming, serialization, shaders, visual scripting, security)
+- `snippets/` - 20 code snippets organized by type (csharp, shaders, visual-scripting)
+- `templates/` - 5 starter templates (2d-platformer, 3d-fps, ui-menu-system, scriptableobject-architecture, editor-tool)
+- `mcp-server/` - Python FastMCP server with 4 tools and JSON data files
+- `docs/` - architecture, roadmap, contributing, getting started
+- `.github/workflows/` - validate, release, stale
+- `AGENTS.md` - full workflow and contribution guide for AI agents
+- `CHANGELOG.md` - manually maintained release history
 
 ## Commit conventions
 
@@ -27,50 +27,34 @@ Never manually edit the version in `plugin.json` or the README version badge. Th
 ## Hard rules
 
 - No em dashes or en dashes anywhere. Use hyphens or rewrite.
-- No `lua54 'yes'` in any template or generated manifest. Lua 5.4 is the only runtime; the directive is deprecated.
 - No hardcoded credentials, tokens, API keys, or passwords.
-- All fxmanifest.lua must use `fx_version 'cerulean'` and include `games`.
+- All C# code should target Unity 6.x conventions.
+- Use Awaitable over IEnumerator coroutines for new async code.
+- Use FindFirstObjectByType, not FindObjectOfType (deprecated).
+- Use HLSLPROGRAM, not CGPROGRAM (deprecated in URP/HDRP).
+- Use UI Toolkit for editor tools, not IMGUI/OnGUI.
 - Python in `mcp-server/` must pass `py_compile`.
-- Server-side event handlers must validate `source`.
-- C# resources use a single compiled DLL referenced in both `client_scripts` and `server_scripts`.
+- URP is the default render pipeline. HDRP is maintenance-only. Built-in is deprecated.
 
 ## When editing skills or rules
 
-- Skills are SKILL.md with YAML frontmatter. Keep them accurate to current FiveM/RedM APIs.
+- Skills are SKILL.md with YAML frontmatter. Keep them accurate to current Unity 6.x APIs.
 - Rules are .mdc with frontmatter (`description`, `globs`, `alwaysApply`). They enforce conventions in generated code.
 - After adding/removing a skill or rule, update `plugin.json` to register it and update counts in README.md.
-- CI validates that README counts match actual file counts on disk.
 
 ## When editing the MCP server
 
-- Shared manifest logic lives in `mcp-server/tools/manifest_common.py`. Don't duplicate it.
-- Don't manually edit `mcp-server/data/natives_*.json`. The update-natives workflow manages these.
-- Dependencies are pinned in `mcp-server/requirements.txt`.
+- All tool logic lives in `mcp-server/server.py`.
+- Placeholder modules in `mcp-server/tools/` maintain directory structure.
+- Data files in `mcp-server/data/` provide reference databases.
+- Dependencies are listed in `mcp-server/requirements.txt`.
 
 ## When editing templates
 
-- Every template directory needs at minimum a `fxmanifest.lua`.
-- Never include `lua54 'yes'`.
-- Follow the existing pattern: fxmanifest.lua + client.lua/js + server.lua/js (or .csproj + .cs).
+- Every template directory needs at minimum a README.md and working C# scripts.
+- Follow Unity 6 conventions: Awaitable, new Input System, [SerializeField] private.
 
-## When editing workflows
+## When editing snippets
 
-- `release.yml` uses `[skip ci]` on its version bump commit. Don't remove that.
-- `release.yml` paths-ignore excludes `.github/**`, `docs/**`, `*.md`, `LICENSE`. Content-only changes won't trigger releases.
-- `release.yml` has a concurrency guard. Only one release can run at a time.
-- `update-natives.yml` commits with `chore:` prefix (patch bump). Don't change to `feat:`.
-- `validate.yml` runs on both PR and push. Keep checks fast.
-- `CHANGELOG.md` is manually maintained. Update it for significant changes.
-
-## Native databases
-
-Data sourced from `runtime.fivem.net/doc/` (GTA5, RDR3, CFX). ~6000+ GTA5, ~5800+ RDR3 natives.
-
-The flat JSON schema for natives:
-```json
-{ "name": "string", "hash": "0x...", "params": [{"type":"","name":""}], "return_type": "string", "description": "string", "category": "string", "side": "client|server|shared", "deprecated": false, "examples": "string|null" }
-```
-
-The `lookup_native_tool` supports: keyword search, hash lookup, category/namespace browsing (empty query + category), listing all categories (empty query + no category), and side filtering.
-
-Events use: `{ "name", "side", "description", "params", "game" }`.
+- Each snippet has a header comment explaining what it does and when to use it.
+- Use modern Unity patterns throughout.

@@ -1,18 +1,22 @@
 ---
 title: Performance rules
-description: Performance optimization rules for CFX resources
-globs: ["**/*.lua", "**/*.js", "**/*.cs"]
+description: Performance optimization rules for Unity
+globs: ["**/*.cs"]
 alwaysApply: true
 ---
 
-# CFX performance rules
+# Unity performance rules
 
-- WARN: `Wait(0)` or `Delay(0)` in a loop. Only acceptable for drawing or per-frame input checks.
-- WARN: `GetHashKey()` calls with string literals. Use backtick compile-time hashing instead.
-- WARN: `GetDistanceBetweenCoords` or `Vdist`. Use `#(vec1 - vec2)` vector math instead.
-- WARN: `Citizen.CreateThread` or `Citizen.Wait`. Use the global `CreateThread` and `Wait` aliases.
-- WARN: Net events firing more than once per second per player. Consider state bags instead.
-- WARN: Missing `Wait()` in any `while true` loop. This will freeze the game.
-- WARN: Creating entities or blips without cleanup in `onResourceStop`.
-- INFO: Use `resmon 1` in server console to profile resource performance.
-- INFO: Target under 0.2ms idle for well-optimized resources.
+- WARN: GetComponent<T>() called inside Update, FixedUpdate, or LateUpdate. Cache in Awake instead.
+- WARN: FindObjectOfType or FindObjectsOfType in any code. Use FindFirstObjectByType or FindObjectsByType instead.
+- WARN: Find, FindObjectOfType, or FindObjectsOfType in runtime code. Cache references or use events.
+- WARN: String concatenation with + in Update. Use StringBuilder or TextMeshPro.SetText.
+- WARN: new List, new Dictionary, or any heap allocation inside Update. Pre-allocate and reuse.
+- WARN: LINQ queries (Where, Select, OrderBy) in per-frame code. Use manual loops.
+- WARN: Instantiate/Destroy called frequently. Use object pooling instead.
+- WARN: Camera.main accessed repeatedly. Cache it: Camera.main uses FindGameObjectWithTag internally.
+- WARN: SendMessage or BroadcastMessage. Use direct references, events, or interfaces.
+- WARN: Resources.Load in runtime code. Use Addressables.LoadAssetAsync instead.
+- INFO: Use the Profiler to verify actual bottlenecks before optimizing.
+- INFO: Use Burst compiler and Jobs for CPU-intensive work.
+- INFO: Use NonAlloc physics methods (RaycastNonAlloc, OverlapSphereNonAlloc) to avoid per-frame allocations.

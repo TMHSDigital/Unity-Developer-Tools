@@ -1,0 +1,19 @@
+---
+title: Security and builds
+description: Security and build configuration rules
+globs: ["**/*.cs", "**/*.json", "**/*.asset"]
+alwaysApply: false
+---
+
+# Security and build rules
+
+- Never commit API keys, tokens, or secrets to the repository
+- Use ScriptableObjects or environment variables for configuration
+- Strip debug symbols and logging in release builds
+- Use IL2CPP or CoreCLR for release builds (harder to reverse engineer than Mono)
+- Enable code stripping to reduce build size
+- Encrypt sensitive save data; never store plaintext passwords
+- Validate server-side in multiplayer; never trust client data
+- Use `Debug.unityLogger.logEnabled = false` in production or wrap in #if UNITY_EDITOR
+- Obfuscate sensitive strings if targeting platforms where decompilation is a risk
+- Verify package trust indicators for third-party packages (signed packages in Unity 6.3+)

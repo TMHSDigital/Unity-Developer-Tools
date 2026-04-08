@@ -1,0 +1,19 @@
+---
+title: Visual scripting conventions
+description: Best practices for Unity Visual Scripting
+globs: ["**/*.asset"]
+alwaysApply: false
+---
+
+# Visual scripting conventions
+
+- Keep graphs small and focused; extract repeated logic into Subgraphs (not SuperUnits)
+- Use descriptive names for all variables and custom events
+- Add sticky notes to explain complex logic
+- Use State Graphs for AI, dialog systems, and game states
+- Use Script Graphs for sequential gameplay logic
+- Avoid deeply nested branches; prefer state machines for complex conditions
+- Use Object variables for component references instead of repeated Find calls
+- Create custom C# units for performance-critical operations
+- Document graph inputs and outputs in the graph description field
+- Use Script Machine component (not the legacy Flow Machine name)

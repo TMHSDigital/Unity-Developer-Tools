@@ -22,45 +22,16 @@ jobs:
       - name: Validate mcp.json
         run: python3 -c "import json; json.load(open('.cursor/mcp.json'))"
 
-      - name: Validate natives_gta5.json
+      - name: Validate MCP data files
         run: python3 -c "
-          import json
-          data = json.load(open('mcp-server/data/natives_gta5.json'))
-          assert isinstance(data, list), 'Expected array'
-          for n in data:
-              assert 'name' in n, f'Missing name in {n}'
-              assert 'hash' in n, f'Missing hash in {n.get(\"name\", \"unknown\")}'
-              assert 'side' in n, f'Missing side in {n.get(\"name\", \"unknown\")}'
-              assert 'category' in n, f'Missing category in {n.get(\"name\", \"unknown\")}'
-              assert isinstance(n.get('deprecated'), bool), f'deprecated must be bool in {n.get(\"name\", \"unknown\")}'
-              assert n.get('examples') is None or isinstance(n.get('examples'), str), f'examples must be string or null in {n.get(\"name\", \"unknown\")}'
-          print(f'GTA5 natives: {len(data)} entries validated')
-          "
-
-      - name: Validate natives_rdr3.json
-        run: python3 -c "
-          import json
-          data = json.load(open('mcp-server/data/natives_rdr3.json'))
-          assert isinstance(data, list), 'Expected array'
-          for n in data:
-              assert 'name' in n, f'Missing name in {n}'
-              assert 'hash' in n, f'Missing hash in {n.get(\"name\", \"unknown\")}'
-              assert 'side' in n, f'Missing side in {n.get(\"name\", \"unknown\")}'
-              assert 'category' in n, f'Missing category in {n.get(\"name\", \"unknown\")}'
-              assert isinstance(n.get('deprecated'), bool), f'deprecated must be bool in {n.get(\"name\", \"unknown\")}'
-              assert n.get('examples') is None or isinstance(n.get('examples'), str), f'examples must be string or null in {n.get(\"name\", \"unknown\")}'
-          print(f'RDR3 natives: {len(data)} entries validated')
-          "
-
-      - name: Validate events.json
-        run: python3 -c "
-          import json
-          data = json.load(open('mcp-server/data/events.json'))
-          assert isinstance(data, list), 'Expected array'
-          for e in data:
-              assert 'name' in e, f'Missing name in {e}'
-              assert 'side' in e, f'Missing side in {e.get(\"name\", \"unknown\")}'
-          print(f'Events: {len(data)} entries validated')
+          import json, os
+          data_dir = 'mcp-server/data'
+          for f in os.listdir(data_dir):
+              if f.endswith('.json'):
+                  path = os.path.join(data_dir, f)
+                  data = json.load(open(path))
+                  assert isinstance(data, (list, dict)), f'{f} must be array or object'
+                  print(f'{f}: valid ({len(data)} entries)')
           "
 
   validate-plugin-manifest:
@@ -107,7 +78,7 @@ jobs:
 
       - name: Check for em dashes and en dashes
         run: |
-          if grep -rP '[\x{2013}\x{2014}]' --include='*.md' --include='*.lua' --include='*.js' --include='*.cs' --include='*.mdc' --include='*.json' --include='*.py' . 2>/dev/null; then
+          if grep -rP '[\x{2013}\x{2014}]' --include='*.md' --include='*.cs' --include='*.mdc' --include='*.json' --include='*.py' --include='*.shader' --include='*.hlsl' . 2>/dev/null; then
             echo "::error::Em dashes or en dashes found. Use hyphens instead."
             exit 1
           fi
@@ -116,19 +87,11 @@ jobs:
       - name: Check for hardcoded credentials
         run: |
           patterns='password\s*=\s*["\x27][^"\x27]+|api_key\s*=\s*["\x27][^"\x27]+|token\s*=\s*["\x27][A-Za-z0-9]+'
-          if grep -rPi "$patterns" --include='*.lua' --include='*.js' --include='*.py' --include='*.json' . 2>/dev/null | grep -v 'YOUR_SESSION_COOKIE\|example\|placeholder\|mock'; then
+          if grep -rPi "$patterns" --include='*.cs' --include='*.py' --include='*.json' . 2>/dev/null | grep -v 'example\|placeholder\|mock\|destroyCancellationToken'; then
             echo "::error::Possible hardcoded credentials found."
             exit 1
           fi
           echo "No hardcoded credentials found"
-
-      - name: Check deprecated lua54 directive in templates
-        run: |
-          if grep -r "lua54" templates/ 2>/dev/null; then
-            echo "::error::lua54 directive found in templates. It is deprecated and should be removed."
-            exit 1
-          fi
-          echo "No deprecated lua54 in templates"
 
   validate-counts:
     name: Validate content counts
@@ -136,7 +99,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check skill and snippet counts match plugin.json
+      - name: Check content counts match README
         run: python3 << 'EOF'
           import json, os, sys
 
@@ -155,7 +118,7 @@ jobs:
           template_count = sum(
               1 for d in os.listdir('templates')
               if os.path.isdir(os.path.join('templates', d))
-              and os.path.exists(os.path.join('templates', d, 'fxmanifest.lua'))
+              and os.path.exists(os.path.join('templates', d, 'README.md'))
           )
 
           readme = open('README.md').read()
@@ -176,38 +139,6 @@ jobs:
           print(f'Counts verified: {skill_count} skills, {rule_count} rules, {snippet_count} snippets, {template_count} templates')
           EOF
 
-  validate-templates:
-    name: Validate fxmanifest templates
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Check fxmanifest.lua files have required fields
-        run: python3 << 'EOF'
-          import os, re, sys
-
-          errors = []
-          for root, dirs, files in os.walk("templates"):
-              for f in files:
-                  if f == "fxmanifest.lua":
-                      path = os.path.join(root, f)
-                      content = open(path).read()
-
-                      if "fx_version" not in content:
-                          errors.append(f"{path}: missing fx_version")
-                      if "games" not in content:
-                          errors.append(f"{path}: missing games")
-                      if "'cerulean'" not in content:
-                          errors.append(f"{path}: fx_version should be cerulean")
-
-          if errors:
-              for e in errors:
-                  print(f"::error::{e}", file=sys.stderr)
-              sys.exit(1)
-
-          print("All fxmanifest.lua templates valid")
-          EOF
-
   validate-python:
     name: Validate MCP server
     runs-on: ubuntu-latest
@@ -218,16 +149,10 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install dependencies
-        run: pip install -r mcp-server/requirements.txt
-
       - name: Check Python syntax
-        run: python3 -m py_compile mcp-server/server.py
-
-      - name: Check tool modules syntax
         run: |
-          python3 -m py_compile mcp-server/tools/manifest_common.py
-          python3 -m py_compile mcp-server/tools/scaffold.py
-          python3 -m py_compile mcp-server/tools/natives.py
-          python3 -m py_compile mcp-server/tools/manifest_gen.py
-          python3 -m py_compile mcp-server/tools/event_search.py
+          python3 -m py_compile mcp-server/server.py
+          for f in mcp-server/tools/*.py; do
+            python3 -m py_compile "$f"
+          done
+          echo "All Python files pass syntax check"

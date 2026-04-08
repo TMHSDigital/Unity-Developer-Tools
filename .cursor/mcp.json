@@ -1,10 +1,10 @@
 {
   "mcpServers": {
-    "cfx-dev-tools": {
+    "unity-dev-tools": {
       "command": "python",
       "args": ["mcp-server/server.py"],
       "env": {
-        "CFX_NATIVES_PATH": "./mcp-server/data"
+        "UNITY_DATA_PATH": "./mcp-server/data"
       }
     }
   }

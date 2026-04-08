@@ -1,0 +1,20 @@
+---
+title: Serialization rules
+description: Unity serialization best practices
+globs: ["**/*.cs"]
+alwaysApply: false
+---
+
+# Unity serialization rules
+
+- Unity serializes: public fields, [SerializeField] private fields
+- Unity does NOT serialize: properties, static fields, readonly fields, dictionaries
+- Use [SerializeField] private over public for encapsulation
+- Use [HideInInspector] to serialize but hide from inspector
+- Use [NonSerialized] or [System.NonSerialized] to exclude public fields
+- Use [Header("Section")] and [Space] to organize inspector fields
+- Use [Tooltip("description")] for inspector documentation
+- Use [Range(min, max)] for numeric sliders
+- Nested serializable classes need [System.Serializable]
+- ScriptableObject references survive play mode; MonoBehaviour field values reset
+- For complex data: use JSON serialization (JsonUtility or Newtonsoft) for save/load

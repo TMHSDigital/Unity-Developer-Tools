@@ -1,0 +1,19 @@
+---
+title: MonoBehaviour lifecycle
+description: Correct usage of MonoBehaviour lifecycle methods
+globs: ["**/*.cs"]
+alwaysApply: true
+---
+
+# MonoBehaviour lifecycle rules
+
+- Awake: self-initialization only (cache own components, set defaults)
+- Start: cross-object initialization (find other objects, subscribe to events)
+- Update: per-frame game logic (input polling, non-physics movement)
+- FixedUpdate: physics only (Rigidbody forces, velocity changes)
+- LateUpdate: post-Update logic (camera follow, UI updates after movement)
+- OnEnable/OnDisable: subscribe/unsubscribe from events
+- OnDestroy: final cleanup (unsubscribe static events, release resources)
+- NEVER put physics code in Update
+- NEVER put frame-dependent code in FixedUpdate
+- NEVER use Awake to reference other GameObjects that may not exist yet

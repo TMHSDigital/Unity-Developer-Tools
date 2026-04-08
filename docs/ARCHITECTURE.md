@@ -1,116 +1,72 @@
 # Architecture
 
-This document explains how the CFX Developer Tools plugin and companion MCP server work together.
+## Plugin Structure
 
-## Overview
-
-CFX Developer Tools is a Cursor IDE plugin that combines:
-
-1. **Skills** - Detailed instructions that teach the AI agent how to perform CFX-specific tasks
-2. **Rules** - Coding conventions the AI follows when generating or reviewing code
-3. **Snippets** - Copy-paste-ready code patterns for common tasks
-4. **Templates** - Complete resource starters for each framework and language
-5. **MCP Server** - A Python server that provides tools the AI can call programmatically
-
-## How the plugin loads
-
-When you open a workspace containing this plugin in Cursor:
-
-1. Cursor reads `.cursor-plugin/plugin.json` and registers the plugin
-2. Skills from `skills/` become available to the AI agent
-3. Rules from `rules/` are applied based on their glob patterns and `alwaysApply` flags
-4. The MCP server defined in `.cursor/mcp.json` starts when a tool is first invoked
-
-## Skills
-
-Each skill is a `SKILL.md` file with YAML frontmatter. Skills teach the AI agent domain-specific knowledge:
-
-- **Resource scaffolding** - How to create new resources from scratch
-- **Native functions** - How to find and use GTA5/RDR3 native functions
-- **fxmanifest** - How to write correct resource manifests
-- **Client-server patterns** - Correct event and thread patterns across all runtimes
-- **Framework detection** - How to identify ESX/QBCore/ox_core/standalone
-- **Performance optimization** - Best practices for CFX performance
-- **NUI development** - How to build in-game web UIs
-- **Database integration** - How to use oxmysql for database queries
-- **State Bags** - Modern data synchronization using Entity/Player/Global state bags
-
-Skills are activated based on context (file type, user request) and provide the agent with the technical knowledge to generate correct code.
-
-## Rules
-
-Rules are `.mdc` files with frontmatter specifying when they apply:
-
-- `globs` - File patterns that trigger the rule (e.g. `**/*.lua`)
-- `alwaysApply` - If true, the rule is always active regardless of file context
-
-Rules enforce conventions like proper event naming, source validation, performance patterns, and manifest formatting.
-
-## MCP server
-
-The MCP server (`mcp-server/server.py`) runs as a local process and exposes tools via the Model Context Protocol:
+This is a single Cursor IDE plugin following the standard plugin specification. All components live at the repository root.
 
 ```
-Cursor AI Agent  --(MCP protocol)-->  MCP Server  --(reads)-->  Data Files
-                                          |
-                                          +--(generates)-->  Resource Files
+.cursor-plugin/plugin.json    <- Plugin manifest (name, version, skills, rules)
+.cursor/mcp.json              <- MCP server configuration
+skills/                       <- AI context files (SKILL.md with YAML frontmatter)
+rules/                        <- Convention enforcement (.mdc with frontmatter)
+snippets/                     <- Production-ready code patterns
+templates/                    <- Starter project scaffolds
+mcp-server/                   <- Python MCP server with tools and data
+docs/                         <- Documentation
 ```
 
-### Tools
+## Component Types
 
-| Tool | Purpose |
-|------|---------|
-| `scaffold_resource_tool` | Creates a new resource directory with boilerplate |
-| `lookup_native_tool` | Searches natives by name, hash, description, or category. Supports namespace browsing. |
-| `generate_manifest_tool` | Generates fxmanifest.lua content |
-| `search_events_tool` | Searches the event reference database |
+### Skills (skills/*.md)
 
-### Data files
+Skills provide domain knowledge to the AI. Each SKILL.md has:
+- YAML frontmatter: title, description, globs (file patterns that activate it)
+- Markdown body: comprehensive reference material
 
-The `mcp-server/data/` directory contains JSON databases updated weekly from upstream sources:
+Skills do not enforce rules - they inform the AI about best practices, APIs, and patterns so it can generate better code.
 
-- `natives_gta5.json` - GTA5 native functions (~6000+ natives, 44 categories)
-- `natives_rdr3.json` - RDR3 native functions (~5800+ natives, 84 categories)
-- `events.json` - Common FiveM/RedM events
+### Rules (rules/*.mdc)
 
-Native database schema:
+Rules enforce coding standards. Each .mdc file has:
+- Frontmatter: title, description, globs, alwaysApply
+- Body: specific do/don't rules
 
-```json
-{
-  "name": "GetVehicleMaxSpeed",
-  "hash": "0x1B8F0DE5",
-  "params": [{"type": "Vehicle", "name": "vehicle"}],
-  "return_type": "float",
-  "description": "Returns the max speed of the vehicle.",
-  "side": "client",
-  "category": "VEHICLE",
-  "deprecated": false,
-  "examples": "```lua\nlocal speed = GetVehicleMaxSpeed(vehicle)\n```"
-}
-```
+Rules with `alwaysApply: true` are active on every matching file. Rules with `alwaysApply: false` are activated when the file matches the glob pattern.
 
-Data is fetched from `runtime.fivem.net/doc/` (GTA5, RDR3, CFX natives) and transformed by `.github/scripts/transform_natives.py`.
+### Snippets (snippets/*)
 
-## Templates
+Ready-to-use code patterns organized by language:
+- `csharp/` - Unity C# patterns
+- `shaders/` - HLSL and ShaderLab templates
+- `visual-scripting/` - Graph pattern documentation
 
-The `templates/` directory contains starter resource structures for:
+### Templates (templates/*)
 
-- **standalone** - No framework dependency
-- **esx** - ESX framework boilerplate
-- **qbcore** - QBCore framework boilerplate
-- **oxcore** - ox_core framework boilerplate
-- **javascript** - JavaScript runtime starter
-- **csharp** - C# runtime starter
-- **nui-vite** - Modern NUI with Vite + React, postMessage bridge
+Complete starter project scaffolds. Each template is a self-contained directory with scripts and a README explaining setup.
 
-Templates are used by the scaffolding tool and can also be copied manually.
+### MCP Server (mcp-server/)
 
-## Snippets
+A Python FastAPI server implementing the Model Context Protocol. Provides 4 tools:
+- `scaffold_script` - Generate scripts from templates
+- `lookup_api` - Search Unity API reference data
+- `shader_helper` - Get shader effect patterns
+- `platform_info` - Get platform-specific information
 
-The `snippets/` directory contains individual code patterns organized by language:
+Data files in `mcp-server/data/` provide the reference databases:
+- `unity_api_common.json` - Common Unity API entries
+- `shader_properties.json` - Shader effect patterns
+- `platform_defines.json` - Platform scripting defines
+- `lifecycle_order.json` - MonoBehaviour execution order
+- `deprecated_patterns.json` - Legacy-to-modern API mapping
 
-- `lua/` - Thread loops, events, commands, exports, NUI callbacks, configs, state bags
-- `javascript/` - Tick loops, events, commands, NUI callbacks, state bags
-- `csharp/` - Base scripts, commands, tick handlers
+## Version Management
 
-Snippets serve as quick-reference patterns that the AI agent can insert into generated code.
+The version in `.cursor-plugin/plugin.json` is the source of truth. The release workflow auto-bumps it based on conventional commit prefixes.
+
+## Design Principles
+
+1. **URP-first**: All rendering content defaults to URP as the standard pipeline
+2. **Modern patterns**: Awaitable over coroutines, UI Toolkit over IMGUI, HLSLPROGRAM over CGPROGRAM
+3. **Deprecated awareness**: All tools and skills warn about deprecated APIs and suggest modern replacements
+4. **Platform-aware**: Content adapts to the target platform's capabilities and limitations
+5. **Zero credentials**: No API keys, tokens, or secrets anywhere in the codebase

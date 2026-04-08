@@ -1,0 +1,177 @@
+[
+  {
+    "method": "Awake",
+    "phase": "Initialization",
+    "description": "Called when the script instance is loaded. Used to initialize variables and references between scripts. Called even if the component is disabled.",
+    "runs_per_frame": false,
+    "thread": "main"
+  },
+  {
+    "method": "OnEnable",
+    "phase": "Initialization",
+    "description": "Called when the object becomes enabled and active. Called immediately after Awake on first load, and each time the component is re-enabled.",
+    "runs_per_frame": false,
+    "thread": "main"
+  },
+  {
+    "method": "Reset",
+    "phase": "Initialization",
+    "description": "Called in the editor only when the script is first attached or when Reset is selected in the context menu. Used to initialize default values.",
+    "runs_per_frame": false,
+    "thread": "main"
+  },
+  {
+    "method": "Start",
+    "phase": "Initialization",
+    "description": "Called before the first frame update, only if the script instance is enabled. Called after all Awake calls. Use for setup that depends on other objects being initialized.",
+    "runs_per_frame": false,
+    "thread": "main"
+  },
+  {
+    "method": "FixedUpdate",
+    "phase": "Physics",
+    "description": "Called at a fixed time interval (default 0.02s). Used for physics calculations and Rigidbody manipulation. Independent of frame rate.",
+    "runs_per_frame": true,
+    "thread": "main"
+  },
+  {
+    "method": "OnTriggerEnter",
+    "phase": "Physics",
+    "description": "Called when a Collider enters a trigger collider attached to this object. Requires at least one object to have a Rigidbody.",
+    "runs_per_frame": false,
+    "thread": "main"
+  },
+  {
+    "method": "OnTriggerStay",
+    "phase": "Physics",
+    "description": "Called once per physics update for every Collider that is touching a trigger. Can fire multiple times per frame during physics catch-up.",
+    "runs_per_frame": true,
+    "thread": "main"
+  },
+  {
+    "method": "OnTriggerExit",
+    "phase": "Physics",
+    "description": "Called when a Collider stops touching a trigger collider attached to this object.",
+    "runs_per_frame": false,
+    "thread": "main"
+  },
+  {
+    "method": "OnCollisionEnter",
+    "phase": "Physics",
+    "description": "Called when a collision between two non-trigger colliders begins. Provides ContactPoint data for the impact.",
+    "runs_per_frame": false,
+    "thread": "main"
+  },
+  {
+    "method": "OnCollisionStay",
+    "phase": "Physics",
+    "description": "Called once per physics update while two non-trigger colliders remain in contact.",
+    "runs_per_frame": true,
+    "thread": "main"
+  },
+  {
+    "method": "OnCollisionExit",
+    "phase": "Physics",
+    "description": "Called when a collision between two non-trigger colliders ends.",
+    "runs_per_frame": false,
+    "thread": "main"
+  },
+  {
+    "method": "Update",
+    "phase": "Game Logic",
+    "description": "Called once per frame. The main function for per-frame game logic. Frame rate dependent - use Time.deltaTime for consistent behavior.",
+    "runs_per_frame": true,
+    "thread": "main"
+  },
+  {
+    "method": "LateUpdate",
+    "phase": "Game Logic",
+    "description": "Called once per frame after all Update calls. Commonly used for camera follow logic and any processing that should happen after movement is complete.",
+    "runs_per_frame": true,
+    "thread": "main"
+  },
+  {
+    "method": "OnAnimatorMove",
+    "phase": "Animation",
+    "description": "Called at each frame after the state machines and animations have been evaluated but before OnAnimatorIK. Used to apply root motion manually.",
+    "runs_per_frame": true,
+    "thread": "main"
+  },
+  {
+    "method": "OnAnimatorIK",
+    "phase": "Animation",
+    "description": "Called after the Animator has computed its final IK state. Used for setting up IK goals and weights for procedural animation.",
+    "runs_per_frame": true,
+    "thread": "main"
+  },
+  {
+    "method": "OnGUI",
+    "phase": "Rendering",
+    "description": "Called multiple times per frame for GUI event processing. Legacy IMGUI system - prefer UI Toolkit or uGUI for new projects.",
+    "runs_per_frame": true,
+    "thread": "main"
+  },
+  {
+    "method": "OnDrawGizmos",
+    "phase": "Rendering",
+    "description": "Called every frame in the editor when the object is visible. Used to draw debug visualization gizmos in the Scene view.",
+    "runs_per_frame": true,
+    "thread": "main"
+  },
+  {
+    "method": "OnDrawGizmosSelected",
+    "phase": "Rendering",
+    "description": "Called every frame in the editor only when the object is selected. Used for selection-specific debug visualizations.",
+    "runs_per_frame": true,
+    "thread": "main"
+  },
+  {
+    "method": "OnApplicationPause",
+    "phase": "Application",
+    "description": "Called when the application pauses or resumes (e.g., losing focus on mobile). Receives a bool indicating pause state.",
+    "runs_per_frame": false,
+    "thread": "main"
+  },
+  {
+    "method": "OnApplicationFocus",
+    "phase": "Application",
+    "description": "Called when the application gains or loses focus. Receives a bool indicating focus state. On mobile, maps to app foregrounding.",
+    "runs_per_frame": false,
+    "thread": "main"
+  },
+  {
+    "method": "OnDisable",
+    "phase": "Decommissioning",
+    "description": "Called when the behaviour becomes disabled. Also called when the object is destroyed or the scene is unloaded. Pair with OnEnable for event cleanup.",
+    "runs_per_frame": false,
+    "thread": "main"
+  },
+  {
+    "method": "OnDestroy",
+    "phase": "Decommissioning",
+    "description": "Called when the MonoBehaviour is destroyed. Only called on objects that have previously been active. Used for final cleanup of resources.",
+    "runs_per_frame": false,
+    "thread": "main"
+  },
+  {
+    "method": "OnApplicationQuit",
+    "phase": "Decommissioning",
+    "description": "Called before the application quits. On mobile platforms this is unreliable - use OnApplicationPause instead for save logic.",
+    "runs_per_frame": false,
+    "thread": "main"
+  },
+  {
+    "method": "OnBecameVisible",
+    "phase": "Rendering",
+    "description": "Called when the attached Renderer becomes visible by any camera. Useful for enabling expensive per-frame logic only when visible.",
+    "runs_per_frame": false,
+    "thread": "main"
+  },
+  {
+    "method": "OnBecameInvisible",
+    "phase": "Rendering",
+    "description": "Called when the attached Renderer is no longer visible by any camera. Use to disable expensive computation on off-screen objects.",
+    "runs_per_frame": false,
+    "thread": "main"
+  }
+]

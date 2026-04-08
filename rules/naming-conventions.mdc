@@ -1,0 +1,19 @@
+---
+title: Unity naming conventions
+description: Naming conventions for Unity C# code
+globs: ["**/*.cs"]
+alwaysApply: true
+---
+
+# Unity naming conventions
+
+- PascalCase for: classes, structs, enums, methods, properties, public fields, constants
+- camelCase for: local variables, parameters, private/protected fields
+- Prefix private fields with underscore: _playerHealth, _moveSpeed
+- Prefix interfaces with I: IInteractable, IDamageable
+- Suffix MonoBehaviours descriptively: PlayerController, EnemySpawner, HealthDisplay
+- Suffix ScriptableObjects with SO or Data: WeaponDataSO, LevelConfigData
+- Suffix Editor scripts: PlayerControllerEditor, WeaponDataDrawer
+- Boolean names should read as questions: isGrounded, hasKey, canJump
+- Event names should use past tense: OnPlayerDied, OnItemCollected
+- Avoid abbreviations except widely understood ones: hp, ui, id, fps

@@ -1,44 +1,43 @@
-# CFX Developer Tools - MCP Server
+# Unity Developer Tools MCP Server
 
-A Model Context Protocol (MCP) server that provides AI-powered tools for FiveM and RedM resource development.
+A Model Context Protocol server providing Unity development tools for the Cursor IDE.
 
 ## Tools
 
-| Tool | Description |
-|------|-------------|
-| `scaffold_resource_tool` | Create a new resource with boilerplate files |
-| `lookup_native_tool` | Search the native function database by name or description |
-| `generate_manifest_tool` | Generate a properly formatted fxmanifest.lua |
-| `search_events_tool` | Search the event reference database |
+### scaffold_script
+Generate well-structured C# scripts following Unity conventions.
+- **type**: monobehaviour, scriptableobject, editor-window, custom-inspector, property-drawer, interface, state-machine, test
+- **name**: Class name for the generated script
+- **namespace**: Optional namespace (default: MyGame)
 
-## Setup
+### lookup_api
+Search the Unity API reference database for classes, methods, and usage patterns.
+- **query**: Search term (class name, method name, or keyword)
+- **category**: Optional filter (physics, ui, animation, audio, rendering, input, networking, editor)
 
-### Prerequisites
+### shader_helper
+Get shader code patterns and property setups for common effects.
+- **effect**: Effect name (dissolve, outline, toon, water, hologram, fresnel)
+- **pipeline**: Target render pipeline (urp, hdrp, builtin)
 
-- Python 3.10+
-- pip
+### platform_info
+Get platform-specific scripting defines, capabilities, and build recommendations.
+- **platform**: Target platform (windows, macos, linux, android, ios, webgl, ps5, xbox, switch)
 
-### Install dependencies
+## Running
 
+The server is started automatically by Cursor via the configuration in `.cursor/mcp.json`.
+
+Manual start:
 ```bash
-cd mcp-server
 pip install -r requirements.txt
-```
-
-### Run the server
-
-The server is configured to run automatically via Cursor's MCP integration (see `.cursor/mcp.json`). To run it manually:
-
-```bash
 python server.py
 ```
 
-## Data files
+## Data Files
 
-The `data/` directory contains JSON databases:
-
-- `natives_gta5.json` - GTA5 native function reference
-- `natives_rdr3.json` - RDR3 native function reference
-- `events.json` - Common FiveM/RedM events
-
-These are snapshots used for offline lookup. For the most current data, refer to the official native reference at https://docs.fivem.net/natives/.
+- `unity_api_common.json` - Common Unity API reference (200+ classes and methods)
+- `shader_properties.json` - Built-in shader properties and effect patterns
+- `platform_defines.json` - Platform scripting defines and capabilities
+- `lifecycle_order.json` - MonoBehaviour execution order reference
+- `deprecated_patterns.json` - Legacy-to-modern API mapping

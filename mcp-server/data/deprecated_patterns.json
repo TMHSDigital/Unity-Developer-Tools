@@ -1,0 +1,104 @@
+[
+  {
+    "legacy": "FindObjectOfType<T>()",
+    "replacement": "FindAnyObjectByType<T>() or FindFirstObjectByType<T>()",
+    "reason": "FindObjectOfType is significantly slower and has undefined ordering. FindAnyObjectByType is faster when you do not need a deterministic result. FindFirstObjectByType uses instance ID ordering.",
+    "since_version": "2023.1"
+  },
+  {
+    "legacy": "FindObjectsOfType<T>()",
+    "replacement": "FindObjectsByType<T>(FindObjectsSortMode)",
+    "reason": "New API requires an explicit sort mode, allowing the engine to skip sorting when not needed, which is substantially faster for large scenes.",
+    "since_version": "2023.1"
+  },
+  {
+    "legacy": "Object.FindObjectOfType",
+    "replacement": "Object.FindAnyObjectByType or Object.FindFirstObjectByType",
+    "reason": "Same performance improvements as the generic version. The non-generic overloads are also deprecated in favor of type-safe generics.",
+    "since_version": "2023.1"
+  },
+  {
+    "legacy": "CGPROGRAM / ENDCG",
+    "replacement": "HLSLPROGRAM / ENDHLSL with URP or HDRP shader libraries",
+    "reason": "CG shaders use the legacy built-in pipeline surface shader compiler. HLSL is required for SRP (URP/HDRP) and gives access to modern shader features.",
+    "since_version": "2019.3"
+  },
+  {
+    "legacy": "Resources.Load",
+    "replacement": "Addressables.LoadAssetAsync or AssetBundle loading",
+    "reason": "Resources folder increases build size, cannot be updated without a full rebuild, and all assets in it are included in the build whether referenced or not.",
+    "since_version": "2019.1"
+  },
+  {
+    "legacy": "Input.GetAxis / Input.GetKey / Input.GetButton",
+    "replacement": "InputSystem via InputAction, PlayerInput component, or generated C# input class",
+    "reason": "The legacy Input Manager lacks action remapping, composite bindings, per-device input, and proper gamepad support. The new Input System is required for modern platforms.",
+    "since_version": "2019.1"
+  },
+  {
+    "legacy": "SendMessage / BroadcastMessage",
+    "replacement": "Direct method calls, C# events, UnityEvent, or ScriptableObject event channels",
+    "reason": "SendMessage uses string-based reflection, is slow, not type-safe, and causes silent failures if the method name is misspelled. Direct references or event patterns are safer and faster.",
+    "since_version": "N/A (best practice)"
+  },
+  {
+    "legacy": "Camera.main (called every frame)",
+    "replacement": "Cache Camera.main in a field during Awake/Start",
+    "reason": "Camera.main performs FindGameObjectWithTag internally each call. In Unity 2020+, it is cached per frame, but caching it yourself is still clearer and avoids null-check overhead.",
+    "since_version": "N/A (best practice)"
+  },
+  {
+    "legacy": "GameObject.Find in Update",
+    "replacement": "Cache references in Awake/Start, use serialized fields, or dependency injection",
+    "reason": "GameObject.Find traverses the entire hierarchy by name each call. It is O(n) per invocation and should never run per-frame.",
+    "since_version": "N/A (best practice)"
+  },
+  {
+    "legacy": "Coroutine (IEnumerator) for async workflows",
+    "replacement": "Awaitable (async/await) introduced in Unity 6",
+    "reason": "Coroutines cannot return values, have awkward error handling, allocate on yield, and cannot be composed. Awaitable supports structured async with proper cancellation and exception propagation.",
+    "since_version": "2023.1 (Unity 6)"
+  },
+  {
+    "legacy": "Mono scripting backend",
+    "replacement": "IL2CPP scripting backend",
+    "reason": "Mono is being phased out. IL2CPP provides better performance, smaller builds on most platforms, and is the only backend available on consoles, iOS, and WebGL.",
+    "since_version": "2021.2"
+  },
+  {
+    "legacy": "UNet (NetworkServer, NetworkClient, etc.)",
+    "replacement": "Netcode for GameObjects (NGO) or third-party (Mirror, FishNet, Photon Fusion)",
+    "reason": "UNet was deprecated and removed. Netcode for GameObjects is Unity's official replacement with server-authoritative architecture and modern transport layer.",
+    "since_version": "2019.1"
+  },
+  {
+    "legacy": "Photon PUN2 (PhotonNetwork, MonoBehaviourPun)",
+    "replacement": "Photon Fusion or Photon Quantum",
+    "reason": "PUN2 is in maintenance mode. Fusion provides tick-based simulation, state authority, and better scalability. Quantum offers a deterministic ECS approach for competitive games.",
+    "since_version": "2022 (Photon lifecycle)"
+  },
+  {
+    "legacy": "UXMLFactory",
+    "replacement": "UxmlElement attribute (auto-generated factory)",
+    "reason": "Manually writing UXMLFactory boilerplate is no longer needed. The UxmlElement and UxmlAttribute attributes auto-generate the factory and traits classes.",
+    "since_version": "2023.2"
+  },
+  {
+    "legacy": "OnGUI / GUILayout / EditorGUILayout for editor tools",
+    "replacement": "UI Toolkit (VisualElement, UXML, USS) for editor UI",
+    "reason": "IMGUI redraws every frame and does not support styling or layout persistence. UI Toolkit provides retained-mode UI with CSS-like styling, data binding, and better performance.",
+    "since_version": "2021.1"
+  },
+  {
+    "legacy": "AssetDatabase.LoadAssetAtPath (runtime)",
+    "replacement": "Addressables.LoadAssetAsync or direct serialized reference",
+    "reason": "AssetDatabase is editor-only and will cause build failures if used in runtime code. Use Addressables or serialized references for runtime asset loading.",
+    "since_version": "N/A (common mistake)"
+  },
+  {
+    "legacy": "PlayerPrefs for game save data",
+    "replacement": "JSON serialization to Application.persistentDataPath or a save system",
+    "reason": "PlayerPrefs is stored in the registry on Windows and has size limits. It is not encrypted, not portable, and not suitable for structured save data.",
+    "since_version": "N/A (best practice)"
+  }
+]

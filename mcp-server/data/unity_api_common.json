@@ -1,0 +1,474 @@
+[
+  {
+    "name": "Transform.position",
+    "namespace": "UnityEngine",
+    "category": "physics",
+    "description": "The world space position of the Transform. Setting this teleports the object without physics interaction.",
+    "signature": "Vector3 Transform.position { get; set; }",
+    "example": "transform.position = new Vector3(0, 1, 0);"
+  },
+  {
+    "name": "Transform.Translate",
+    "namespace": "UnityEngine",
+    "category": "physics",
+    "description": "Moves the transform by the given direction and distance. Can operate in self or world space.",
+    "signature": "void Transform.Translate(Vector3 translation, Space relativeTo = Space.Self)",
+    "example": "transform.Translate(Vector3.forward * speed * Time.deltaTime);"
+  },
+  {
+    "name": "Transform.Rotate",
+    "namespace": "UnityEngine",
+    "category": "physics",
+    "description": "Applies a rotation of eulerAngles.z degrees around the z-axis, eulerAngles.x around the x-axis, and eulerAngles.y around the y-axis (in that order).",
+    "signature": "void Transform.Rotate(Vector3 eulers, Space relativeTo = Space.Self)",
+    "example": "transform.Rotate(Vector3.up, 90f * Time.deltaTime);"
+  },
+  {
+    "name": "Transform.LookAt",
+    "namespace": "UnityEngine",
+    "category": "physics",
+    "description": "Rotates the transform so the forward vector points at the target position. worldUp defaults to Vector3.up.",
+    "signature": "void Transform.LookAt(Transform target, Vector3 worldUp = Vector3.up)",
+    "example": "transform.LookAt(target.transform);"
+  },
+  {
+    "name": "Transform.SetParent",
+    "namespace": "UnityEngine",
+    "category": "physics",
+    "description": "Sets the parent of the transform. If worldPositionStays is true, the world position/rotation/scale is maintained.",
+    "signature": "void Transform.SetParent(Transform parent, bool worldPositionStays = true)",
+    "example": "child.transform.SetParent(newParent, true);"
+  },
+  {
+    "name": "GameObject.SetActive",
+    "namespace": "UnityEngine",
+    "category": "general",
+    "description": "Activates or deactivates the GameObject. Inactive GameObjects do not receive Update, FixedUpdate, or rendering calls.",
+    "signature": "void GameObject.SetActive(bool value)",
+    "example": "gameObject.SetActive(false);"
+  },
+  {
+    "name": "GameObject.GetComponent",
+    "namespace": "UnityEngine",
+    "category": "general",
+    "description": "Returns the component of the specified type. Returns null if no component is found. Cache the result instead of calling per frame.",
+    "signature": "T GameObject.GetComponent<T>()",
+    "example": "var rb = GetComponent<Rigidbody>();"
+  },
+  {
+    "name": "GameObject.AddComponent",
+    "namespace": "UnityEngine",
+    "category": "general",
+    "description": "Adds a component of the specified type to the GameObject. Returns the newly added component.",
+    "signature": "T GameObject.AddComponent<T>()",
+    "example": "var col = gameObject.AddComponent<BoxCollider>();"
+  },
+  {
+    "name": "GameObject.CompareTag",
+    "namespace": "UnityEngine",
+    "category": "general",
+    "description": "Compares the tag of the GameObject against the given string. Faster than string comparison and does not allocate.",
+    "signature": "bool GameObject.CompareTag(string tag)",
+    "example": "if (other.CompareTag(\"Player\")) { /* hit player */ }"
+  },
+  {
+    "name": "Object.Instantiate",
+    "namespace": "UnityEngine",
+    "category": "general",
+    "description": "Clones the original object and returns the clone. Can optionally set parent and world position. Consider object pooling for frequent spawning.",
+    "signature": "T Object.Instantiate<T>(T original, Vector3 position, Quaternion rotation, Transform parent = null)",
+    "example": "var bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);"
+  },
+  {
+    "name": "Object.Destroy",
+    "namespace": "UnityEngine",
+    "category": "general",
+    "description": "Removes the GameObject, component, or asset. Optional delay parameter. The object is destroyed at the end of the frame.",
+    "signature": "void Object.Destroy(Object obj, float delay = 0f)",
+    "example": "Destroy(gameObject, 2f);"
+  },
+  {
+    "name": "Object.DontDestroyOnLoad",
+    "namespace": "UnityEngine",
+    "category": "general",
+    "description": "Preserves the target object when loading a new scene. Only works on root GameObjects.",
+    "signature": "void Object.DontDestroyOnLoad(Object target)",
+    "example": "DontDestroyOnLoad(gameObject);"
+  },
+  {
+    "name": "MonoBehaviour.StartCoroutine",
+    "namespace": "UnityEngine",
+    "category": "general",
+    "description": "Starts a coroutine. Returns a Coroutine handle that can be used with StopCoroutine. Consider Awaitable in Unity 6+.",
+    "signature": "Coroutine MonoBehaviour.StartCoroutine(IEnumerator routine)",
+    "example": "StartCoroutine(FadeOut(1f));"
+  },
+  {
+    "name": "MonoBehaviour.Invoke",
+    "namespace": "UnityEngine",
+    "category": "general",
+    "description": "Invokes a method by name after a delay. Not type-safe - prefer coroutines or Awaitable for delayed execution.",
+    "signature": "void MonoBehaviour.Invoke(string methodName, float time)",
+    "example": "Invoke(nameof(Respawn), 3f);"
+  },
+  {
+    "name": "Rigidbody.AddForce",
+    "namespace": "UnityEngine",
+    "category": "physics",
+    "description": "Adds a force to the Rigidbody. ForceMode determines whether it is a continuous force, acceleration, impulse, or velocity change.",
+    "signature": "void Rigidbody.AddForce(Vector3 force, ForceMode mode = ForceMode.Force)",
+    "example": "rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);"
+  },
+  {
+    "name": "Rigidbody.MovePosition",
+    "namespace": "UnityEngine",
+    "category": "physics",
+    "description": "Moves the Rigidbody to the specified position while respecting physics interpolation. Call in FixedUpdate.",
+    "signature": "void Rigidbody.MovePosition(Vector3 position)",
+    "example": "rb.MovePosition(rb.position + velocity * Time.fixedDeltaTime);"
+  },
+  {
+    "name": "Rigidbody.velocity",
+    "namespace": "UnityEngine",
+    "category": "physics",
+    "description": "The velocity vector of the Rigidbody in world space. Setting directly bypasses physics simulation - prefer AddForce for realistic movement.",
+    "signature": "Vector3 Rigidbody.velocity { get; set; }",
+    "example": "rb.velocity = new Vector3(rb.velocity.x, jumpSpeed, rb.velocity.z);"
+  },
+  {
+    "name": "Rigidbody2D.AddForce",
+    "namespace": "UnityEngine",
+    "category": "physics",
+    "description": "Adds a force to the 2D Rigidbody. Works identically to Rigidbody.AddForce but in 2D space.",
+    "signature": "void Rigidbody2D.AddForce(Vector2 force, ForceMode2D mode = ForceMode2D.Force)",
+    "example": "rb2d.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);"
+  },
+  {
+    "name": "Physics.Raycast",
+    "namespace": "UnityEngine",
+    "category": "physics",
+    "description": "Casts a ray and returns true if it hits a collider. Use layerMask to filter which layers to test. Prefer non-allocating overloads.",
+    "signature": "bool Physics.Raycast(Vector3 origin, Vector3 direction, out RaycastHit hitInfo, float maxDistance, int layerMask)",
+    "example": "if (Physics.Raycast(transform.position, transform.forward, out var hit, 100f)) Debug.Log(hit.collider.name);"
+  },
+  {
+    "name": "Physics.OverlapSphere",
+    "namespace": "UnityEngine",
+    "category": "physics",
+    "description": "Returns all colliders within a sphere. Use OverlapSphereNonAlloc to avoid garbage allocation.",
+    "signature": "Collider[] Physics.OverlapSphere(Vector3 position, float radius, int layerMask)",
+    "example": "var colliders = Physics.OverlapSphere(transform.position, blastRadius, enemyLayer);"
+  },
+  {
+    "name": "Physics2D.Raycast",
+    "namespace": "UnityEngine",
+    "category": "physics",
+    "description": "Casts a 2D ray and returns the first hit. Use layerMask to filter collision layers.",
+    "signature": "RaycastHit2D Physics2D.Raycast(Vector2 origin, Vector2 direction, float distance, int layerMask)",
+    "example": "var hit = Physics2D.Raycast(transform.position, Vector2.down, 1f, groundLayer);"
+  },
+  {
+    "name": "Camera.ScreenToWorldPoint",
+    "namespace": "UnityEngine",
+    "category": "rendering",
+    "description": "Transforms position from screen space to world space. The z component of the input is the distance from the camera.",
+    "signature": "Vector3 Camera.ScreenToWorldPoint(Vector3 position)",
+    "example": "Vector3 worldPos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10f));"
+  },
+  {
+    "name": "Camera.WorldToScreenPoint",
+    "namespace": "UnityEngine",
+    "category": "rendering",
+    "description": "Transforms position from world space to screen space. Z is the distance from the camera in world units.",
+    "signature": "Vector3 Camera.WorldToScreenPoint(Vector3 position)",
+    "example": "Vector3 screenPos = Camera.main.WorldToScreenPoint(target.position);"
+  },
+  {
+    "name": "Camera.ViewportToWorldPoint",
+    "namespace": "UnityEngine",
+    "category": "rendering",
+    "description": "Transforms from viewport space (0-1 range) to world space. Useful for positioning UI or screen-relative objects.",
+    "signature": "Vector3 Camera.ViewportToWorldPoint(Vector3 position)",
+    "example": "Vector3 topRight = cam.ViewportToWorldPoint(new Vector3(1, 1, cam.nearClipPlane));"
+  },
+  {
+    "name": "AudioSource.Play",
+    "namespace": "UnityEngine",
+    "category": "audio",
+    "description": "Plays the AudioClip assigned to the AudioSource. If already playing, restarts from the beginning.",
+    "signature": "void AudioSource.Play()",
+    "example": "audioSource.Play();"
+  },
+  {
+    "name": "AudioSource.PlayOneShot",
+    "namespace": "UnityEngine",
+    "category": "audio",
+    "description": "Plays an AudioClip without stopping the current clip. Good for overlapping sound effects like gunshots.",
+    "signature": "void AudioSource.PlayOneShot(AudioClip clip, float volumeScale = 1f)",
+    "example": "audioSource.PlayOneShot(hitSound, 0.8f);"
+  },
+  {
+    "name": "AudioSource.PlayClipAtPoint",
+    "namespace": "UnityEngine",
+    "category": "audio",
+    "description": "Static method that creates a temporary AudioSource at the given world position, plays the clip, and destroys the source after playback.",
+    "signature": "static void AudioSource.PlayClipAtPoint(AudioClip clip, Vector3 position, float volume = 1f)",
+    "example": "AudioSource.PlayClipAtPoint(explosionClip, transform.position);"
+  },
+  {
+    "name": "Animator.SetTrigger",
+    "namespace": "UnityEngine",
+    "category": "animation",
+    "description": "Sets a trigger parameter, causing the Animator to transition to the associated state. Resets automatically after consumption.",
+    "signature": "void Animator.SetTrigger(string name)",
+    "example": "animator.SetTrigger(\"Jump\");"
+  },
+  {
+    "name": "Animator.SetBool",
+    "namespace": "UnityEngine",
+    "category": "animation",
+    "description": "Sets a bool parameter in the Animator Controller. Used for toggling states like IsRunning or IsGrounded.",
+    "signature": "void Animator.SetBool(string name, bool value)",
+    "example": "animator.SetBool(\"IsGrounded\", isGrounded);"
+  },
+  {
+    "name": "Animator.SetFloat",
+    "namespace": "UnityEngine",
+    "category": "animation",
+    "description": "Sets a float parameter in the Animator Controller. Used for blend trees (speed, direction) and gradual transitions.",
+    "signature": "void Animator.SetFloat(string name, float value)",
+    "example": "animator.SetFloat(\"Speed\", velocity.magnitude);"
+  },
+  {
+    "name": "Animator.Play",
+    "namespace": "UnityEngine",
+    "category": "animation",
+    "description": "Plays a specific state immediately, bypassing transitions. Use the string hash overload for better performance.",
+    "signature": "void Animator.Play(string stateName, int layer = -1, float normalizedTime = float.NegativeInfinity)",
+    "example": "animator.Play(\"Idle\", 0, 0f);"
+  },
+  {
+    "name": "Debug.Log",
+    "namespace": "UnityEngine",
+    "category": "general",
+    "description": "Logs a message to the Unity Console. Expensive in builds - strip with Conditional attribute or preprocessor directives.",
+    "signature": "static void Debug.Log(object message, Object context = null)",
+    "example": "Debug.Log($\"Player health: {health}\", gameObject);"
+  },
+  {
+    "name": "Debug.DrawRay",
+    "namespace": "UnityEngine",
+    "category": "general",
+    "description": "Draws a ray in the Scene view for visual debugging. Only visible in the Scene view, not in Game view.",
+    "signature": "static void Debug.DrawRay(Vector3 start, Vector3 dir, Color color, float duration = 0f)",
+    "example": "Debug.DrawRay(transform.position, transform.forward * 10f, Color.red);"
+  },
+  {
+    "name": "Mathf.Lerp",
+    "namespace": "UnityEngine",
+    "category": "general",
+    "description": "Linearly interpolates between a and b by t (clamped 0-1). For unclamped interpolation, use LerpUnclamped.",
+    "signature": "static float Mathf.Lerp(float a, float b, float t)",
+    "example": "float current = Mathf.Lerp(start, end, elapsed / duration);"
+  },
+  {
+    "name": "Mathf.Clamp",
+    "namespace": "UnityEngine",
+    "category": "general",
+    "description": "Clamps value between min and max. Use Clamp01 for the common 0-1 range case.",
+    "signature": "static float Mathf.Clamp(float value, float min, float max)",
+    "example": "health = Mathf.Clamp(health - damage, 0f, maxHealth);"
+  },
+  {
+    "name": "Mathf.SmoothDamp",
+    "namespace": "UnityEngine",
+    "category": "general",
+    "description": "Gradually changes a float towards a target value. Commonly used for smooth camera follow and UI transitions.",
+    "signature": "static float Mathf.SmoothDamp(float current, float target, ref float currentVelocity, float smoothTime)",
+    "example": "value = Mathf.SmoothDamp(value, targetValue, ref vel, 0.3f);"
+  },
+  {
+    "name": "Vector3.Lerp",
+    "namespace": "UnityEngine",
+    "category": "general",
+    "description": "Linearly interpolates between two Vector3 values by t (clamped 0-1).",
+    "signature": "static Vector3 Vector3.Lerp(Vector3 a, Vector3 b, float t)",
+    "example": "transform.position = Vector3.Lerp(startPos, endPos, t);"
+  },
+  {
+    "name": "Vector3.MoveTowards",
+    "namespace": "UnityEngine",
+    "category": "general",
+    "description": "Moves a point towards a target by a maximum distance. Does not overshoot. Good for constant-speed movement.",
+    "signature": "static Vector3 Vector3.MoveTowards(Vector3 current, Vector3 target, float maxDistanceDelta)",
+    "example": "transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);"
+  },
+  {
+    "name": "Vector3.Distance",
+    "namespace": "UnityEngine",
+    "category": "general",
+    "description": "Returns the distance between two points. For distance checks, compare sqrMagnitude to avoid the sqrt cost.",
+    "signature": "static float Vector3.Distance(Vector3 a, Vector3 b)",
+    "example": "float dist = Vector3.Distance(transform.position, target.position);"
+  },
+  {
+    "name": "Quaternion.LookRotation",
+    "namespace": "UnityEngine",
+    "category": "general",
+    "description": "Creates a rotation with the specified forward and upward directions. Forward must not be zero.",
+    "signature": "static Quaternion Quaternion.LookRotation(Vector3 forward, Vector3 upwards = Vector3.up)",
+    "example": "transform.rotation = Quaternion.LookRotation(moveDirection);"
+  },
+  {
+    "name": "Quaternion.Slerp",
+    "namespace": "UnityEngine",
+    "category": "general",
+    "description": "Spherically interpolates between two rotations by t (clamped 0-1). Produces smooth rotation blending.",
+    "signature": "static Quaternion Quaternion.Slerp(Quaternion a, Quaternion b, float t)",
+    "example": "transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotSpeed);"
+  },
+  {
+    "name": "Time.deltaTime",
+    "namespace": "UnityEngine",
+    "category": "general",
+    "description": "The interval in seconds from the last frame to the current frame. Use in Update for frame-rate-independent movement.",
+    "signature": "static float Time.deltaTime { get; }",
+    "example": "transform.position += direction * speed * Time.deltaTime;"
+  },
+  {
+    "name": "Time.fixedDeltaTime",
+    "namespace": "UnityEngine",
+    "category": "general",
+    "description": "The interval in seconds at which physics and FixedUpdate are called. Default is 0.02 (50Hz).",
+    "signature": "static float Time.fixedDeltaTime { get; set; }",
+    "example": "rb.MovePosition(rb.position + velocity * Time.fixedDeltaTime);"
+  },
+  {
+    "name": "Time.timeScale",
+    "namespace": "UnityEngine",
+    "category": "general",
+    "description": "The scale at which time passes. Set to 0 to pause the game (affects Time.deltaTime and FixedUpdate). Use Time.unscaledDeltaTime for UI during pause.",
+    "signature": "static float Time.timeScale { get; set; }",
+    "example": "Time.timeScale = isPaused ? 0f : 1f;"
+  },
+  {
+    "name": "SceneManager.LoadScene",
+    "namespace": "UnityEngine.SceneManagement",
+    "category": "general",
+    "description": "Loads a scene by name or build index. Use LoadSceneAsync for non-blocking loading with progress tracking.",
+    "signature": "static void SceneManager.LoadScene(string sceneName, LoadSceneMode mode = LoadSceneMode.Single)",
+    "example": "SceneManager.LoadScene(\"MainMenu\");"
+  },
+  {
+    "name": "SceneManager.LoadSceneAsync",
+    "namespace": "UnityEngine.SceneManagement",
+    "category": "general",
+    "description": "Loads a scene asynchronously. Returns an AsyncOperation for progress tracking. Set allowSceneActivation to false to control when the scene activates.",
+    "signature": "static AsyncOperation SceneManager.LoadSceneAsync(string sceneName, LoadSceneMode mode = LoadSceneMode.Single)",
+    "example": "var op = SceneManager.LoadSceneAsync(\"GameLevel\"); op.allowSceneActivation = false;"
+  },
+  {
+    "name": "Application.persistentDataPath",
+    "namespace": "UnityEngine",
+    "category": "general",
+    "description": "A persistent data directory path where you can store save files. Survives app updates. Platform-specific location.",
+    "signature": "static string Application.persistentDataPath { get; }",
+    "example": "string savePath = Path.Combine(Application.persistentDataPath, \"save.json\");"
+  },
+  {
+    "name": "Application.targetFrameRate",
+    "namespace": "UnityEngine",
+    "category": "general",
+    "description": "Sets the target frame rate. -1 means platform default (typically VSync). Set in Awake or Start. Does not guarantee the target is hit.",
+    "signature": "static int Application.targetFrameRate { get; set; }",
+    "example": "Application.targetFrameRate = 60;"
+  },
+  {
+    "name": "Screen.SetResolution",
+    "namespace": "UnityEngine",
+    "category": "rendering",
+    "description": "Sets the screen resolution. On mobile, affects the render resolution. On desktop, changes the window or fullscreen resolution.",
+    "signature": "static void Screen.SetResolution(int width, int height, FullScreenMode fullScreenMode)",
+    "example": "Screen.SetResolution(1920, 1080, FullScreenMode.FullScreenWindow);"
+  },
+  {
+    "name": "PlayerPrefs.SetFloat",
+    "namespace": "UnityEngine",
+    "category": "general",
+    "description": "Stores a float value in persistent storage keyed by string. Limited storage - use file I/O for large save data.",
+    "signature": "static void PlayerPrefs.SetFloat(string key, float value)",
+    "example": "PlayerPrefs.SetFloat(\"MusicVolume\", 0.75f);"
+  },
+  {
+    "name": "PlayerPrefs.GetFloat",
+    "namespace": "UnityEngine",
+    "category": "general",
+    "description": "Returns the float value stored at the given key. Returns defaultValue if the key does not exist.",
+    "signature": "static float PlayerPrefs.GetFloat(string key, float defaultValue = 0f)",
+    "example": "float volume = PlayerPrefs.GetFloat(\"MusicVolume\", 1f);"
+  },
+  {
+    "name": "Awaitable.WaitForSecondsAsync",
+    "namespace": "UnityEngine",
+    "category": "general",
+    "description": "Async replacement for WaitForSeconds coroutine yield. Returns an Awaitable that completes after the given time. Unity 6+.",
+    "signature": "static Awaitable Awaitable.WaitForSecondsAsync(float seconds, CancellationToken cancellationToken = default)",
+    "example": "await Awaitable.WaitForSecondsAsync(1.5f, destroyCancellationToken);"
+  },
+  {
+    "name": "Awaitable.NextFrameAsync",
+    "namespace": "UnityEngine",
+    "category": "general",
+    "description": "Async replacement for yield return null. Suspends until the next frame. Unity 6+.",
+    "signature": "static Awaitable Awaitable.NextFrameAsync(CancellationToken cancellationToken = default)",
+    "example": "await Awaitable.NextFrameAsync();"
+  },
+  {
+    "name": "Awaitable.MainThreadAsync",
+    "namespace": "UnityEngine",
+    "category": "general",
+    "description": "Switches execution back to the main thread from a background thread. Unity 6+.",
+    "signature": "static Awaitable Awaitable.MainThreadAsync()",
+    "example": "await Awaitable.BackgroundThreadAsync(); /* do work */ await Awaitable.MainThreadAsync();"
+  },
+  {
+    "name": "Collider.OnTriggerEnter",
+    "namespace": "UnityEngine",
+    "category": "physics",
+    "description": "Called when a Collider enters the trigger. At least one object must have a Rigidbody. Use CompareTag for type checking.",
+    "signature": "void OnTriggerEnter(Collider other)",
+    "example": "private void OnTriggerEnter(Collider other) { if (other.CompareTag(\"Pickup\")) Collect(other); }"
+  },
+  {
+    "name": "Addressables.LoadAssetAsync",
+    "namespace": "UnityEngine.AddressableAssets",
+    "category": "general",
+    "description": "Loads an addressable asset asynchronously by key or label. Returns an AsyncOperationHandle for tracking and releasing.",
+    "signature": "static AsyncOperationHandle<T> Addressables.LoadAssetAsync<T>(object key)",
+    "example": "var handle = Addressables.LoadAssetAsync<GameObject>(\"EnemyPrefab\"); await handle.Task;"
+  },
+  {
+    "name": "Addressables.InstantiateAsync",
+    "namespace": "UnityEngine.AddressableAssets",
+    "category": "general",
+    "description": "Instantiates an addressable prefab asynchronously. Must be released with Addressables.ReleaseInstance when done.",
+    "signature": "static AsyncOperationHandle<GameObject> Addressables.InstantiateAsync(object key, Vector3 position, Quaternion rotation, Transform parent = null)",
+    "example": "var handle = Addressables.InstantiateAsync(\"EnemyPrefab\", spawnPoint.position, Quaternion.identity);"
+  },
+  {
+    "name": "FindAnyObjectByType",
+    "namespace": "UnityEngine",
+    "category": "general",
+    "description": "Finds any loaded object of the given type. Faster than FindFirstObjectByType when ordering does not matter. Unity 2023.1+.",
+    "signature": "static T Object.FindAnyObjectByType<T>(FindObjectsInactive findObjectsInactive = FindObjectsInactive.Exclude)",
+    "example": "var manager = FindAnyObjectByType<GameManager>();"
+  },
+  {
+    "name": "FindFirstObjectByType",
+    "namespace": "UnityEngine",
+    "category": "general",
+    "description": "Finds the first loaded object of the given type with deterministic ordering by instance ID. Unity 2023.1+.",
+    "signature": "static T Object.FindFirstObjectByType<T>(FindObjectsInactive findObjectsInactive = FindObjectsInactive.Exclude)",
+    "example": "var player = FindFirstObjectByType<PlayerController>();"
+  }
+]

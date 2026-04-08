@@ -1,0 +1,22 @@
+---
+title: Shader conventions
+description: Conventions for Unity shader development
+globs: ["**/*.shader", "**/*.hlsl", "**/*.cginc", "**/*.shadergraph"]
+alwaysApply: false
+---
+
+# Shader conventions
+
+- Always specify a Fallback shader for compatibility
+- Use properties block for all tweakable values
+- Name properties with underscore prefix: _MainTex, _Color, _Metallic
+- Use HLSLPROGRAM / ENDHLSL blocks, not the deprecated CGPROGRAM / ENDCG
+- Include SRP Batcher compatibility: use CBUFFER_START(UnityPerMaterial) for properties in URP/HDRP
+- Minimize shader variants: use shader_feature_local over multi_compile when possible
+- Use half precision where full float is unnecessary (mobile especially)
+- Tag SubShaders with RenderPipeline tag: "UniversalPipeline" or "HDRenderPipeline"
+- Use Render Graph compatible custom passes instead of extra cameras
+- Test shaders on target platforms early; mobile GPUs behave differently
+- Document complex math with comments
+- Prefer Shader Graph for artist-facing shaders; use HLSL for performance-critical shaders
+- Use Custom Function nodes with header guards (#ifndef) to inject HLSL into Shader Graph

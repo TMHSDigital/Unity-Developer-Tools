@@ -1,0 +1,120 @@
+[
+  {
+    "effect": "Dissolve",
+    "description": "Dissolves an object using a noise texture, revealing or hiding geometry along a threshold. Commonly used for death effects, teleportation, and material transitions.",
+    "pipelines": ["urp", "hdrp", "builtin"],
+    "properties": [
+      {"name": "_DissolveAmount", "type": "Range(0,1)", "description": "Controls how much of the object is dissolved. 0 = fully visible, 1 = fully dissolved."},
+      {"name": "_NoiseTex", "type": "2D", "description": "Grayscale noise texture that drives the dissolve pattern."},
+      {"name": "_EdgeColor", "type": "Color", "description": "Color of the glowing edge at the dissolve boundary."},
+      {"name": "_EdgeWidth", "type": "Float", "description": "Width of the glowing edge effect in UV space."}
+    ],
+    "code_snippet": "// URP Dissolve - Fragment shader core\nhalf4 noise = SAMPLE_TEXTURE2D(_NoiseTex, sampler_NoiseTex, IN.uv);\nclip(noise.r - _DissolveAmount);\n\nhalf edgeFactor = saturate((noise.r - _DissolveAmount) / _EdgeWidth);\nhalf4 edgeColor = lerp(_EdgeColor, half4(0,0,0,0), edgeFactor);\nhalf4 baseColor = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uv);\nreturn baseColor + edgeColor * (1.0 - edgeFactor);",
+    "shader_graph_nodes": [
+      "Sample Texture 2D (noise texture) -> Split R channel",
+      "Subtract: noise R - DissolveAmount property",
+      "Step or Smoothstep node for edge detection",
+      "Lerp between base color and edge color using edge mask",
+      "Connect edge mask to Alpha Clip Threshold on the Master Stack"
+    ]
+  },
+  {
+    "effect": "Outline",
+    "description": "Renders a visible outline around objects. Used for selection highlights, toon rendering, and interactable object indication.",
+    "pipelines": ["urp", "hdrp", "builtin"],
+    "properties": [
+      {"name": "_OutlineColor", "type": "Color", "description": "Color of the outline."},
+      {"name": "_OutlineWidth", "type": "Float", "description": "Thickness of the outline in clip space or world units."},
+      {"name": "_OutlineMode", "type": "Float", "description": "0 = vertex extrusion, 1 = screen-space post-process."}
+    ],
+    "code_snippet": "// URP Outline - Vertex extrusion pass\nfloat3 normalWS = TransformObjectToWorldNormal(v.normalOS);\nfloat3 posWS = TransformObjectToWorld(v.positionOS.xyz);\nposWS += normalWS * _OutlineWidth * 0.01;\n\no.positionCS = TransformWorldToHClip(posWS);\no.color = _OutlineColor;\nreturn o;\n\n// Fragment: simply return the outline color\nreturn i.color;",
+    "shader_graph_nodes": [
+      "Position node (Object Space) + Normal Vector node",
+      "Multiply normal by OutlineWidth property",
+      "Add offset position to original position",
+      "Use a separate Shader Graph for the outline pass with Cull Front",
+      "For screen-space: use a Full Screen Render Feature with Sobel edge detection"
+    ]
+  },
+  {
+    "effect": "Fresnel",
+    "description": "Brightens or colors the edges of an object based on view angle. Used for shields, holographic effects, and rim lighting.",
+    "pipelines": ["urp", "hdrp", "builtin"],
+    "properties": [
+      {"name": "_FresnelColor", "type": "Color", "description": "Color applied to the fresnel rim effect."},
+      {"name": "_FresnelPower", "type": "Float", "description": "Controls the falloff of the fresnel effect. Higher values create a tighter rim."},
+      {"name": "_FresnelIntensity", "type": "Float", "description": "Multiplier for the overall brightness of the fresnel effect."}
+    ],
+    "code_snippet": "// URP Fresnel - Fragment calculation\nfloat3 viewDirWS = normalize(_WorldSpaceCameraPos - IN.positionWS);\nfloat3 normalWS = normalize(IN.normalWS);\nfloat fresnel = pow(1.0 - saturate(dot(viewDirWS, normalWS)), _FresnelPower);\nfresnel *= _FresnelIntensity;\n\nhalf4 baseColor = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uv);\nreturn baseColor + _FresnelColor * fresnel;",
+    "shader_graph_nodes": [
+      "Fresnel Effect node (built-in) with Power property input",
+      "Multiply fresnel output by FresnelColor and Intensity properties",
+      "Add fresnel contribution to base color output",
+      "Connect to Emission on Master Stack for glow effect",
+      "Optional: animate Power over time using Time node for pulsing"
+    ]
+  },
+  {
+    "effect": "Toon",
+    "description": "Cel-shading effect that quantizes lighting into discrete bands for a cartoon or anime art style.",
+    "pipelines": ["urp", "hdrp", "builtin"],
+    "properties": [
+      {"name": "_BaseColor", "type": "Color", "description": "Main tint color of the surface."},
+      {"name": "_ShadowColor", "type": "Color", "description": "Color used for shadowed areas instead of darkening."},
+      {"name": "_ShadowThreshold", "type": "Range(0,1)", "description": "NdotL threshold where shadow begins."},
+      {"name": "_ShadowSmoothness", "type": "Range(0,0.5)", "description": "Smoothness of the shadow-to-light transition."},
+      {"name": "_SpecularSize", "type": "Range(0,1)", "description": "Size of the specular highlight band."}
+    ],
+    "code_snippet": "// URP Toon - Lighting calculation in fragment\nLight mainLight = GetMainLight(IN.shadowCoord);\nfloat NdotL = dot(IN.normalWS, mainLight.direction);\n\n// Quantize lighting into bands\nfloat shadow = smoothstep(_ShadowThreshold - _ShadowSmoothness,\n                          _ShadowThreshold + _ShadowSmoothness, NdotL);\nhalf4 litColor = _BaseColor;\nhalf4 shadColor = _ShadowColor * _BaseColor;\nhalf4 finalColor = lerp(shadColor, litColor, shadow);\n\n// Specular band\nfloat3 halfDir = normalize(mainLight.direction + IN.viewDirWS);\nfloat spec = step(1.0 - _SpecularSize, saturate(dot(IN.normalWS, halfDir)));\nfinalColor.rgb += spec * mainLight.color;\n\nreturn finalColor;",
+    "shader_graph_nodes": [
+      "Dot Product of Normal and Main Light Direction",
+      "Smoothstep node with Shadow Threshold and Smoothness inputs",
+      "Lerp between Shadow Color and Base Color using step result",
+      "For specular: Dot product of Normal and Half Direction, then Step node",
+      "Custom Function node for GetMainLight if using Shader Graph in URP"
+    ]
+  },
+  {
+    "effect": "Water",
+    "description": "Stylized or semi-realistic water surface with scrolling normals, depth-based coloring, and vertex displacement.",
+    "pipelines": ["urp", "hdrp", "builtin"],
+    "properties": [
+      {"name": "_ShallowColor", "type": "Color", "description": "Water color in shallow areas near the shore."},
+      {"name": "_DeepColor", "type": "Color", "description": "Water color in deep areas away from the shore."},
+      {"name": "_DepthMaxDistance", "type": "Float", "description": "Depth distance over which color transitions from shallow to deep."},
+      {"name": "_NormalMap1", "type": "2D", "description": "First scrolling normal map for surface ripples."},
+      {"name": "_NormalMap2", "type": "2D", "description": "Second scrolling normal map at a different speed and direction."},
+      {"name": "_WaveHeight", "type": "Float", "description": "Amplitude of vertex displacement waves."},
+      {"name": "_WaveSpeed", "type": "Float", "description": "Speed of the wave animation."}
+    ],
+    "code_snippet": "// URP Water - Vertex displacement\nfloat wave = sin(v.positionOS.x * 2.0 + _Time.y * _WaveSpeed)\n           + cos(v.positionOS.z * 1.5 + _Time.y * _WaveSpeed * 0.8);\nv.positionOS.y += wave * _WaveHeight * 0.5;\n\n// Fragment - depth-based coloring\nfloat sceneDepth = LinearEyeDepth(\n    SAMPLE_TEXTURE2D(_CameraDepthTexture, sampler_CameraDepthTexture, screenUV).r,\n    _ZBufferParams);\nfloat surfaceDepth = IN.positionCS.w;\nfloat depthDiff = saturate((sceneDepth - surfaceDepth) / _DepthMaxDistance);\nhalf4 waterColor = lerp(_ShallowColor, _DeepColor, depthDiff);\n\n// Scrolling normals\nfloat2 uv1 = IN.uv + _Time.y * float2(0.03, 0.02);\nfloat2 uv2 = IN.uv + _Time.y * float2(-0.02, 0.03);\nfloat3 n1 = UnpackNormal(SAMPLE_TEXTURE2D(_NormalMap1, sampler_NormalMap1, uv1));\nfloat3 n2 = UnpackNormal(SAMPLE_TEXTURE2D(_NormalMap2, sampler_NormalMap2, uv2));\nfloat3 finalNormal = normalize(n1 + n2);",
+    "shader_graph_nodes": [
+      "Sine/Cosine of (Position.x + Time) for vertex wave displacement",
+      "Scene Depth node minus Surface Depth for depth-based color blending",
+      "Lerp between Shallow Color and Deep Color using depth difference",
+      "Two Tiling And Offset nodes with Time-driven offset for scrolling normals",
+      "Normal Blend node to combine both normal maps, connect to Normal on Master Stack"
+    ]
+  },
+  {
+    "effect": "Hologram",
+    "description": "Sci-fi holographic projection effect with scan lines, flickering, and transparent rendering.",
+    "pipelines": ["urp", "hdrp", "builtin"],
+    "properties": [
+      {"name": "_HoloColor", "type": "Color", "description": "Primary color of the hologram."},
+      {"name": "_ScanLineSpeed", "type": "Float", "description": "Speed at which horizontal scan lines scroll."},
+      {"name": "_ScanLineDensity", "type": "Float", "description": "Number of scan lines per unit of world space."},
+      {"name": "_FlickerSpeed", "type": "Float", "description": "Speed of the random flicker effect."},
+      {"name": "_FresnelPower", "type": "Float", "description": "Controls edge glow falloff for the hologram rim."},
+      {"name": "_GlitchIntensity", "type": "Range(0,1)", "description": "Strength of horizontal glitch offset distortion."}
+    ],
+    "code_snippet": "// URP Hologram - Fragment shader\nfloat3 viewDirWS = normalize(_WorldSpaceCameraPos - IN.positionWS);\nfloat fresnel = pow(1.0 - saturate(dot(viewDirWS, IN.normalWS)), _FresnelPower);\n\n// Scan lines\nfloat scanLine = step(0.5, frac(IN.positionWS.y * _ScanLineDensity\n    + _Time.y * _ScanLineSpeed));\n\n// Flicker\nfloat flicker = 0.8 + 0.2 * step(0.9, frac(sin(_Time.y * _FlickerSpeed) * 43758.5453));\n\nfloat alpha = (fresnel + scanLine * 0.3) * flicker;\nhalf4 color = _HoloColor;\ncolor.a = saturate(alpha);\nreturn color;",
+    "shader_graph_nodes": [
+      "Fresnel Effect node for edge glow with Power property",
+      "Position (World).y multiplied by Density, add Time * Speed, then Fraction and Step for scan lines",
+      "Sine of (Time * FlickerSpeed), Fraction and Step for flicker mask",
+      "Multiply fresnel + scanlines by flicker, connect to Alpha",
+      "Set Surface Type to Transparent on the Master Stack, Blend Mode Additive"
+    ]
+  }
+]

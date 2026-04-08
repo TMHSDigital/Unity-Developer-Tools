@@ -1,5 +1,19 @@
-# Build prompt (not part of the plugin)
-CFX-Developer-Tools-Cursor-Prompt.md
+# Unity
+Library/
+Temp/
+Logs/
+obj/
+Builds/
+UserSettings/
+MemoryCaptures/
+*.csproj
+*.sln
+*.suo
+*.user
+*.pidb
+*.booproj
+
+# Note: Always commit .meta files. Unity uses them for asset GUIDs and import settings.
 
 # Python
 __pycache__/
@@ -8,41 +22,27 @@ __pycache__/
 *.egg-info/
 dist/
 build/
+.eggs/
 *.egg
 .venv/
 venv/
 env/
-.env
-
-# Node
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-package-lock.json
-yarn.lock
-
-# Cursor workspace files (keep .cursor/mcp.json via negation)
-.cursor/*
-!.cursor/mcp.json
 
 # IDE
+.vs/
 .vscode/
+.idea/
 *.swp
 *.swo
 *~
-.idea/
 
 # OS
 .DS_Store
 Thumbs.db
-Desktop.ini
+desktop.ini
 
-# Compiled C# output
-*.dll
-*.pdb
-*.mdb
-bin/
-obj/
-Unity-Developer-Tools-Cursor-Prompt.md
+# Build prompt (not needed in published plugin)
+*-Cursor-Prompt.md
+
+# Research (reference only, not needed in published plugin)
 RESEARCH.md

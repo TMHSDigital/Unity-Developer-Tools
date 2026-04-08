@@ -1,79 +1,68 @@
 # Contributing
 
-Thank you for your interest in contributing to CFX Developer Tools.
-
-## How to contribute
-
-### Reporting issues
-
-Open a GitHub issue with:
-- A clear description of the problem
-- Steps to reproduce (if applicable)
-- Expected vs actual behavior
-- Your environment (OS, Cursor version, Python version)
-
-### Suggesting features
-
-Open a GitHub issue with the "feature request" label. Describe:
-- What you want the plugin to do
-- Why it would be useful
-- Any examples or references
-
-### Submitting changes
+## How to Contribute
 
 1. Fork the repository
-2. Create a feature branch from `main`
-3. Make your changes
-4. Test your changes in Cursor
-5. Submit a pull request
+2. Create a feature branch (`git checkout -b feat/my-feature`)
+3. Make your changes following the conventions below
+4. Commit using conventional commits
+5. Open a pull request
 
-## What to contribute
+## Commit Conventions
 
-### Templates
+Use conventional commits:
+- `feat:` - New features (minor version bump)
+- `fix:` - Bug fixes (patch version bump)
+- `docs:` - Documentation changes (patch version bump)
+- `chore:` - Maintenance tasks (patch version bump)
+- `refactor:` - Code restructuring (patch version bump)
+- `feat!:` or `BREAKING CHANGE` - Breaking changes (major version bump)
 
-Add new resource templates for additional frameworks or use cases:
-- Place them in `templates/your-template-name/`
-- Include a complete `fxmanifest.lua`
-- Include working client and server scripts
-- Follow existing template conventions
+## Adding a Skill
 
-### Snippets
+1. Create `skills/<skill-name>/SKILL.md` with YAML frontmatter (title, description, globs)
+2. Add the path to `plugin.json` under "skills"
+3. Update the skills count in README.md
+4. Write thorough, accurate content targeting Unity 6.x
 
-Add code patterns for common tasks:
-- Place them in the correct language folder under `snippets/`
-- Include a header comment explaining what the snippet does and when to use it
-- Keep snippets focused on a single pattern
+## Adding a Rule
 
-### Native data
+1. Create `rules/<rule-name>.mdc` with frontmatter (title, description, globs, alwaysApply)
+2. Add the path to `plugin.json` under "rules"
+3. Update the rules count in README.md
 
-The native databases (`mcp-server/data/natives_gta5.json`, `natives_rdr3.json`) are **auto-generated** by a weekly CI workflow that fetches from `runtime.fivem.net/doc/`. Do not edit them manually.
+## Adding a Snippet
 
-To improve the native transformation logic:
-- Edit `.github/scripts/transform_natives.py`
-- Changes to side classification, description parsing, or schema mapping go there
-- You can trigger a manual update via `gh workflow run update-natives.yml`
+1. Add the file to `snippets/<language>/`
+2. Include a header comment explaining what the snippet does and when to use it
+3. Update the snippets count in README.md
 
-### Events data
+## Adding a Template
 
-Help expand the event reference database:
-- `mcp-server/data/events.json`
-- Follow the existing JSON structure: `name`, `side`, `description`, `params`, `game`
-- Include accurate side (client/server/shared) and parameter lists
+1. Create `templates/<template-name>/` with scripts and a README.md
+2. Follow existing template patterns for consistency
+3. Update the templates count in README.md
 
-### Documentation
+## Content Rules
 
-Improve or expand documentation:
-- Fix typos or unclear explanations
-- Add examples
-- Update outdated information
+- No em dashes or en dashes - use hyphens or rewrite
+- No hardcoded credentials, tokens, API keys, or passwords
+- Target Unity 6.3 LTS as the baseline
+- Use modern APIs: Awaitable, FindFirstObjectByType, HLSLPROGRAM, UI Toolkit
+- Python code in mcp-server/ must pass py_compile
+- All JSON files must be valid
 
-## Code style
+## Code Style
 
-- No em dashes anywhere - use hyphens or rewrite the sentence
-- No hardcoded credentials, tokens, or passwords
-- Follow existing file naming conventions
-- Keep fxmanifest.lua syntax consistent with the fxmanifest-standards rule
+- C# snippets: follow the naming-conventions.mdc rules
+- Shaders: HLSLPROGRAM for URP/HDRP, include SRP Batcher compatibility
+- Python: standard formatting, type hints where helpful
 
-## License
+## Testing Changes
 
-By contributing, you agree that your contributions will be licensed under the project's CC-BY-NC-ND-4.0 license.
+Run the validate workflow locally to check:
+- JSON validity
+- Plugin manifest completeness
+- File count consistency
+- Em dash detection
+- Credential scanning

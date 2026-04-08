@@ -1,0 +1,250 @@
+[
+  {
+    "platform": "windows",
+    "display_name": "Windows (Standalone)",
+    "define": "UNITY_STANDALONE_WIN",
+    "backend": "IL2CPP or Mono",
+    "graphics_api": "Direct3D 11, Direct3D 12, Vulkan",
+    "capabilities": [
+      "Full .NET API surface with IL2CPP or Mono backend",
+      "Native plugin support via DllImport (P/Invoke)",
+      "DirectX 12 ray tracing support via HDRP",
+      "Steam, Epic, and GOG SDK integration",
+      "Multi-monitor and arbitrary resolution support"
+    ],
+    "limitations": [
+      "Anti-cheat integration requires platform-specific SDKs",
+      "Windows Defender may flag IL2CPP builds during development",
+      "DirectX 12 backend may have driver-specific issues on older GPUs"
+    ],
+    "recommendations": [
+      "Use IL2CPP for release builds - Mono is fine for faster iteration",
+      "Set target architecture to x86_64 unless 32-bit support is required",
+      "Enable incremental GC to reduce frame hitches",
+      "Use Burst compiler for math-heavy code paths",
+      "Test with both DX11 and DX12 - some players force a specific API"
+    ]
+  },
+  {
+    "platform": "macos",
+    "display_name": "macOS (Standalone)",
+    "define": "UNITY_STANDALONE_OSX",
+    "backend": "IL2CPP or Mono",
+    "graphics_api": "Metal",
+    "capabilities": [
+      "Universal Binary support for Intel and Apple Silicon",
+      "Metal API with compute shader support",
+      "Retina display support via Screen.dpi",
+      "App Sandbox and Hardened Runtime for notarization",
+      "Steam and Mac App Store distribution"
+    ],
+    "limitations": [
+      "No Vulkan or OpenGL support since macOS Mojave deprecation",
+      "Metal does not support geometry shaders",
+      "Code signing and notarization required for distribution",
+      "Less reliable GPU profiling tools compared to Windows"
+    ],
+    "recommendations": [
+      "Build as Universal Binary (ARM64 + x86_64) for full Mac coverage",
+      "Use IL2CPP - Mono AOT has limitations on Apple Silicon",
+      "Test on both Intel and Apple Silicon hardware",
+      "Enable Metal validation layer during development for shader debugging",
+      "Handle Application.targetFrameRate carefully - macOS VSync behavior differs"
+    ]
+  },
+  {
+    "platform": "linux",
+    "display_name": "Linux (Standalone)",
+    "define": "UNITY_STANDALONE_LINUX",
+    "backend": "IL2CPP or Mono",
+    "graphics_api": "Vulkan, OpenGL Core",
+    "capabilities": [
+      "Vulkan support with compute shaders",
+      "Steam Deck compatibility via Proton or native build",
+      "Headless server builds for dedicated game servers",
+      "X11 and Wayland display server support",
+      "Native plugin support via shared libraries (.so)"
+    ],
+    "limitations": [
+      "Wide variety of distros and driver versions to test against",
+      "Audio backend varies - PulseAudio, PipeWire, or ALSA",
+      "Gamepad support depends on kernel and driver availability",
+      "Smaller player base makes QA coverage harder"
+    ],
+    "recommendations": [
+      "Target Vulkan as primary API with OpenGL Core fallback",
+      "Test on SteamOS / Steam Deck for the largest Linux gaming audience",
+      "Use Headless mode for dedicated server builds to avoid GPU dependency",
+      "Bundle required shared libraries or document dependencies clearly",
+      "Test with both X11 and Wayland window managers"
+    ]
+  },
+  {
+    "platform": "android",
+    "display_name": "Android",
+    "define": "UNITY_ANDROID",
+    "backend": "IL2CPP",
+    "graphics_api": "Vulkan, OpenGL ES 3.0+",
+    "capabilities": [
+      "Vulkan support on Android 7.0+ devices",
+      "ARCore integration for augmented reality",
+      "Adaptive performance API (Samsung and partners)",
+      "Google Play Asset Delivery for large games",
+      "Split APKs (AAB) and runtime asset downloading"
+    ],
+    "limitations": [
+      "Extreme device fragmentation - thousands of GPU and SoC combinations",
+      "Thermal throttling reduces sustained performance on mobile chips",
+      "Vulkan driver quality varies significantly across vendors",
+      "64-bit requirement (arm64-v8a) for Google Play since 2019",
+      "Background app lifecycle can kill your app without warning"
+    ],
+    "recommendations": [
+      "Set minimum API level to 24 (Android 7.0) for Vulkan support",
+      "Use IL2CPP exclusively - Mono is not supported for arm64",
+      "Profile on low-end devices early - Galaxy A series, not just flagships",
+      "Use Addressables to keep initial APK size under store limits",
+      "Implement Application.lowMemory callback to release cached assets"
+    ]
+  },
+  {
+    "platform": "ios",
+    "display_name": "iOS",
+    "define": "UNITY_IOS",
+    "backend": "IL2CPP",
+    "graphics_api": "Metal",
+    "capabilities": [
+      "Metal API with GPU-driven rendering support",
+      "ARKit integration for augmented reality",
+      "Haptic feedback via Core Haptics",
+      "On-demand resources for asset streaming",
+      "Game Center and StoreKit integration"
+    ],
+    "limitations": [
+      "IL2CPP only - no JIT compilation allowed by App Store policy",
+      "No dynamic code generation (Reflection.Emit, runtime assembly loading)",
+      "Metal does not support geometry shaders or tessellation on all devices",
+      "Strict App Store review - no hot-patching code at runtime",
+      "Xcode required for building and signing"
+    ],
+    "recommendations": [
+      "Set minimum iOS version to 15.0 for broadest modern device coverage",
+      "Use Asset Bundles or Addressables for on-demand content",
+      "Enable Metal API Validation in Xcode during development",
+      "Minimize managed allocations to avoid GC spikes on older devices",
+      "Use On-Demand Resources (ODR) for optional content to reduce download size"
+    ]
+  },
+  {
+    "platform": "webgl",
+    "display_name": "WebGL",
+    "define": "UNITY_WEBGL",
+    "backend": "IL2CPP (Emscripten/WASM)",
+    "graphics_api": "WebGL 2.0 (OpenGL ES 3.0 subset)",
+    "capabilities": [
+      "Runs in any modern browser without plugins",
+      "WebAssembly (WASM) compilation for near-native performance",
+      "IndexedDB for persistent local storage",
+      "JavaScript interop via .jslib plugins",
+      "Progressive loading with streaming assets"
+    ],
+    "limitations": [
+      "No threading - System.Threading and C# async/await are limited",
+      "No sockets - use WebSocket or HTTP via UnityWebRequest",
+      "Memory is limited by browser tab allocation (typically 2-4 GB)",
+      "No file system access - must use IndexedDB or server-side storage",
+      "Audio autoplay blocked by browser policy until user interaction"
+    ],
+    "recommendations": [
+      "Keep build size small - compress with Brotli, strip unused code",
+      "Use Addressables with remote asset hosting for large projects",
+      "Avoid Instantiate/Destroy loops - use object pooling aggressively",
+      "Call WebGLInput.captureAllKeyboardInput(false) if embedding in a page with other HTML",
+      "Test in Chrome, Firefox, and Safari - WebGL behavior varies across browsers"
+    ]
+  },
+  {
+    "platform": "ps5",
+    "display_name": "PlayStation 5",
+    "define": "UNITY_PS5",
+    "backend": "IL2CPP",
+    "graphics_api": "AGC (PlayStation proprietary), Vulkan subset",
+    "capabilities": [
+      "DualSense haptic feedback and adaptive trigger support",
+      "SSD-based asset streaming with near-instant load times",
+      "Ray tracing support via hardware RT units",
+      "PSN integration for trophies, matchmaking, and commerce",
+      "Activity cards and Game Help integration"
+    ],
+    "limitations": [
+      "Requires PlayStation Partners registration and NDA",
+      "DevKit hardware required for testing and profiling",
+      "Platform-specific APIs available only under NDA documentation",
+      "Certification requirements are strict and time-consuming",
+      "Unity PS5 module requires separate license"
+    ],
+    "recommendations": [
+      "Use platform scripting defines (#if UNITY_PS5) to isolate platform code",
+      "Leverage Addressables for SSD streaming - avoid blocking loads",
+      "Integrate DualSense features early - they are a TRC expectation",
+      "Profile with PlayStation-specific tools (Razor, PIX equivalent)",
+      "Plan for certification requirements from the start of production"
+    ]
+  },
+  {
+    "platform": "xbox",
+    "display_name": "Xbox Series X|S",
+    "define": "UNITY_GAMECORE_XBOXONE (Xbox One) / UNITY_GAMECORE_SCARLETT (Series)",
+    "backend": "IL2CPP",
+    "graphics_api": "Direct3D 12",
+    "capabilities": [
+      "DirectX 12 Ultimate with ray tracing and mesh shaders",
+      "Xbox Game Pass and Xbox Live integration",
+      "Smart Delivery for cross-generation support",
+      "Quick Resume and suspend/resume lifecycle",
+      "GDK (Game Development Kit) integration"
+    ],
+    "limitations": [
+      "Requires ID@Xbox or Microsoft publisher agreement",
+      "DevKit hardware required for testing",
+      "GDK integration requires specific Unity version support",
+      "Certification (XR) requirements are extensive",
+      "Two hardware targets (Series X and S) need separate performance profiles"
+    ],
+    "recommendations": [
+      "Use UNITY_GAMECORE define for shared Xbox code across generations",
+      "Target 4K/60fps on Series X and 1080p/60fps on Series S",
+      "Implement Quick Resume support - handle suspend/resume lifecycle properly",
+      "Use PIX for Xbox for GPU profiling and capture analysis",
+      "Plan scalable quality settings to cover both Series X and S from the start"
+    ]
+  },
+  {
+    "platform": "switch",
+    "display_name": "Nintendo Switch",
+    "define": "UNITY_SWITCH",
+    "backend": "IL2CPP",
+    "graphics_api": "OpenGL ES 3.0+ (Tegra X1), Vulkan",
+    "capabilities": [
+      "Handheld and docked mode detection and resolution switching",
+      "Touch screen input in handheld mode",
+      "Joy-Con motion controls and HD Rumble",
+      "Local wireless multiplayer (LDN)",
+      "Nintendo Account and eShop integration"
+    ],
+    "limitations": [
+      "Tegra X1 GPU is significantly weaker than other current-gen consoles",
+      "4 GB RAM total (approximately 3 GB available to games)",
+      "CPU is ARM Cortex-A57 - lower single-thread performance than desktop",
+      "Must maintain 30fps minimum in both handheld and docked modes",
+      "Requires Nintendo Developer Portal registration and DevKit"
+    ],
+    "recommendations": [
+      "Target 720p handheld / 1080p docked with dynamic resolution scaling",
+      "Use aggressive LOD, texture streaming, and occlusion culling",
+      "Minimize shader variants - compile times are long on Switch",
+      "Pool all allocations - GC pauses are more noticeable at 30fps",
+      "Test thermals in handheld mode during extended play sessions"
+    ]
+  }
+]
