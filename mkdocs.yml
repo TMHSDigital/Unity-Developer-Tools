@@ -36,8 +36,8 @@ nav:
 
 theme:
   name: material
-  logo: assets/logo-docs.png
-  favicon: assets/favicon.png
+  logo: assets/logo-docs.svg
+  favicon: assets/logo-docs.svg
   palette:
     - scheme: slate
       primary: indigo

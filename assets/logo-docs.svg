@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#00d4ff"/>
+      <stop offset="100%" stop-color="#7b2ff7"/>
+    </linearGradient>
+  </defs>
+  <!-- Cube outline -->
+  <polygon points="100,20 180,60 180,140 100,180 20,140 20,60" fill="none" stroke="url(#g)" stroke-width="6" stroke-linejoin="round"/>
+  <!-- Inner edges -->
+  <line x1="100" y1="20" x2="100" y2="100" stroke="url(#g)" stroke-width="4"/>
+  <line x1="20" y1="60" x2="100" y2="100" stroke="url(#g)" stroke-width="4"/>
+  <line x1="180" y1="60" x2="100" y2="100" stroke="url(#g)" stroke-width="4"/>
+  <!-- Top diamond -->
+  <polygon points="100,20 180,60 100,100 20,60" fill="none" stroke="url(#g)" stroke-width="4" stroke-linejoin="round"/>
+  <!-- Curly braces -->
+  <text x="68" y="138" font-family="monospace" font-size="50" font-weight="bold" fill="white" text-anchor="middle">{</text>
+  <text x="132" y="138" font-family="monospace" font-size="50" font-weight="bold" fill="white" text-anchor="middle">}</text>
+</svg>
