@@ -3,7 +3,7 @@
 **AI-powered development toolkit for Unity game development in Cursor IDE.**
 
 ![License: CC BY-NC-ND 4.0](https://img.shields.io/badge/license-CC%20BY--NC--ND%204.0-lightgrey)
-![Version](https://img.shields.io/badge/version-1.1.0-blue)
+![Version](https://img.shields.io/badge/version-1.2.0-blue)
 ![GitHub stars](https://img.shields.io/github/stars/TMHSDigital/Unity-Developer-Tools)
 
 [**Getting Started**](docs/GETTING-STARTED.md) | [Features](#features) | [Quick Start](#quick-start) | [MCP Server](#mcp-server) | [Skills](#skills-18) | [Rules](#rules-8) | [Roadmap](#roadmap)
