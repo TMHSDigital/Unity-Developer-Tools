@@ -36,7 +36,6 @@ jobs:
       - name: Determine bump type from commits
         id: bump
         run: |
-          # Get commits since last tag (or all if no tags)
           last_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
           if [ -z "$last_tag" ]; then
             commits=$(git log --oneline --format="%s")
@@ -84,18 +83,17 @@ jobs:
             echo "skip=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Update version in plugin.json, README badge, and CHANGELOG
+      - name: Update version in plugin.json and README badge
         if: steps.check.outputs.skip == 'false'
         env:
           NEW_VERSION: ${{ steps.new.outputs.version }}
           OLD_VERSION: ${{ steps.current.outputs.version }}
         run: |
           python3 -c "
-          import json, os, re, datetime
+          import json, os
 
           new_version = os.environ['NEW_VERSION']
           old_version = os.environ['OLD_VERSION']
-          today = datetime.date.today().isoformat()
 
           # 1. plugin.json
           path = '.cursor-plugin/plugin.json'
@@ -137,10 +135,10 @@ jobs:
               commits=$(git log "$last_tag"..HEAD --oneline --format="- %s (%h)")
             fi
 
-            # Group by conventional commit type
             features=$(echo "$commits" | grep -iE "^- (feat|feature)" || true)
             fixes=$(echo "$commits" | grep -iE "^- fix" || true)
-            others=$(echo "$commits" | grep -viE "^- (feat|feature|fix)" || true)
+            docs=$(echo "$commits" | grep -iE "^- docs" || true)
+            others=$(echo "$commits" | grep -viE "^- (feat|feature|fix|docs|chore)" || true)
 
             if [ -n "$features" ]; then
               echo "### Features"
@@ -154,15 +152,44 @@ jobs:
               echo ""
             fi
 
+            if [ -n "$docs" ]; then
+              echo "### Documentation"
+              echo "$docs"
+              echo ""
+            fi
+
             if [ -n "$others" ]; then
               echo "### Other"
               echo "$others"
               echo ""
             fi
 
+            echo "---"
+            echo ""
+            echo "**Install:** Download \`unity-developer-tools-v${{ steps.new.outputs.version }}.zip\` and extract into your project, or clone the repo and open in Cursor."
+            echo ""
             echo "**Full Changelog**: https://github.com/${{ github.repository }}/compare/${last_tag:-initial}...v${{ steps.new.outputs.version }}"
             echo "RELEASE_EOF"
           } >> "$GITHUB_OUTPUT"
+
+      - name: Build plugin zip
+        if: steps.check.outputs.skip == 'false'
+        run: |
+          zip -r "unity-developer-tools-v${{ steps.new.outputs.version }}.zip" \
+            .cursor-plugin/ \
+            .cursor/ \
+            .cursorrules \
+            AGENTS.md \
+            skills/ \
+            rules/ \
+            snippets/ \
+            templates/ \
+            mcp-server/ \
+            docs/ \
+            LICENSE \
+            README.md \
+            CHANGELOG.md \
+            -x "**/__pycache__/*" "**/*.pyc"
 
       - name: Commit version bump
         if: steps.check.outputs.skip == 'false'
@@ -188,3 +215,4 @@ jobs:
           body: ${{ steps.notes.outputs.notes }}
           draft: false
           prerelease: false
+          files: unity-developer-tools-v${{ steps.new.outputs.version }}.zip

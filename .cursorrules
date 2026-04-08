@@ -9,7 +9,8 @@ You are working on Unity Developer Tools, a Cursor IDE plugin for Unity game dev
 - `templates/` - 5 starter templates (2d-platformer, 3d-fps, ui-menu-system, scriptableobject-architecture, editor-tool)
 - `mcp-server/` - Python FastMCP server with 4 tools and JSON data files
 - `docs/` - architecture, roadmap, contributing, getting started
-- `.github/workflows/` - validate, release, stale
+- `.github/workflows/` - validate, release, label-sync, update-unity-api, stale
+- `.github/scripts/` - refresh_unity_data.py (data update script)
 - `AGENTS.md` - full workflow and contribution guide for AI agents
 - `CHANGELOG.md` - manually maintained release history
 
@@ -58,3 +59,19 @@ Never manually edit the version in `plugin.json` or the README version badge. Th
 
 - Each snippet has a header comment explaining what it does and when to use it.
 - Use modern Unity patterns throughout.
+
+## When editing workflows
+
+- `release.yml` uses `[skip ci]` on its version bump commit. Don't remove that.
+- `release.yml` paths-ignore excludes `.github/**`, `docs/**`, `*.md`, `LICENSE`. Content-only changes won't trigger releases.
+- `release.yml` has a concurrency guard. Only one release can run at a time.
+- `release.yml` builds and attaches a zip artifact to each GitHub Release.
+- `update-unity-api.yml` commits with `chore:` prefix (patch bump). Don't change to `feat:`.
+- `validate.yml` runs 8 parallel jobs on PR and push. Keep checks fast.
+- `label-sync.yml` auto-labels PRs by path. Add new label mappings when adding top-level directories.
+- `CHANGELOG.md` is manually maintained. Update it for significant changes.
+
+## When editing MCP data files
+
+- Do not manually edit files that `update-unity-api.yml` manages unless you also update the refresh script.
+- Each JSON data file has a schema validated by `validate.yml`. Adding or renaming fields requires updating the validation job.

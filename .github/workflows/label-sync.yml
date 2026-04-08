@@ -1,0 +1,68 @@
+name: Label PRs
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  label:
+    name: Auto-label by path
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get changed files
+        id: files
+        run: |
+          files=$(gh pr diff ${{ github.event.pull_request.number }} --name-only 2>/dev/null || echo "")
+          echo "files<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$files" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Apply labels
+        run: |
+          labels=""
+          files="${{ steps.files.outputs.files }}"
+
+          if echo "$files" | grep -q "^skills/"; then
+            labels="$labels skills"
+          fi
+          if echo "$files" | grep -q "^rules/"; then
+            labels="$labels rules"
+          fi
+          if echo "$files" | grep -q "^snippets/"; then
+            labels="$labels snippets"
+          fi
+          if echo "$files" | grep -q "^templates/"; then
+            labels="$labels templates"
+          fi
+          if echo "$files" | grep -q "^mcp-server/"; then
+            labels="$labels mcp-server"
+          fi
+          if echo "$files" | grep -q "^docs/"; then
+            labels="$labels documentation"
+          fi
+          if echo "$files" | grep -q "^\.github/"; then
+            labels="$labels ci"
+          fi
+          if echo "$files" | grep -q "^\.cursor-plugin/\|^\.cursor/\|^\.cursorrules\|^AGENTS.md"; then
+            labels="$labels plugin-config"
+          fi
+
+          if [ -n "$labels" ]; then
+            for label in $labels; do
+              gh label create "$label" --force --color "ededed" 2>/dev/null || true
+              gh pr edit ${{ github.event.pull_request.number }} --add-label "$label"
+            done
+            echo "Applied labels: $labels"
+          else
+            echo "No labels to apply"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

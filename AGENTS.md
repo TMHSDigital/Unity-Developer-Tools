@@ -29,13 +29,18 @@ This is a Cursor IDE plugin for Unity game development. It contains:
 
 ### `validate.yml` (runs on PR and push to main)
 
-Checks:
-- JSON validity for plugin.json and MCP data files
-- Plugin manifest required fields and skill/rule file existence
-- Content counts in README match actual files on disk (skills, rules, snippets, templates)
-- Em dash and en dash detection (use hyphens, not em/en dashes)
-- Hardcoded credential patterns
-- Python syntax for all MCP server modules
+8 parallel jobs:
+
+| Job | What it checks |
+|-----|----------------|
+| validate-json | JSON validity for plugin.json, mcp.json, and all MCP data files with full schema validation (required fields, types) |
+| validate-plugin-manifest | Required manifest fields, kebab-case name, semver version, author object, keywords array, skill/rule file existence |
+| validate-skills | SKILL.md YAML frontmatter (title, description, globs) and minimum body length |
+| validate-rules | .mdc YAML frontmatter (title, description, globs, alwaysApply) and minimum body length |
+| validate-content | Em/en dash detection, hardcoded credential scanning, snippet non-empty checks |
+| validate-templates | Each template directory has README.md and .cs files with minimum content |
+| validate-counts | Skill, rule, snippet, template counts in README match actual files on disk |
+| validate-python | pip install + py_compile for all MCP server Python files |
 
 ### `release.yml` (runs on push to main, ignores docs/md/github changes)
 
@@ -44,13 +49,36 @@ Automatic flow:
 2. Determines bump type from conventional commit messages since last tag
 3. Computes new semver version
 4. Updates `plugin.json` version and `README.md` version badge
-5. Commits with `[skip ci]` to prevent re-triggering
-6. Creates git tag `vX.Y.Z`
-7. Creates GitHub Release with grouped release notes
+5. Builds a distributable zip of the plugin (excludes __pycache__)
+6. Commits with `[skip ci]` to prevent re-triggering
+7. Creates git tag `vX.Y.Z`
+8. Creates GitHub Release with grouped release notes and zip artifact attached
 
-### `stale.yml`
+Has a concurrency guard - only one release can run at a time.
 
-Marks issues/PRs as stale after inactivity and closes them after further inactivity.
+### `update-unity-api.yml` (weekly on Monday 06:00 UTC, or manual dispatch)
+
+1. Runs `.github/scripts/refresh_unity_data.py` to fetch latest lifecycle method docs
+2. Validates all MCP data files against their schemas
+3. If data changed, commits and pushes with `chore:` prefix (patch bump)
+
+Do not manually edit data files that this workflow manages. To change the refresh logic, edit `.github/scripts/refresh_unity_data.py`.
+
+### `label-sync.yml` (runs on PR open/sync)
+
+Automatically labels PRs based on changed file paths:
+- `skills/` -> `skills` label
+- `rules/` -> `rules` label
+- `snippets/` -> `snippets` label
+- `templates/` -> `templates` label
+- `mcp-server/` -> `mcp-server` label
+- `docs/` -> `documentation` label
+- `.github/` -> `ci` label
+- Plugin config files -> `plugin-config` label
+
+### `stale.yml` (weekly on Sunday midnight UTC)
+
+Marks issues/PRs as stale after inactivity and closes them after further inactivity. Exempts `pinned`, `security`, and `bug` labels.
 
 ## Version management
 

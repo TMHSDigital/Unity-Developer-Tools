@@ -1,0 +1,66 @@
+name: Update Unity API Data
+
+on:
+  schedule:
+    - cron: "0 6 * * 1" # Every Monday at 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-data:
+    name: Refresh MCP data files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Refresh Unity data
+        run: python3 .github/scripts/refresh_unity_data.py
+
+      - name: Validate updated data
+        run: python3 << 'PYEOF'
+import json
+
+for name, required_fields in [
+    ('lifecycle_order.json', ['method', 'phase', 'description']),
+    ('deprecated_patterns.json', ['legacy', 'replacement', 'reason']),
+    ('unity_api_common.json', ['name', 'namespace', 'category']),
+    ('shader_properties.json', ['effect', 'description', 'pipelines']),
+    ('platform_defines.json', ['platform', 'display_name', 'define']),
+]:
+    path = f'mcp-server/data/{name}'
+    data = json.load(open(path))
+    assert isinstance(data, list), f'{name}: expected array'
+    assert len(data) > 0, f'{name}: empty array'
+    for entry in data:
+        for field in required_fields:
+            assert field in entry, f'{name}: missing {field}'
+    print(f'{name}: {len(data)} entries valid')
+PYEOF
+
+      - name: Check for changes
+        id: diff
+        run: |
+          if git diff --quiet mcp-server/data/; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No changes to data files"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            changed=$(git diff --name-only mcp-server/data/)
+            echo "Changed files:"
+            echo "$changed"
+          fi
+
+      - name: Commit and push changes
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add mcp-server/data/
+          git commit -m "chore: update Unity API data"
+          git push
