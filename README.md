@@ -1,137 +1,297 @@
 # Unity Developer Tools
 
+**AI-powered development toolkit for Unity game development in Cursor IDE.**
+
+![License: CC BY-NC-ND 4.0](https://img.shields.io/badge/license-CC%20BY--NC--ND%204.0-lightgrey)
 ![Version](https://img.shields.io/badge/version-1.1.0-blue)
-![License](https://img.shields.io/badge/license-MIT-green)
+![GitHub stars](https://img.shields.io/github/stars/TMHSDigital/Unity-Developer-Tools)
 
-AI-powered development toolkit for Unity. Scaffold scripts, look up APIs, write shaders, and build games with best-practice rules for C#, Visual Scripting, and HLSL.
+[**Getting Started**](docs/GETTING-STARTED.md) | [Features](#features) | [Quick Start](#quick-start) | [MCP Server](#mcp-server) | [Skills](#skills-18) | [Rules](#rules-8) | [Roadmap](#roadmap)
 
-## What This Is
+---
 
-A Cursor IDE plugin that bundles 18 skills, 8 rules, 20 snippets, 5 templates, and an MCP server with 4 tools - all focused on Unity game development. Whether you are a beginner learning Unity, a solo dev at a game jam, or an intermediate developer wanting productivity tools and best-practice enforcement, this plugin provides an AI-assisted environment optimized for building games, tools, and interactive experiences.
+> 18 skills - 8 rules - 4 MCP tools - 20 snippets - 5 templates
+
+Scaffold Unity scripts, look up APIs, generate shader patterns, detect render pipelines, and write optimized C# -- all from within Cursor's AI chat. Covers the full Unity development lifecycle from project setup to platform deployment.
+
+[**Getting Started Guide**](docs/GETTING-STARTED.md)
+
+> **First time here?** The **Getting Started guide** walks you through every step -- from installing prerequisites to building your first Unity project with AI assistance. No prior Cursor plugin experience required.
+
+## How It Works
+
+```mermaid
+flowchart LR
+    A["You ask Cursor\na Unity question"] --> B["Cursor loads\na Skill"]
+    B --> C{"MCP server\navailable?"}
+    C -- Yes --> D["Unity MCP Server\n(4 tools)"]
+    C -- No --> E["Skill guidance\nonly"]
+    D --> F["Scaffold, lookup,\nshader help,\nplatform info"]
+    E --> G["AI-assisted answer\nin Cursor chat"]
+    F --> G
+```
+
+**Skills** teach Cursor how to handle Unity development prompts. **Rules** enforce Unity best practices in your code. The **MCP server** provides programmatic tools so skills can scaffold scripts, look up APIs, and generate shader patterns directly.
 
 ## Quick Start
 
-1. Clone this repository
-2. Open the folder in Cursor IDE
-3. The plugin loads automatically - skills, rules, and snippets are available immediately
-4. For MCP tools, install Python dependencies: `pip install -r mcp-server/requirements.txt`
-5. Start building
+Already have Git, Python 3.10+, and Cursor installed? Here's the short version:
+
+```bash
+git clone https://github.com/TMHSDigital/Unity-Developer-Tools.git
+# Open Unity-Developer-Tools folder in Cursor (File > Open Folder)
+cd mcp-server && pip install -r requirements.txt
+```
+
+Then ask the AI agent to scaffold a MonoBehaviour, look up an API, or generate a shader effect.
+
+> **Need more detail?** The [**Getting Started guide**](docs/GETTING-STARTED.md) covers installing prerequisites, troubleshooting, and building your first project step by step.
 
 ## Features
 
-### Skills (18)
+- **Script scaffolding** -- Generate MonoBehaviours, ScriptableObjects, Editor windows, and ECS systems following Unity 6 conventions
+- **API lookup** -- Search common Unity APIs by name, namespace, or category via MCP tools
+- **Shader patterns** -- Get HLSL code and Shader Graph node setups for common effects (dissolve, outline, hologram, etc.)
+- **Performance-aware coding rules** -- Catch deprecated APIs, allocation-heavy patterns, and common mistakes
+- **Snippet library** -- 20 copy-paste-ready code patterns for C#, shaders, and Visual Scripting
+- **Render pipeline detection** -- Automatically adapt guidance to URP, HDRP, or Built-in
+- **Platform targeting** -- Platform-specific defines, capabilities, and build recommendations
+- **Template projects** -- 5 starter templates for 2D, 3D, UI, architecture patterns, and editor tools
 
-| Skill | Description |
+<details>
+<summary><strong>Supported Workflows</strong></summary>
+
+| Workflow | Description |
+|----------|-------------|
+| MonoBehaviour | Classic Unity scripting with lifecycle methods |
+| ScriptableObject Architecture | Data-driven design with events, variables, runtime sets |
+| ECS/DOTS | High-performance data-oriented tech stack |
+| Visual Scripting | Node-based scripting for designers |
+| Editor Tooling | Custom inspectors, windows, overlays, gizmos |
+
+</details>
+
+<details>
+<summary><strong>Supported Render Pipelines</strong></summary>
+
+| Pipeline | Status |
+|----------|--------|
+| **URP** (Universal) | Primary -- recommended for all new projects |
+| **HDRP** (High Definition) | Supported -- maintenance mode guidance |
+| **Built-in** (Legacy) | Migration guidance -- deprecated in Unity 6.5 |
+
+</details>
+
+<details>
+<summary><strong>Supported Platforms</strong></summary>
+
+| Platform | Backend |
+|----------|---------|
+| Windows | IL2CPP or Mono |
+| macOS | IL2CPP or Mono |
+| Linux | IL2CPP or Mono |
+| iOS | IL2CPP |
+| Android | IL2CPP |
+| WebGL | IL2CPP (WebGPU opt-in) |
+| Consoles | IL2CPP |
+
+</details>
+
+## Skills (18)
+
+| Skill | What it does |
 |-------|-------------|
-| Project Setup | Unity project configuration, folder structure, assembly definitions |
-| MonoBehaviour Patterns | Lifecycle, Awaitable async, common design patterns |
-| ScriptableObjects | Data-driven architecture, events, variables, runtime sets |
-| Physics (2D/3D) | Rigidbody, collisions, raycasting, layers |
-| UI Development | UI Toolkit (primary) and Canvas/UGUI |
-| Shader Development | Shader Graph, HLSL, ShaderLab for URP |
-| Animation Systems | Animator, DOTween, Timeline, sprite animation |
-| Audio Systems | AudioSource, AudioMixer, spatial audio |
-| Input Systems | New Input System (primary), legacy migration |
-| Networking | Netcode for GameObjects, Netcode for Entities, Photon, Mirror |
-| Editor Scripting | Custom inspectors, editor windows, overlays, gizmos |
-| Performance Optimization | CPU, GPU, memory, profiling tools |
-| Render Pipeline Detection | URP, HDRP, Built-in detection and adaptation |
-| ECS/DOTS | Entity Component System, Jobs, Burst |
-| Visual Scripting | Script Graphs, State Graphs, Subgraphs |
-| Testing | Edit Mode and Play Mode tests with UTF 2.x |
-| Addressables | Async asset loading, groups, remote content |
-| Platform Targeting | Platform defines, build settings, cross-platform |
+| **Project Setup** | Unity project configuration, folder structure, assembly definitions, package management |
+| **MonoBehaviour Patterns** | Lifecycle methods, Awaitable async, FindFirstObjectByType, design patterns |
+| **ScriptableObjects** | Data-driven architecture with events, variables, and runtime sets |
+| **Physics (2D/3D)** | Rigidbody, collisions, raycasting, layers, NonAlloc patterns |
+| **UI Development** | UI Toolkit (primary), Runtime Data Binding, Canvas/UGUI for legacy |
+| **Shader Development** | Shader Graph, HLSLPROGRAM, ShaderLab for URP, Render Graph integration |
+| **Animation Systems** | Animator controllers, DOTween, Timeline, sprite animation |
+| **Audio Systems** | AudioSource, AudioMixer, spatial audio, music management |
+| **Input Systems** | New Input System with Action Assets, composite bindings, legacy migration |
+| **Networking** | Netcode for GameObjects, Netcode for Entities, Photon Fusion 2, Mirror |
+| **Editor Scripting** | Custom inspectors, editor windows, Scene View overlays, gizmos |
+| **Performance Optimization** | Profiler, Burst, Jobs, object pooling, memory management |
+| **Render Pipeline Detection** | Auto-detect URP, HDRP, or Built-in and adapt code accordingly |
+| **ECS/DOTS** | Entity Component System, ISystem, IJobEntity, SystemAPI.Query, Burst |
+| **Visual Scripting** | Script Graphs, State Graphs, Subgraphs, custom nodes |
+| **Testing** | Edit Mode and Play Mode tests with Unity Test Framework 2.x |
+| **Addressables** | Async asset loading, groups, labels, remote content delivery |
+| **Platform Targeting** | Platform defines, IL2CPP/CoreCLR backends, build settings |
 
-### Rules (8)
+## Rules (8)
 
-- C# Unity Conventions
-- MonoBehaviour Lifecycle
-- Performance Rules
-- Naming Conventions
-- Serialization Rules
-- Shader Conventions
-- Visual Scripting Conventions
-- Security and Builds
+| Rule | What it enforces |
+|------|-----------------|
+| **C# Unity Conventions** | SerializeField, Awaitable over coroutines, modern API usage |
+| **MonoBehaviour Lifecycle** | Correct initialization order, Update vs FixedUpdate usage |
+| **Performance Rules** | No FindObjectOfType, no Resources.Load, allocation warnings |
+| **Naming Conventions** | PascalCase methods, _camelCase privates, Unity-standard naming |
+| **Serialization Rules** | Proper [SerializeField], [field: SerializeField] for events |
+| **Shader Conventions** | HLSLPROGRAM over CGPROGRAM, URP-first shader patterns |
+| **Visual Scripting Conventions** | Graph naming, Subgraph usage, variable scoping |
+| **Security and Builds** | No credentials in code, IL2CPP stripping, signed packages |
 
-### Snippets (20)
+## Snippets (20)
 
-- 15 C# snippets (MonoBehaviour, Singleton, Object Pool, ScriptableObject, Coroutine, Events, State Machine, Custom Inspector, Editor Window, Property Drawer, Input System, Raycasting, Async/Await, Interfaces, Save/Load)
-- 4 shader snippets (Unlit URP, Surface Legacy, URP Lit PBR, HLSL Vertex/Fragment)
-- 1 Visual Scripting guide
+<details>
+<summary><strong>C# (15)</strong></summary>
 
-### Templates (5)
+| Snippet | Description |
+|---------|-------------|
+| monobehaviour-template.cs | Complete MonoBehaviour with lifecycle methods |
+| singleton-pattern.cs | Thread-safe singleton using FindFirstObjectByType |
+| object-pool.cs | Generic object pool with warm-up and auto-expand |
+| scriptableobject-template.cs | ScriptableObject with custom editor support |
+| coroutine-pattern.cs | Coroutine patterns with cancellation |
+| async-await-pattern.cs | Awaitable async with single-await pooling rule |
+| event-system.cs | C# event system with UnityEvent integration |
+| state-machine.cs | Finite state machine pattern |
+| custom-inspector.cs | Custom inspector with UI Toolkit |
+| editor-window.cs | Editor window with UI Toolkit |
+| property-drawer.cs | Custom property drawer |
+| input-system-actions.cs | New Input System with Action Assets |
+| raycast-patterns.cs | Physics.Raycast and NonAlloc patterns |
+| interface-component.cs | Interface-based component communication |
+| save-load-json.cs | JSON save/load with Application.persistentDataPath |
 
-- 2D Platformer (player controller, game manager, camera follow)
-- 3D FPS (FPS controller, weapon system, game manager)
-- UI Menu System (UI Toolkit menus, settings with persistence)
-- ScriptableObject Architecture (events, variables, runtime sets)
-- Editor Tool (level builder window with UI Toolkit)
+</details>
 
-### MCP Tools (4)
+<details>
+<summary><strong>Shaders (4)</strong></summary>
 
-- **scaffold_script** - Generate C# scripts following Unity conventions
-- **lookup_api** - Search the Unity API reference database
-- **shader_helper** - Get shader code patterns for common effects
-- **platform_info** - Get platform-specific defines and build tips
+| Snippet | Description |
+|---------|-------------|
+| unlit-basic.shader | Basic unlit shader for URP (HLSLPROGRAM) |
+| urp-lit-template.shader | PBR lit shader template for URP |
+| hlsl-vertex-fragment.shader | Custom vertex/fragment with URP lighting |
+| surface-basic.shader | Legacy surface shader (Built-in only) |
 
-## Supported Workflows
+</details>
 
-- MonoBehaviour (classic Unity scripting)
-- ScriptableObject Architecture (data-driven design)
-- ECS/DOTS (high-performance data-oriented)
-- Visual Scripting (node-based for designers)
-- Editor Tooling (custom inspectors, windows, overlays)
+<details>
+<summary><strong>Visual Scripting (1)</strong></summary>
 
-## Supported Render Pipelines
+| File | Description |
+|------|-------------|
+| README.md | Graph architecture patterns and Subgraph conventions |
 
-- **URP** (Universal Render Pipeline) - Primary, recommended for all new projects
-- **HDRP** (High Definition Render Pipeline) - Maintenance mode, existing projects only
-- **Built-in** (Legacy) - Deprecated as of Unity 6.5, migration guidance provided
+</details>
 
-## MCP Server Setup
+## Templates (5)
 
-The MCP server is configured in `.cursor/mcp.json` and starts automatically when Cursor invokes a tool.
+| Template | Description |
+|----------|-------------|
+| **2D Platformer** | Player controller with new Input System, camera follow, game manager |
+| **3D FPS** | First-person controller, weapon system, game manager |
+| **UI Menu System** | UI Toolkit menus with settings persistence |
+| **ScriptableObject Architecture** | Event system, float variables, runtime sets -- Ryan Hipple pattern |
+| **Editor Tool** | Level builder window with UI Toolkit and Scene View integration |
 
-Prerequisites:
+## MCP Server
+
+The companion MCP server provides programmatic tools that Cursor's AI agent can call directly. Configuration lives in `.cursor/mcp.json`.
+
+**Prerequisites:** Python 3.10+
+
 ```bash
-pip install -r mcp-server/requirements.txt
+cd mcp-server
+pip install -r requirements.txt
+```
+
+The server starts automatically when Cursor invokes an MCP tool.
+
+<details>
+<summary><strong>Available Tools (4)</strong></summary>
+
+| Tool | Description |
+|------|-------------|
+| **scaffold_script** | Generate C# scripts following Unity 6 conventions. Supports MonoBehaviour, ScriptableObject, Editor, and ECS templates. |
+| **lookup_api** | Search the Unity API reference database by name, namespace, or category. Returns signatures, descriptions, and examples. |
+| **shader_helper** | Get shader code patterns for common effects (dissolve, outline, hologram, etc.) with HLSL and Shader Graph guidance. |
+| **platform_info** | Get platform-specific defines, capabilities, limitations, and build recommendations. |
+
+</details>
+
+**Usage Examples**
+
+**Scaffold a script:**
+```
+Create a MonoBehaviour for a health system with damage, healing, and death events
+```
+
+**Look up an API:**
+```
+How do I use Addressables.LoadAssetAsync?
+```
+
+**Get a shader pattern:**
+```
+Show me a dissolve effect shader for URP with edge glow
+```
+
+**Get platform info:**
+```
+What are the WebGL limitations and recommended settings?
 ```
 
 ## Project Structure
 
 ```
 Unity-Developer-Tools/
-|-- .cursor-plugin/plugin.json      # Plugin manifest
-|-- .cursor/mcp.json                # MCP server configuration
-|-- skills/                         # 18 SKILL.md files
-|-- rules/                          # 8 .mdc rule files
-|-- snippets/
-|   |-- csharp/                     # 15 C# code snippets
-|   |-- shaders/                    # 4 shader snippets
-|   |-- visual-scripting/           # VS graph pattern guide
-|-- templates/                      # 5 starter project templates
-|-- mcp-server/
-|   |-- server.py                   # MCP server entry point
-|   |-- tools/                      # Tool implementations
-|   |-- data/                       # API reference and data files
-|-- docs/                           # Documentation
+  .cursor-plugin/      Plugin manifest
+  .cursor/             MCP server configuration
+  skills/              AI skill files (18 skills)
+  rules/               Coding convention rules (8 rules)
+  snippets/            Code snippets -- C#, shaders (20 files)
+  templates/           Starter project templates (5 sets)
+  mcp-server/          Python MCP server (4 tools) and data files
+  docs/                Architecture, roadmap, contributing guide
+  .github/             CI/CD workflows (5 workflows)
 ```
 
 ## Roadmap
 
-See [docs/ROADMAP.md](docs/ROADMAP.md) for planned milestones.
+See [docs/ROADMAP.md](docs/ROADMAP.md) for the full project roadmap.
+
+<details>
+<summary><strong>Release Plan</strong></summary>
+
+| Version | Milestone | Status |
+|---------|-----------|--------|
+| **v0.1.0** | Foundation -- skills, rules, snippets, templates, MCP server, CI/CD | Done |
+| **v1.0.0** | M1 Complete -- 18 skills, 8 rules, 20 snippets, 5 templates, 4 MCP tools | Done |
+| **v1.1.0** | CI/CD overhaul -- 8-job validation, zip releases, auto-labeling, data refresh | Done |
+| **v2.0.0** | M2 Intelligence -- expanded API DB, version detection, shader conversion | Planned |
+| **v3.0.0** | M3 Advanced -- ECS codegen, build automation, VFX/Cinemachine, AI/ML | Planned |
+| **v4.0.0** | M4 Polish -- marketplace listing, community templates, localization | Planned |
+
+</details>
 
 ## Contributing
 
-See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) for guidelines.
+See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) for guidelines on adding skills, rules, and improvements.
+
+## Support
+
+If this plugin is useful to you, consider starring the repository or [sponsoring the project](https://github.com/sponsors/TMHSDigital).
 
 ## License
 
-MIT - see [LICENSE](LICENSE) for details.
+CC BY-NC-ND 4.0 -- see [LICENSE](LICENSE) for details.
 
-## Credits
+<details>
+<summary><strong>Unity Reference Links</strong></summary>
 
-- Built by [TMHSDigital](https://github.com/TMHSDigital)
-- Unity documentation: https://docs.unity3d.com/Manual/
-- Unity Scripting API: https://docs.unity3d.com/ScriptReference/
-- Cursor plugin specification: https://github.com/cursor/plugins
+- [Unity Manual](https://docs.unity3d.com/Manual/)
+- [Unity Scripting API](https://docs.unity3d.com/ScriptReference/)
+- [Unity Package Manager](https://docs.unity3d.com/Manual/Packages.html)
+- [Unity Forums](https://discussions.unity.com/)
+- [Unity Issue Tracker](https://issuetracker.unity3d.com/)
+
+</details>
+
+---
+
+**Built by [TMHSDigital](https://github.com/TMHSDigital)**

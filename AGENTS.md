@@ -142,4 +142,4 @@ The MCP server is configured in `.cursor/mcp.json` and starts automatically when
 
 ## License
 
-MIT. All contributions fall under this license.
+CC-BY-NC-ND-4.0. All contributions fall under this license.
