@@ -1,0 +1,82 @@
+site_name: Unity Developer Tools
+site_url: https://tmhsdigital.github.io/Unity-Developer-Tools/
+site_description: AI-powered development toolkit for Unity game development in Cursor IDE
+site_author: TMHSDigital
+repo_url: https://github.com/TMHSDigital/Unity-Developer-Tools
+repo_name: TMHSDigital/Unity-Developer-Tools
+edit_uri: edit/main/
+
+nav:
+  - Home: index.md
+  - Getting Started: GETTING-STARTED.md
+  - Architecture: ARCHITECTURE.md
+  - Roadmap: ROADMAP.md
+  - Contributing: CONTRIBUTING.md
+  - Changelog: CHANGELOG.md
+  - Skills:
+      - Project Setup: skills/project-setup/SKILL.md
+      - MonoBehaviour Patterns: skills/monobehaviour-patterns/SKILL.md
+      - ScriptableObjects: skills/scriptableobjects/SKILL.md
+      - Physics (2D/3D): skills/physics-2d-3d/SKILL.md
+      - UI Development: skills/ui-development/SKILL.md
+      - Shader Development: skills/shader-development/SKILL.md
+      - Animation Systems: skills/animation-systems/SKILL.md
+      - Audio Systems: skills/audio-systems/SKILL.md
+      - Input Systems: skills/input-systems/SKILL.md
+      - Networking: skills/networking/SKILL.md
+      - Editor Scripting: skills/editor-scripting/SKILL.md
+      - Performance Optimization: skills/performance-optimization/SKILL.md
+      - Render Pipeline Detection: skills/render-pipeline-detection/SKILL.md
+      - ECS/DOTS: skills/ecs-dots/SKILL.md
+      - Visual Scripting: skills/visual-scripting/SKILL.md
+      - Testing: skills/testing/SKILL.md
+      - Addressables: skills/addressables-assets/SKILL.md
+      - Platform Targeting: skills/platform-targeting/SKILL.md
+  - MCP Server: mcp-server/README.md
+
+theme:
+  name: material
+  logo: assets/logo-docs.png
+  favicon: assets/favicon.png
+  palette:
+    - scheme: slate
+      primary: indigo
+      accent: cyan
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+    - scheme: default
+      primary: indigo
+      accent: cyan
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+  features:
+    - navigation.instant
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.action.edit
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.details
+  - pymdownx.inlinehilite
+  - pymdownx.snippets

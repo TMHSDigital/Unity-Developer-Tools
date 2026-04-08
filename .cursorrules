@@ -9,7 +9,8 @@ You are working on Unity Developer Tools, a Cursor IDE plugin for Unity game dev
 - `templates/` - 5 starter templates (2d-platformer, 3d-fps, ui-menu-system, scriptableobject-architecture, editor-tool)
 - `mcp-server/` - Python FastMCP server with 4 tools and JSON data files
 - `docs/` - architecture, roadmap, contributing, getting started
-- `.github/workflows/` - validate, release, label-sync, update-unity-api, stale
+- `.github/workflows/` - validate, release, deploy-docs, label-sync, update-unity-api, stale
+- `mkdocs.yml` - MkDocs Material documentation site configuration
 - `.github/scripts/` - refresh_unity_data.py (data update script)
 - `AGENTS.md` - full workflow and contribution guide for AI agents
 - `CHANGELOG.md` - manually maintained release history
@@ -69,6 +70,8 @@ Never manually edit the version in `plugin.json` or the README version badge. Th
 - `update-unity-api.yml` commits with `chore:` prefix (patch bump). Don't change to `feat:`.
 - `validate.yml` runs 8 parallel jobs on PR and push. Keep checks fast.
 - `label-sync.yml` auto-labels PRs by path. Add new label mappings when adding top-level directories.
+- `deploy-docs.yml` builds and deploys the MkDocs Material site to GitHub Pages on every push to main.
+- When adding a new skill, also add it to the `nav:` section in `mkdocs.yml`.
 - `CHANGELOG.md` is manually maintained. Update it for significant changes.
 
 ## When editing MCP data files

@@ -12,10 +12,12 @@
   <img src="https://img.shields.io/badge/license-CC%20BY--NC--ND%204.0-lightgrey" alt="License: CC BY-NC-ND 4.0" />
   <img src="https://img.shields.io/badge/version-1.2.1-blue" alt="Version" />
   <img src="https://img.shields.io/github/stars/TMHSDigital/Unity-Developer-Tools" alt="GitHub stars" />
+  <a href="https://tmhsdigital.github.io/Unity-Developer-Tools/"><img src="https://img.shields.io/badge/docs-online-brightgreen" alt="docs online" /></a>
 </p>
 
 <p align="center">
   <a href="docs/GETTING-STARTED.md"><strong>Getting Started</strong></a> &bull;
+  <a href="https://tmhsdigital.github.io/Unity-Developer-Tools/">Documentation</a> &bull;
   <a href="#features">Features</a> &bull;
   <a href="#quick-start">Quick Start</a> &bull;
   <a href="#mcp-server">MCP Server</a> &bull;

@@ -76,6 +76,19 @@ Automatically labels PRs based on changed file paths:
 - `.github/` -> `ci` label
 - Plugin config files -> `plugin-config` label
 
+### `deploy-docs.yml` (runs on push to main, or manual dispatch)
+
+Builds and deploys the MkDocs Material documentation site to GitHub Pages.
+
+1. Copies CHANGELOG.md, skills/, and mcp-server/README.md into docs/ (MkDocs requires all content under docs/)
+2. Copies logo and favicon assets into docs/assets/
+3. Builds with `mkdocs build --strict`
+4. Uploads and deploys to GitHub Pages
+
+The site lives at `https://tmhsdigital.github.io/Unity-Developer-Tools/`.
+
+When adding a new skill, also add it to the `nav:` section in `mkdocs.yml`.
+
 ### `stale.yml` (weekly on Sunday midnight UTC)
 
 Marks issues/PRs as stale after inactivity and closes them after further inactivity. Exempts `pinned`, `security`, and `bug` labels.
