@@ -2,6 +2,7 @@
 title: Multiplayer Networking
 description: Multiplayer networking patterns with Netcode for GameObjects, Netcode for Entities, Mirror, and Photon Fusion.
 globs: ["**/*.cs"]
+standards-version: 1.6.3
 ---
 
 # Multiplayer Networking

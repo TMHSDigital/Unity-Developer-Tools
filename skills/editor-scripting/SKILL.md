@@ -2,6 +2,7 @@
 title: Editor Scripting
 description: Extending the Unity Editor with custom inspectors, editor windows, property drawers, gizmos, and Scene View overlays using UI Toolkit.
 globs: ["**/Editor/**/*.cs"]
+standards-version: 1.6.3
 ---
 
 # Editor Scripting

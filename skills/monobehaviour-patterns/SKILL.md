@@ -2,6 +2,7 @@
 title: MonoBehaviour Patterns
 description: Comprehensive guide to MonoBehaviour lifecycle, async patterns with Awaitable, and common Unity design patterns.
 globs: ["**/*.cs"]
+standards-version: 1.6.3
 ---
 
 # MonoBehaviour Patterns

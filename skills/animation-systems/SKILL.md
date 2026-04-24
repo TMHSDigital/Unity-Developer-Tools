@@ -2,6 +2,7 @@
 title: Animation Systems
 description: Unity animation workflows including Animator Controller, Timeline, DOTween, and sprite animation for 2D.
 globs: ["**/*.cs", "**/*.controller", "**/*.anim", "**/*.playable"]
+standards-version: 1.6.3
 ---
 
 # Animation Systems
