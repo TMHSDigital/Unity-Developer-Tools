@@ -2,6 +2,7 @@
 title: Render Pipeline Detection
 description: Detecting the active render pipeline (URP, HDRP, or Built-in) and adapting code, shaders, and settings accordingly.
 globs: ["**/*.cs", "**/*.shader", "**/*.shadergraph"]
+standards-version: 1.6.3
 ---
 
 # Render Pipeline Detection

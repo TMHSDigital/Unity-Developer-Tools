@@ -2,6 +2,7 @@
 title: Audio Systems
 description: Audio implementation patterns including AudioSource, AudioMixer, spatial audio, and audio management.
 globs: ["**/*.cs", "**/*.mixer"]
+standards-version: 1.6.3
 ---
 
 # Audio Systems

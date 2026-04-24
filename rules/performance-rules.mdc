@@ -3,6 +3,7 @@ title: Performance rules
 description: Performance optimization rules for Unity
 globs: ["**/*.cs"]
 alwaysApply: true
+standards-version: 1.6.3
 ---
 
 # Unity performance rules

@@ -3,6 +3,7 @@ title: MonoBehaviour lifecycle
 description: Correct usage of MonoBehaviour lifecycle methods
 globs: ["**/*.cs"]
 alwaysApply: true
+standards-version: 1.6.3
 ---
 
 # MonoBehaviour lifecycle rules

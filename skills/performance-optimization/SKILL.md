@@ -2,6 +2,7 @@
 title: Performance Optimization
 description: Unity-specific performance best practices for CPU, GPU, memory, and profiling tools.
 globs: ["**/*.cs"]
+standards-version: 1.6.3
 ---
 
 # Performance Optimization

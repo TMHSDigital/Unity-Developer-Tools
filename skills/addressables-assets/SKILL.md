@@ -2,6 +2,7 @@
 title: Addressables and Asset Management
 description: Managing assets with the Addressables system for async loading, memory management, and remote content delivery.
 globs: ["**/*.cs", "**/*.asset"]
+standards-version: 1.6.3
 ---
 
 # Addressables and Asset Management

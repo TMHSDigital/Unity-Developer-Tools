@@ -3,6 +3,7 @@ title: Visual scripting conventions
 description: Best practices for Unity Visual Scripting
 globs: ["**/*.asset"]
 alwaysApply: false
+standards-version: 1.6.3
 ---
 
 # Visual scripting conventions
