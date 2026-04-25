@@ -10,7 +10,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/license-CC%20BY--NC--ND%204.0-lightgrey" alt="License: CC BY-NC-ND 4.0" />
-  <img src="https://img.shields.io/badge/version-1.4.0-blue" alt="Version" />
+  <img src="https://img.shields.io/badge/version-1.4.1-blue" alt="Version" />
   <img src="https://img.shields.io/github/stars/TMHSDigital/Unity-Developer-Tools" alt="GitHub stars" />
   <a href="https://tmhsdigital.github.io/Unity-Developer-Tools/"><img src="https://img.shields.io/badge/docs-online-brightgreen" alt="docs online" /></a>
 </p>
