@@ -3,7 +3,7 @@ title: Security and builds
 description: Security and build configuration rules
 globs: ["**/*.cs", "**/*.json", "**/*.asset"]
 alwaysApply: false
-standards-version: 1.6.3
+standards-version: 1.7.0
 ---
 
 # Security and build rules

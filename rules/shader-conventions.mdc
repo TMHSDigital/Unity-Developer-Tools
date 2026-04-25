@@ -3,7 +3,7 @@ title: Shader conventions
 description: Conventions for Unity shader development
 globs: ["**/*.shader", "**/*.hlsl", "**/*.cginc", "**/*.shadergraph"]
 alwaysApply: false
-standards-version: 1.6.3
+standards-version: 1.7.0
 ---
 
 # Shader conventions

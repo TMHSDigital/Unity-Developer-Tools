@@ -3,7 +3,7 @@ title: Unity naming conventions
 description: Naming conventions for Unity C# code
 globs: ["**/*.cs"]
 alwaysApply: true
-standards-version: 1.6.3
+standards-version: 1.7.0
 ---
 
 # Unity naming conventions

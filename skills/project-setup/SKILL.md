@@ -2,7 +2,7 @@
 title: Unity Project Setup
 description: Guide for creating and configuring Unity projects with recommended folder structure, assembly definitions, version control, and package management.
 globs: ["**/*.asmdef", "**/*.asmref", "**/ProjectSettings/**"]
-standards-version: 1.6.3
+standards-version: 1.7.0
 ---
 
 # Unity Project Setup
