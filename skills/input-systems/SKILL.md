@@ -2,7 +2,7 @@
 title: Input Systems
 description: Input handling with the New Input System package and legacy Input Manager migration guidance.
 globs: ["**/*.cs", "**/*.inputactions"]
-standards-version: 1.6.3
+standards-version: 1.7.0
 ---
 
 # Input Systems

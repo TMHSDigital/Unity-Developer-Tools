@@ -2,7 +2,7 @@
 title: Shader Development
 description: Shader creation with Shader Graph, HLSL, and ShaderLab for URP and HDRP projects.
 globs: ["**/*.shader", "**/*.hlsl", "**/*.cginc", "**/*.shadergraph"]
-standards-version: 1.6.3
+standards-version: 1.7.0
 ---
 
 # Shader Development

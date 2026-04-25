@@ -2,7 +2,7 @@
 title: Visual Scripting
 description: Unity Visual Scripting guidance for Script Graphs, State Graphs, Subgraphs, and custom units.
 globs: ["**/*.asset"]
-standards-version: 1.6.3
+standards-version: 1.7.0
 ---
 
 # Visual Scripting

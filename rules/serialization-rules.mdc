@@ -3,7 +3,7 @@ title: Serialization rules
 description: Unity serialization best practices
 globs: ["**/*.cs"]
 alwaysApply: false
-standards-version: 1.6.3
+standards-version: 1.7.0
 ---
 
 # Unity serialization rules
