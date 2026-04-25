@@ -122,6 +122,13 @@ jobs:
           print(f'Updated README.md badge to {new_version}')
           "
 
+      - name: Sync release docs
+        if: steps.check.outputs.skip == 'false'
+        uses: TMHSDigital/Developer-Tools-Directory/.github/actions/release-doc-sync@v1.0
+        with:
+          plugin-version: ${{ steps.new.outputs.version }}
+          previous-version: ${{ steps.current.outputs.version }}
+
       - name: Generate release notes from commits
         if: steps.check.outputs.skip == 'false'
         id: notes
@@ -200,7 +207,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add .cursor-plugin/plugin.json README.md
+          git add .cursor-plugin/plugin.json README.md CHANGELOG.md
           git commit -m "chore: bump version to ${{ steps.new.outputs.version }} [skip ci]"
           git push
 
