@@ -23,25 +23,26 @@ jobs:
         run: python3 .github/scripts/refresh_unity_data.py
 
       - name: Validate updated data
-        run: python3 << 'PYEOF'
-import json
+        run: |
+          python3 << 'PYEOF'
+          import json
 
-for name, required_fields in [
-    ('lifecycle_order.json', ['method', 'phase', 'description']),
-    ('deprecated_patterns.json', ['legacy', 'replacement', 'reason']),
-    ('unity_api_common.json', ['name', 'namespace', 'category']),
-    ('shader_properties.json', ['effect', 'description', 'pipelines']),
-    ('platform_defines.json', ['platform', 'display_name', 'define']),
-]:
-    path = f'mcp-server/data/{name}'
-    data = json.load(open(path))
-    assert isinstance(data, list), f'{name}: expected array'
-    assert len(data) > 0, f'{name}: empty array'
-    for entry in data:
-        for field in required_fields:
-            assert field in entry, f'{name}: missing {field}'
-    print(f'{name}: {len(data)} entries valid')
-PYEOF
+          for name, required_fields in [
+              ('lifecycle_order.json', ['method', 'phase', 'description']),
+              ('deprecated_patterns.json', ['legacy', 'replacement', 'reason']),
+              ('unity_api_common.json', ['name', 'namespace', 'category']),
+              ('shader_properties.json', ['effect', 'description', 'pipelines']),
+              ('platform_defines.json', ['platform', 'display_name', 'define']),
+          ]:
+              path = f'mcp-server/data/{name}'
+              data = json.load(open(path))
+              assert isinstance(data, list), f'{name}: expected array'
+              assert len(data) > 0, f'{name}: empty array'
+              for entry in data:
+                  for field in required_fields:
+                      assert field in entry, f'{name}: missing {field}'
+              print(f'{name}: {len(data)} entries valid')
+          PYEOF
 
       - name: Check for changes
         id: diff
