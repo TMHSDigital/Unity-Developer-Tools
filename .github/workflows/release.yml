@@ -124,7 +124,7 @@ jobs:
 
       - name: Sync release docs
         if: steps.check.outputs.skip == 'false'
-        uses: TMHSDigital/Developer-Tools-Directory/.github/actions/release-doc-sync@v1.0
+        uses: TMHSDigital/Developer-Tools-Directory/.github/actions/release-doc-sync@v1
         with:
           plugin-version: ${{ steps.new.outputs.version }}
           previous-version: ${{ steps.current.outputs.version }}
