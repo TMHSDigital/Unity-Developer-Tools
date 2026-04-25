@@ -23,73 +23,74 @@ jobs:
         run: python3 -c "import json; json.load(open('.cursor/mcp.json'))"
 
       - name: Validate MCP data file schemas
-        run: python3 << 'PYEOF'
-import json, os, sys
+        run: |
+          python3 << 'PYEOF'
+          import json, os, sys
 
-errors = []
+          errors = []
 
-def check(condition, msg):
-    if not condition:
-        errors.append(msg)
+          def check(condition, msg):
+              if not condition:
+                  errors.append(msg)
 
-# unity_api_common.json
-data = json.load(open('mcp-server/data/unity_api_common.json'))
-check(isinstance(data, list), 'unity_api_common.json must be an array')
-for i, entry in enumerate(data):
-    check('name' in entry, f'unity_api_common[{i}]: missing name')
-    check('namespace' in entry, f'unity_api_common[{i}]: missing namespace')
-    check('category' in entry, f'unity_api_common[{i}]: missing category')
-    check('description' in entry, f'unity_api_common[{i}]: missing description')
-    check('signature' in entry, f'unity_api_common[{i}]: missing signature')
-print(f'unity_api_common.json: {len(data)} entries')
+          # unity_api_common.json
+          data = json.load(open('mcp-server/data/unity_api_common.json'))
+          check(isinstance(data, list), 'unity_api_common.json must be an array')
+          for i, entry in enumerate(data):
+              check('name' in entry, f'unity_api_common[{i}]: missing name')
+              check('namespace' in entry, f'unity_api_common[{i}]: missing namespace')
+              check('category' in entry, f'unity_api_common[{i}]: missing category')
+              check('description' in entry, f'unity_api_common[{i}]: missing description')
+              check('signature' in entry, f'unity_api_common[{i}]: missing signature')
+          print(f'unity_api_common.json: {len(data)} entries')
 
-# deprecated_patterns.json
-data = json.load(open('mcp-server/data/deprecated_patterns.json'))
-check(isinstance(data, list), 'deprecated_patterns.json must be an array')
-for i, entry in enumerate(data):
-    check('legacy' in entry, f'deprecated_patterns[{i}]: missing legacy')
-    check('replacement' in entry, f'deprecated_patterns[{i}]: missing replacement')
-    check('reason' in entry, f'deprecated_patterns[{i}]: missing reason')
-    check('since_version' in entry, f'deprecated_patterns[{i}]: missing since_version')
-print(f'deprecated_patterns.json: {len(data)} entries')
+          # deprecated_patterns.json
+          data = json.load(open('mcp-server/data/deprecated_patterns.json'))
+          check(isinstance(data, list), 'deprecated_patterns.json must be an array')
+          for i, entry in enumerate(data):
+              check('legacy' in entry, f'deprecated_patterns[{i}]: missing legacy')
+              check('replacement' in entry, f'deprecated_patterns[{i}]: missing replacement')
+              check('reason' in entry, f'deprecated_patterns[{i}]: missing reason')
+              check('since_version' in entry, f'deprecated_patterns[{i}]: missing since_version')
+          print(f'deprecated_patterns.json: {len(data)} entries')
 
-# lifecycle_order.json
-data = json.load(open('mcp-server/data/lifecycle_order.json'))
-check(isinstance(data, list), 'lifecycle_order.json must be an array')
-for i, entry in enumerate(data):
-    check('method' in entry, f'lifecycle_order[{i}]: missing method')
-    check('phase' in entry, f'lifecycle_order[{i}]: missing phase')
-    check('description' in entry, f'lifecycle_order[{i}]: missing description')
-    check(isinstance(entry.get('runs_per_frame'), bool), f'lifecycle_order[{i}]: runs_per_frame must be bool')
-print(f'lifecycle_order.json: {len(data)} entries')
+          # lifecycle_order.json
+          data = json.load(open('mcp-server/data/lifecycle_order.json'))
+          check(isinstance(data, list), 'lifecycle_order.json must be an array')
+          for i, entry in enumerate(data):
+              check('method' in entry, f'lifecycle_order[{i}]: missing method')
+              check('phase' in entry, f'lifecycle_order[{i}]: missing phase')
+              check('description' in entry, f'lifecycle_order[{i}]: missing description')
+              check(isinstance(entry.get('runs_per_frame'), bool), f'lifecycle_order[{i}]: runs_per_frame must be bool')
+          print(f'lifecycle_order.json: {len(data)} entries')
 
-# shader_properties.json
-data = json.load(open('mcp-server/data/shader_properties.json'))
-check(isinstance(data, list), 'shader_properties.json must be an array')
-for i, entry in enumerate(data):
-    check('effect' in entry, f'shader_properties[{i}]: missing effect')
-    check('description' in entry, f'shader_properties[{i}]: missing description')
-    check(isinstance(entry.get('pipelines'), list), f'shader_properties[{i}]: pipelines must be array')
-    check(isinstance(entry.get('properties'), list), f'shader_properties[{i}]: properties must be array')
-print(f'shader_properties.json: {len(data)} entries')
+          # shader_properties.json
+          data = json.load(open('mcp-server/data/shader_properties.json'))
+          check(isinstance(data, list), 'shader_properties.json must be an array')
+          for i, entry in enumerate(data):
+              check('effect' in entry, f'shader_properties[{i}]: missing effect')
+              check('description' in entry, f'shader_properties[{i}]: missing description')
+              check(isinstance(entry.get('pipelines'), list), f'shader_properties[{i}]: pipelines must be array')
+              check(isinstance(entry.get('properties'), list), f'shader_properties[{i}]: properties must be array')
+          print(f'shader_properties.json: {len(data)} entries')
 
-# platform_defines.json
-data = json.load(open('mcp-server/data/platform_defines.json'))
-check(isinstance(data, list), 'platform_defines.json must be an array')
-for i, entry in enumerate(data):
-    check('platform' in entry, f'platform_defines[{i}]: missing platform')
-    check('display_name' in entry, f'platform_defines[{i}]: missing display_name')
-    check('define' in entry, f'platform_defines[{i}]: missing define')
-    check(isinstance(entry.get('capabilities'), list), f'platform_defines[{i}]: capabilities must be array')
-print(f'platform_defines.json: {len(data)} entries')
+          # platform_defines.json
+          data = json.load(open('mcp-server/data/platform_defines.json'))
+          check(isinstance(data, list), 'platform_defines.json must be an array')
+          for i, entry in enumerate(data):
+              check('platform' in entry, f'platform_defines[{i}]: missing platform')
+              check('display_name' in entry, f'platform_defines[{i}]: missing display_name')
+              check('define' in entry, f'platform_defines[{i}]: missing define')
+              check(isinstance(entry.get('capabilities'), list), f'platform_defines[{i}]: capabilities must be array')
+          print(f'platform_defines.json: {len(data)} entries')
 
-if errors:
-    for e in errors:
-        print(f'::error::{e}', file=sys.stderr)
-    sys.exit(1)
+          if errors:
+              for e in errors:
+                  print(f'::error::{e}', file=sys.stderr)
+              sys.exit(1)
 
-print('All MCP data schemas valid')
-PYEOF
+          print('All MCP data schemas valid')
+          PYEOF
 
   validate-plugin-manifest:
     name: Validate plugin manifest
@@ -98,7 +99,8 @@ PYEOF
       - uses: actions/checkout@v4
 
       - name: Check required manifest fields
-        run: python3 -c "
+        run: |
+          python3 << 'PYEOF'
           import json, re
           m = json.load(open('.cursor-plugin/plugin.json'))
           required = ['name', 'displayName', 'description', 'version', 'author', 'license', 'skills', 'rules']
@@ -109,25 +111,27 @@ PYEOF
           assert isinstance(m.get('author'), dict) and 'name' in m['author'], 'author must have name'
           assert isinstance(m.get('keywords'), list), 'keywords must be an array'
           print('Plugin manifest valid')
-          "
+          PYEOF
 
       - name: Check skill files exist
-        run: python3 -c "
+        run: |
+          python3 << 'PYEOF'
           import json, os
           m = json.load(open('.cursor-plugin/plugin.json'))
           for skill in m.get('skills', []):
               assert os.path.exists(skill), f'Skill not found: {skill}'
-          print(f'All {len(m[\"skills\"])} skill files exist')
-          "
+          print(f'All {len(m["skills"])} skill files exist')
+          PYEOF
 
       - name: Check rule files exist
-        run: python3 -c "
+        run: |
+          python3 << 'PYEOF'
           import json, os
           m = json.load(open('.cursor-plugin/plugin.json'))
           for rule in m.get('rules', []):
               assert os.path.exists(rule), f'Rule not found: {rule}'
-          print(f'All {len(m[\"rules\"])} rule files exist')
-          "
+          print(f'All {len(m["rules"])} rule files exist')
+          PYEOF
 
   validate-skills:
     name: Validate skill files
@@ -136,50 +140,51 @@ PYEOF
       - uses: actions/checkout@v4
 
       - name: Check SKILL.md frontmatter
-        run: python3 << 'PYEOF'
-import os, sys, re
+        run: |
+          python3 << 'PYEOF'
+          import os, sys, re
 
-errors = []
-skill_dirs = [
-    d for d in os.listdir('skills')
-    if os.path.isdir(os.path.join('skills', d))
-]
+          errors = []
+          skill_dirs = [
+              d for d in os.listdir('skills')
+              if os.path.isdir(os.path.join('skills', d))
+          ]
 
-for d in skill_dirs:
-    path = os.path.join('skills', d, 'SKILL.md')
-    if not os.path.exists(path):
-        errors.append(f'{path}: SKILL.md missing')
-        continue
+          for d in skill_dirs:
+              path = os.path.join('skills', d, 'SKILL.md')
+              if not os.path.exists(path):
+                  errors.append(f'{path}: SKILL.md missing')
+                  continue
 
-    content = open(path).read()
-    if not content.startswith('---'):
-        errors.append(f'{path}: missing YAML frontmatter')
-        continue
+              content = open(path).read()
+              if not content.startswith('---'):
+                  errors.append(f'{path}: missing YAML frontmatter')
+                  continue
 
-    parts = content.split('---', 2)
-    if len(parts) < 3:
-        errors.append(f'{path}: malformed frontmatter (no closing ---)')
-        continue
+              parts = content.split('---', 2)
+              if len(parts) < 3:
+                  errors.append(f'{path}: malformed frontmatter (no closing ---)')
+                  continue
 
-    fm = parts[1]
-    if 'title:' not in fm:
-        errors.append(f'{path}: frontmatter missing title')
-    if 'description:' not in fm:
-        errors.append(f'{path}: frontmatter missing description')
-    if 'globs:' not in fm:
-        errors.append(f'{path}: frontmatter missing globs')
+              fm = parts[1]
+              if 'title:' not in fm:
+                  errors.append(f'{path}: frontmatter missing title')
+              if 'description:' not in fm:
+                  errors.append(f'{path}: frontmatter missing description')
+              if 'globs:' not in fm:
+                  errors.append(f'{path}: frontmatter missing globs')
 
-    body = parts[2].strip()
-    if len(body) < 100:
-        errors.append(f'{path}: body too short ({len(body)} chars, minimum 100)')
+              body = parts[2].strip()
+              if len(body) < 100:
+                  errors.append(f'{path}: body too short ({len(body)} chars, minimum 100)')
 
-if errors:
-    for e in errors:
-        print(f'::error::{e}', file=sys.stderr)
-    sys.exit(1)
+          if errors:
+              for e in errors:
+                  print(f'::error::{e}', file=sys.stderr)
+              sys.exit(1)
 
-print(f'All {len(skill_dirs)} skills have valid frontmatter and content')
-PYEOF
+          print(f'All {len(skill_dirs)} skills have valid frontmatter and content')
+          PYEOF
 
   validate-rules:
     name: Validate rule files
@@ -188,42 +193,43 @@ PYEOF
       - uses: actions/checkout@v4
 
       - name: Check .mdc frontmatter
-        run: python3 << 'PYEOF'
-import os, sys
+        run: |
+          python3 << 'PYEOF'
+          import os, sys
 
-errors = []
-rule_files = [f for f in os.listdir('rules') if f.endswith('.mdc')]
+          errors = []
+          rule_files = [f for f in os.listdir('rules') if f.endswith('.mdc')]
 
-for f in rule_files:
-    path = os.path.join('rules', f)
-    content = open(path).read()
+          for f in rule_files:
+              path = os.path.join('rules', f)
+              content = open(path).read()
 
-    if not content.startswith('---'):
-        errors.append(f'{path}: missing YAML frontmatter')
-        continue
+              if not content.startswith('---'):
+                  errors.append(f'{path}: missing YAML frontmatter')
+                  continue
 
-    parts = content.split('---', 2)
-    if len(parts) < 3:
-        errors.append(f'{path}: malformed frontmatter (no closing ---)')
-        continue
+              parts = content.split('---', 2)
+              if len(parts) < 3:
+                  errors.append(f'{path}: malformed frontmatter (no closing ---)')
+                  continue
 
-    fm = parts[1]
-    required_fields = ['title', 'description', 'globs', 'alwaysApply']
-    for field in required_fields:
-        if f'{field}:' not in fm:
-            errors.append(f'{path}: frontmatter missing {field}')
+              fm = parts[1]
+              required_fields = ['title', 'description', 'globs', 'alwaysApply']
+              for field in required_fields:
+                  if f'{field}:' not in fm:
+                      errors.append(f'{path}: frontmatter missing {field}')
 
-    body = parts[2].strip()
-    if len(body) < 20:
-        errors.append(f'{path}: body too short ({len(body)} chars)')
+              body = parts[2].strip()
+              if len(body) < 20:
+                  errors.append(f'{path}: body too short ({len(body)} chars)')
 
-if errors:
-    for e in errors:
-        print(f'::error::{e}', file=sys.stderr)
-    sys.exit(1)
+          if errors:
+              for e in errors:
+                  print(f'::error::{e}', file=sys.stderr)
+              sys.exit(1)
 
-print(f'All {len(rule_files)} rules have valid frontmatter')
-PYEOF
+          print(f'All {len(rule_files)} rules have valid frontmatter')
+          PYEOF
 
   validate-content:
     name: Validate content quality
@@ -249,27 +255,28 @@ PYEOF
           echo "No hardcoded credentials found"
 
       - name: Check snippets are non-empty
-        run: python3 << 'PYEOF'
-import os, sys
+        run: |
+          python3 << 'PYEOF'
+          import os, sys
 
-errors = []
-for root, dirs, files in os.walk('snippets'):
-    for f in files:
-        if f == 'README.md':
-            continue
-        path = os.path.join(root, f)
-        size = os.path.getsize(path)
-        if size < 10:
-            errors.append(f'{path}: file is empty or too small ({size} bytes)')
+          errors = []
+          for root, dirs, files in os.walk('snippets'):
+              for f in files:
+                  if f == 'README.md':
+                      continue
+                  path = os.path.join(root, f)
+                  size = os.path.getsize(path)
+                  if size < 10:
+                      errors.append(f'{path}: file is empty or too small ({size} bytes)')
 
-if errors:
-    for e in errors:
-        print(f'::error::{e}', file=sys.stderr)
-    sys.exit(1)
+          if errors:
+              for e in errors:
+                  print(f'::error::{e}', file=sys.stderr)
+              sys.exit(1)
 
-count = sum(len(files) for _, _, files in os.walk('snippets'))
-print(f'All {count} snippet files are non-empty')
-PYEOF
+          count = sum(len(files) for _, _, files in os.walk('snippets'))
+          print(f'All {count} snippet files are non-empty')
+          PYEOF
 
   validate-templates:
     name: Validate templates
@@ -278,38 +285,39 @@ PYEOF
       - uses: actions/checkout@v4
 
       - name: Check template structure
-        run: python3 << 'PYEOF'
-import os, sys
+        run: |
+          python3 << 'PYEOF'
+          import os, sys
 
-errors = []
-template_dirs = [
-    d for d in os.listdir('templates')
-    if os.path.isdir(os.path.join('templates', d))
-]
+          errors = []
+          template_dirs = [
+              d for d in os.listdir('templates')
+              if os.path.isdir(os.path.join('templates', d))
+          ]
 
-for d in template_dirs:
-    tdir = os.path.join('templates', d)
-    readme = os.path.join(tdir, 'README.md')
-    if not os.path.exists(readme):
-        errors.append(f'{tdir}: missing README.md')
+          for d in template_dirs:
+              tdir = os.path.join('templates', d)
+              readme = os.path.join(tdir, 'README.md')
+              if not os.path.exists(readme):
+                  errors.append(f'{tdir}: missing README.md')
 
-    cs_files = [f for f in os.listdir(tdir) if f.endswith('.cs')]
-    if not cs_files:
-        errors.append(f'{tdir}: no .cs files found')
+              cs_files = [f for f in os.listdir(tdir) if f.endswith('.cs')]
+              if not cs_files:
+                  errors.append(f'{tdir}: no .cs files found')
 
-    for cs in cs_files:
-        path = os.path.join(tdir, cs)
-        content = open(path).read()
-        if len(content) < 50:
-            errors.append(f'{path}: file too small ({len(content)} chars)')
+              for cs in cs_files:
+                  path = os.path.join(tdir, cs)
+                  content = open(path).read()
+                  if len(content) < 50:
+                      errors.append(f'{path}: file too small ({len(content)} chars)')
 
-if errors:
-    for e in errors:
-        print(f'::error::{e}', file=sys.stderr)
-    sys.exit(1)
+          if errors:
+              for e in errors:
+                  print(f'::error::{e}', file=sys.stderr)
+              sys.exit(1)
 
-print(f'All {len(template_dirs)} templates have README.md and C# scripts')
-PYEOF
+          print(f'All {len(template_dirs)} templates have README.md and C# scripts')
+          PYEOF
 
   validate-counts:
     name: Validate content counts
@@ -318,44 +326,45 @@ PYEOF
       - uses: actions/checkout@v4
 
       - name: Check content counts match README
-        run: python3 << 'PYEOF'
-import json, os, sys
+        run: |
+          python3 << 'PYEOF'
+          import json, os, sys
 
-m = json.load(open('.cursor-plugin/plugin.json'))
-errors = []
+          m = json.load(open('.cursor-plugin/plugin.json'))
+          errors = []
 
-skill_count = len(m.get('skills', []))
-rule_count = len(m.get('rules', []))
+          skill_count = len(m.get('skills', []))
+          rule_count = len(m.get('rules', []))
 
-snippet_count = sum(
-    len(files)
-    for root, dirs, files in os.walk('snippets')
-    if files
-)
+          snippet_count = sum(
+              len(files)
+              for root, dirs, files in os.walk('snippets')
+              if files
+          )
 
-template_count = sum(
-    1 for d in os.listdir('templates')
-    if os.path.isdir(os.path.join('templates', d))
-    and os.path.exists(os.path.join('templates', d, 'README.md'))
-)
+          template_count = sum(
+              1 for d in os.listdir('templates')
+              if os.path.isdir(os.path.join('templates', d))
+              and os.path.exists(os.path.join('templates', d, 'README.md'))
+          )
 
-readme = open('README.md').read()
-if f'{skill_count} skills' not in readme:
-    errors.append(f'README skill count mismatch (expected {skill_count})')
-if f'{snippet_count} snippets' not in readme:
-    errors.append(f'README snippet count mismatch (expected {snippet_count})')
-if f'{template_count} templates' not in readme:
-    errors.append(f'README template count mismatch (expected {template_count})')
-if f'{rule_count} rules' not in readme:
-    errors.append(f'README rule count mismatch (expected {rule_count})')
+          readme = open('README.md').read()
+          if f'{skill_count} skills' not in readme:
+              errors.append(f'README skill count mismatch (expected {skill_count})')
+          if f'{snippet_count} snippets' not in readme:
+              errors.append(f'README snippet count mismatch (expected {snippet_count})')
+          if f'{template_count} templates' not in readme:
+              errors.append(f'README template count mismatch (expected {template_count})')
+          if f'{rule_count} rules' not in readme:
+              errors.append(f'README rule count mismatch (expected {rule_count})')
 
-if errors:
-    for e in errors:
-        print(f'::error::{e}', file=sys.stderr)
-    sys.exit(1)
+          if errors:
+              for e in errors:
+                  print(f'::error::{e}', file=sys.stderr)
+              sys.exit(1)
 
-print(f'Counts verified: {skill_count} skills, {rule_count} rules, {snippet_count} snippets, {template_count} templates')
-PYEOF
+          print(f'Counts verified: {skill_count} skills, {rule_count} rules, {snippet_count} snippets, {template_count} templates')
+          PYEOF
 
   validate-python:
     name: Validate MCP server
