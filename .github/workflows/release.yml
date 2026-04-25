@@ -8,6 +8,10 @@ on:
       - "docs/**"
       - "*.md"
       - "LICENSE"
+      - "skills/**"
+      - "rules/**/*.mdc"
+      - "AGENTS.md"
+      - "CLAUDE.md"
 
 permissions:
   contents: write
