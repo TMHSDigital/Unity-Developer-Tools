@@ -12,7 +12,7 @@ Unity Developer Tools is a Cursor IDE plugin for Unity game development. It incl
 
 This is a monorepo. Skills, rules, snippets, templates, and the companion MCP server live in the same repository because Unity development crosses all of those layers in a single workflow.
 
-**Version:** 1.4.3
+**Version:** 1.4.4
 **License:** CC-BY-NC-ND-4.0
 **Author:** TMHSDigital
 
