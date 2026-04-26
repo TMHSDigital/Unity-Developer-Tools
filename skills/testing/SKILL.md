@@ -2,7 +2,7 @@
 title: Unity Testing
 description: Unity Test Framework usage for Edit Mode and Play Mode tests with async Awaitable support.
 globs: ["**/Tests/**/*.cs", "**/*Tests*.cs", "**/*Test*.cs"]
-standards-version: 1.7.0
+standards-version: 1.9.0
 ---
 
 # Unity Testing
