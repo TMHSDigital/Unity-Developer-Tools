@@ -198,7 +198,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add .cursor-plugin/plugin.json README.md CHANGELOG.md
+          git add -A
           git commit -m "chore: bump version to ${{ steps.new.outputs.version }} [skip ci]"
           git push
 
