@@ -2,175 +2,217 @@
   {
     "method": "Awake",
     "phase": "Initialization",
-    "description": "Called when the script instance is loaded. Used to initialize variables and references between scripts. Called even if the component is disabled.",
+    "description": "MonoBehaviour.Awake callback.",
     "runs_per_frame": false,
     "thread": "main"
   },
   {
     "method": "OnEnable",
     "phase": "Initialization",
-    "description": "Called when the object becomes enabled and active. Called immediately after Awake on first load, and each time the component is re-enabled.",
+    "description": "MonoBehaviour.OnEnable callback.",
     "runs_per_frame": false,
     "thread": "main"
   },
   {
     "method": "Reset",
     "phase": "Initialization",
-    "description": "Called in the editor only when the script is first attached or when Reset is selected in the context menu. Used to initialize default values.",
+    "description": "MonoBehaviour.Reset callback.",
     "runs_per_frame": false,
     "thread": "main"
   },
   {
     "method": "Start",
     "phase": "Initialization",
-    "description": "Called before the first frame update, only if the script instance is enabled. Called after all Awake calls. Use for setup that depends on other objects being initialized.",
+    "description": "MonoBehaviour.Start callback.",
     "runs_per_frame": false,
     "thread": "main"
   },
   {
     "method": "FixedUpdate",
     "phase": "Physics",
-    "description": "Called at a fixed time interval (default 0.02s). Used for physics calculations and Rigidbody manipulation. Independent of frame rate.",
+    "description": "MonoBehaviour.FixedUpdate callback.",
     "runs_per_frame": true,
     "thread": "main"
   },
   {
     "method": "OnTriggerEnter",
     "phase": "Physics",
-    "description": "Called when a Collider enters a trigger collider attached to this object. Requires at least one object to have a Rigidbody.",
+    "description": "MonoBehaviour.OnTriggerEnter callback.",
     "runs_per_frame": false,
     "thread": "main"
   },
   {
     "method": "OnTriggerStay",
     "phase": "Physics",
-    "description": "Called once per physics update for every Collider that is touching a trigger. Can fire multiple times per frame during physics catch-up.",
+    "description": "MonoBehaviour.OnTriggerStay callback.",
     "runs_per_frame": true,
     "thread": "main"
   },
   {
     "method": "OnTriggerExit",
     "phase": "Physics",
-    "description": "Called when a Collider stops touching a trigger collider attached to this object.",
+    "description": "MonoBehaviour.OnTriggerExit callback.",
     "runs_per_frame": false,
     "thread": "main"
   },
   {
     "method": "OnCollisionEnter",
     "phase": "Physics",
-    "description": "Called when a collision between two non-trigger colliders begins. Provides ContactPoint data for the impact.",
+    "description": "MonoBehaviour.OnCollisionEnter callback.",
     "runs_per_frame": false,
     "thread": "main"
   },
   {
     "method": "OnCollisionStay",
     "phase": "Physics",
-    "description": "Called once per physics update while two non-trigger colliders remain in contact.",
+    "description": "MonoBehaviour.OnCollisionStay callback.",
     "runs_per_frame": true,
     "thread": "main"
   },
   {
     "method": "OnCollisionExit",
     "phase": "Physics",
-    "description": "Called when a collision between two non-trigger colliders ends.",
+    "description": "MonoBehaviour.OnCollisionExit callback.",
     "runs_per_frame": false,
     "thread": "main"
   },
   {
     "method": "Update",
     "phase": "Game Logic",
-    "description": "Called once per frame. The main function for per-frame game logic. Frame rate dependent - use Time.deltaTime for consistent behavior.",
+    "description": "MonoBehaviour.Update callback.",
     "runs_per_frame": true,
     "thread": "main"
   },
   {
     "method": "LateUpdate",
     "phase": "Game Logic",
-    "description": "Called once per frame after all Update calls. Commonly used for camera follow logic and any processing that should happen after movement is complete.",
+    "description": "MonoBehaviour.LateUpdate callback.",
     "runs_per_frame": true,
     "thread": "main"
   },
   {
     "method": "OnAnimatorMove",
     "phase": "Animation",
-    "description": "Called at each frame after the state machines and animations have been evaluated but before OnAnimatorIK. Used to apply root motion manually.",
+    "description": "MonoBehaviour.OnAnimatorMove callback.",
     "runs_per_frame": true,
     "thread": "main"
   },
   {
     "method": "OnAnimatorIK",
     "phase": "Animation",
-    "description": "Called after the Animator has computed its final IK state. Used for setting up IK goals and weights for procedural animation.",
+    "description": "MonoBehaviour.OnAnimatorIK callback.",
     "runs_per_frame": true,
     "thread": "main"
   },
   {
-    "method": "OnGUI",
+    "method": "OnPreCull",
     "phase": "Rendering",
-    "description": "Called multiple times per frame for GUI event processing. Legacy IMGUI system - prefer UI Toolkit or uGUI for new projects.",
+    "description": "MonoBehaviour.OnPreCull callback.",
     "runs_per_frame": true,
-    "thread": "main"
-  },
-  {
-    "method": "OnDrawGizmos",
-    "phase": "Rendering",
-    "description": "Called every frame in the editor when the object is visible. Used to draw debug visualization gizmos in the Scene view.",
-    "runs_per_frame": true,
-    "thread": "main"
-  },
-  {
-    "method": "OnDrawGizmosSelected",
-    "phase": "Rendering",
-    "description": "Called every frame in the editor only when the object is selected. Used for selection-specific debug visualizations.",
-    "runs_per_frame": true,
-    "thread": "main"
-  },
-  {
-    "method": "OnApplicationPause",
-    "phase": "Application",
-    "description": "Called when the application pauses or resumes (e.g., losing focus on mobile). Receives a bool indicating pause state.",
-    "runs_per_frame": false,
-    "thread": "main"
-  },
-  {
-    "method": "OnApplicationFocus",
-    "phase": "Application",
-    "description": "Called when the application gains or loses focus. Receives a bool indicating focus state. On mobile, maps to app foregrounding.",
-    "runs_per_frame": false,
-    "thread": "main"
-  },
-  {
-    "method": "OnDisable",
-    "phase": "Decommissioning",
-    "description": "Called when the behaviour becomes disabled. Also called when the object is destroyed or the scene is unloaded. Pair with OnEnable for event cleanup.",
-    "runs_per_frame": false,
-    "thread": "main"
-  },
-  {
-    "method": "OnDestroy",
-    "phase": "Decommissioning",
-    "description": "Called when the MonoBehaviour is destroyed. Only called on objects that have previously been active. Used for final cleanup of resources.",
-    "runs_per_frame": false,
-    "thread": "main"
-  },
-  {
-    "method": "OnApplicationQuit",
-    "phase": "Decommissioning",
-    "description": "Called before the application quits. On mobile platforms this is unreliable - use OnApplicationPause instead for save logic.",
-    "runs_per_frame": false,
     "thread": "main"
   },
   {
     "method": "OnBecameVisible",
     "phase": "Rendering",
-    "description": "Called when the attached Renderer becomes visible by any camera. Useful for enabling expensive per-frame logic only when visible.",
+    "description": "MonoBehaviour.OnBecameVisible callback.",
     "runs_per_frame": false,
     "thread": "main"
   },
   {
     "method": "OnBecameInvisible",
     "phase": "Rendering",
-    "description": "Called when the attached Renderer is no longer visible by any camera. Use to disable expensive computation on off-screen objects.",
+    "description": "MonoBehaviour.OnBecameInvisible callback.",
+    "runs_per_frame": false,
+    "thread": "main"
+  },
+  {
+    "method": "OnWillRenderObject",
+    "phase": "Rendering",
+    "description": "MonoBehaviour.OnWillRenderObject callback.",
+    "runs_per_frame": true,
+    "thread": "main"
+  },
+  {
+    "method": "OnPreRender",
+    "phase": "Rendering",
+    "description": "MonoBehaviour.OnPreRender callback.",
+    "runs_per_frame": true,
+    "thread": "main"
+  },
+  {
+    "method": "OnRenderObject",
+    "phase": "Rendering",
+    "description": "MonoBehaviour.OnRenderObject callback.",
+    "runs_per_frame": true,
+    "thread": "main"
+  },
+  {
+    "method": "OnPostRender",
+    "phase": "Rendering",
+    "description": "MonoBehaviour.OnPostRender callback.",
+    "runs_per_frame": true,
+    "thread": "main"
+  },
+  {
+    "method": "OnRenderImage",
+    "phase": "Rendering",
+    "description": "MonoBehaviour.OnRenderImage callback.",
+    "runs_per_frame": true,
+    "thread": "main"
+  },
+  {
+    "method": "OnGUI",
+    "phase": "GUI",
+    "description": "MonoBehaviour.OnGUI callback.",
+    "runs_per_frame": true,
+    "thread": "main"
+  },
+  {
+    "method": "OnDrawGizmos",
+    "phase": "Editor",
+    "description": "MonoBehaviour.OnDrawGizmos callback.",
+    "runs_per_frame": true,
+    "thread": "main"
+  },
+  {
+    "method": "OnDrawGizmosSelected",
+    "phase": "Editor",
+    "description": "MonoBehaviour.OnDrawGizmosSelected callback.",
+    "runs_per_frame": false,
+    "thread": "main"
+  },
+  {
+    "method": "OnApplicationPause",
+    "phase": "Application",
+    "description": "MonoBehaviour.OnApplicationPause callback.",
+    "runs_per_frame": false,
+    "thread": "main"
+  },
+  {
+    "method": "OnApplicationFocus",
+    "phase": "Application",
+    "description": "MonoBehaviour.OnApplicationFocus callback.",
+    "runs_per_frame": false,
+    "thread": "main"
+  },
+  {
+    "method": "OnApplicationQuit",
+    "phase": "Application",
+    "description": "MonoBehaviour.OnApplicationQuit callback.",
+    "runs_per_frame": false,
+    "thread": "main"
+  },
+  {
+    "method": "OnDisable",
+    "phase": "Decommissioning",
+    "description": "MonoBehaviour.OnDisable callback.",
+    "runs_per_frame": false,
+    "thread": "main"
+  },
+  {
+    "method": "OnDestroy",
+    "phase": "Decommissioning",
+    "description": "MonoBehaviour.OnDestroy callback.",
     "runs_per_frame": false,
     "thread": "main"
   }
