@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.6] - 2026-05-24
+
+See [release notes](https://github.com/TMHSDigital/Unity-Developer-Tools/releases/tag/v1.4.6) for details.
+
 ## [1.4.5] - 2026-04-26
 
 See [release notes](https://github.com/TMHSDigital/Unity-Developer-Tools/releases/tag/v1.4.5) for details.
