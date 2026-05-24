@@ -2,7 +2,7 @@
 title: Platform Targeting
 description: Platform-specific compilation, scripting defines, build settings, and cross-platform considerations.
 globs: ["**/*.cs"]
-standards-version: 1.9.0
+standards-version: 1.10.0
 ---
 
 # Platform Targeting

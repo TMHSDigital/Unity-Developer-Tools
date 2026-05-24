@@ -2,7 +2,7 @@
 title: UI Development
 description: Building user interfaces with UI Toolkit (primary) and Canvas/UGUI, including data binding, styling, and responsive layouts.
 globs: ["**/*.cs", "**/*.uxml", "**/*.uss", "**/*.prefab"]
-standards-version: 1.9.0
+standards-version: 1.10.0
 ---
 
 # UI Development

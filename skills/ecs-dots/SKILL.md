@@ -2,7 +2,7 @@
 title: ECS and DOTS
 description: Entity Component System development with Unity Entities, Jobs, and Burst for high-performance simulation.
 globs: ["**/*.cs"]
-standards-version: 1.9.0
+standards-version: 1.10.0
 ---
 
 # ECS and DOTS
