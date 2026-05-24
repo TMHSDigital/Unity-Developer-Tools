@@ -2,7 +2,7 @@
   "name": "unity-developer-tools",
   "displayName": "Unity Developer Tools",
   "description": "AI-powered development toolkit for Unity. Scaffold scripts, look up APIs, write shaders, and build games with best-practice rules for C#, Visual Scripting, and HLSL.",
-  "version": "1.4.7",
+  "version": "1.4.8",
   "author": {
     "name": "TMHSDigital",
     "email": "contact@tmhospitalitystrategies.com"
