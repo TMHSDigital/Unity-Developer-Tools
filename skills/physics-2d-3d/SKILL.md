@@ -2,7 +2,7 @@
 title: Physics Systems (2D and 3D)
 description: Physics programming for both 2D and 3D Unity projects including collision, raycasting, layers, and rigidbody management.
 globs: ["**/*.cs"]
-standards-version: 1.9.0
+standards-version: 1.10.0
 ---
 
 # Physics Systems (2D and 3D)
