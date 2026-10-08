@@ -3,6 +3,7 @@
     "effect": "Dissolve",
     "description": "Dissolves an object using a noise texture, revealing or hiding geometry along a threshold. Commonly used for death effects, teleportation, and material transitions.",
     "pipelines": ["urp", "hdrp", "builtin"],
+    "code_pipeline": "urp",
     "properties": [
       {"name": "_DissolveAmount", "type": "Range(0,1)", "description": "Controls how much of the object is dissolved. 0 = fully visible, 1 = fully dissolved."},
       {"name": "_NoiseTex", "type": "2D", "description": "Grayscale noise texture that drives the dissolve pattern."},
@@ -22,6 +23,7 @@
     "effect": "Outline",
     "description": "Renders a visible outline around objects. Used for selection highlights, toon rendering, and interactable object indication.",
     "pipelines": ["urp", "hdrp", "builtin"],
+    "code_pipeline": "urp",
     "properties": [
       {"name": "_OutlineColor", "type": "Color", "description": "Color of the outline."},
       {"name": "_OutlineWidth", "type": "Float", "description": "Thickness of the outline in clip space or world units."},
@@ -40,6 +42,7 @@
     "effect": "Fresnel",
     "description": "Brightens or colors the edges of an object based on view angle. Used for shields, holographic effects, and rim lighting.",
     "pipelines": ["urp", "hdrp", "builtin"],
+    "code_pipeline": "urp",
     "properties": [
       {"name": "_FresnelColor", "type": "Color", "description": "Color applied to the fresnel rim effect."},
       {"name": "_FresnelPower", "type": "Float", "description": "Controls the falloff of the fresnel effect. Higher values create a tighter rim."},
@@ -58,6 +61,7 @@
     "effect": "Toon",
     "description": "Cel-shading effect that quantizes lighting into discrete bands for a cartoon or anime art style.",
     "pipelines": ["urp", "hdrp", "builtin"],
+    "code_pipeline": "urp",
     "properties": [
       {"name": "_BaseColor", "type": "Color", "description": "Main tint color of the surface."},
       {"name": "_ShadowColor", "type": "Color", "description": "Color used for shadowed areas instead of darkening."},
@@ -78,6 +82,7 @@
     "effect": "Water",
     "description": "Stylized or semi-realistic water surface with scrolling normals, depth-based coloring, and vertex displacement.",
     "pipelines": ["urp", "hdrp", "builtin"],
+    "code_pipeline": "urp",
     "properties": [
       {"name": "_ShallowColor", "type": "Color", "description": "Water color in shallow areas near the shore."},
       {"name": "_DeepColor", "type": "Color", "description": "Water color in deep areas away from the shore."},
@@ -100,6 +105,7 @@
     "effect": "Hologram",
     "description": "Sci-fi holographic projection effect with scan lines, flickering, and transparent rendering.",
     "pipelines": ["urp", "hdrp", "builtin"],
+    "code_pipeline": "urp",
     "properties": [
       {"name": "_HoloColor", "type": "Color", "description": "Primary color of the hologram."},
       {"name": "_ScanLineSpeed", "type": "Float", "description": "Speed at which horizontal scan lines scroll."},

@@ -128,12 +128,20 @@
     "example": "rb.MovePosition(rb.position + velocity * Time.fixedDeltaTime);"
   },
   {
-    "name": "Rigidbody.velocity",
+    "name": "Rigidbody.linearVelocity",
     "namespace": "UnityEngine",
     "category": "physics",
-    "description": "The velocity vector of the Rigidbody in world space. Setting directly bypasses physics simulation - prefer AddForce for realistic movement.",
-    "signature": "Vector3 Rigidbody.velocity { get; set; }",
-    "example": "rb.velocity = new Vector3(rb.velocity.x, jumpSpeed, rb.velocity.z);"
+    "description": "The linear velocity vector of the Rigidbody in world space (renamed from Rigidbody.velocity in Unity 6). Setting directly bypasses physics simulation - prefer AddForce for realistic movement.",
+    "signature": "Vector3 Rigidbody.linearVelocity { get; set; }",
+    "example": "rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpSpeed, rb.linearVelocity.z);"
+  },
+  {
+    "name": "Rigidbody.linearDamping",
+    "namespace": "UnityEngine",
+    "category": "physics",
+    "description": "Linear drag applied to the Rigidbody (renamed from Rigidbody.drag in Unity 6). angularDamping replaces angularDrag.",
+    "signature": "float Rigidbody.linearDamping { get; set; }",
+    "example": "rb.linearDamping = 0.5f;"
   },
   {
     "name": "Rigidbody2D.AddForce",
@@ -470,5 +478,125 @@
     "description": "Finds the first loaded object of the given type with deterministic ordering by instance ID. Unity 2023.1+.",
     "signature": "static T Object.FindFirstObjectByType<T>(FindObjectsInactive findObjectsInactive = FindObjectsInactive.Exclude)",
     "example": "var player = FindFirstObjectByType<PlayerController>();"
+  },
+  {
+    "name": "InputSystem.actions",
+    "namespace": "UnityEngine.InputSystem",
+    "category": "input",
+    "description": "The project-wide Input Action Asset (Unity 6). Configure actions in Project Settings > Input System Package and look them up by name at runtime.",
+    "signature": "static InputActionAsset InputSystem.actions { get; set; }",
+    "example": "var move = InputSystem.actions.FindAction(\"Move\");"
+  },
+  {
+    "name": "InputActionAsset.FindAction",
+    "namespace": "UnityEngine.InputSystem",
+    "category": "input",
+    "description": "Finds an action by name, \"Map/Action\" path, or ID. Cache the result in Awake or Start instead of looking it up every frame.",
+    "signature": "InputAction InputActionAsset.FindAction(string actionNameOrId, bool throwIfNotFound = false)",
+    "example": "_jump = InputSystem.actions.FindAction(\"Player/Jump\", throwIfNotFound: true);"
+  },
+  {
+    "name": "InputAction.ReadValue",
+    "namespace": "UnityEngine.InputSystem",
+    "category": "input",
+    "description": "Reads the current value of the action, for example a Vector2 for a move stick or composite.",
+    "signature": "TValue InputAction.ReadValue<TValue>() where TValue : struct",
+    "example": "Vector2 move = _move.ReadValue<Vector2>();"
+  },
+  {
+    "name": "InputAction.WasPressedThisFrame",
+    "namespace": "UnityEngine.InputSystem",
+    "category": "input",
+    "description": "Returns true if the action was pressed during the current frame. Replaces Input.GetButtonDown polling.",
+    "signature": "bool InputAction.WasPressedThisFrame()",
+    "example": "if (_jump.WasPressedThisFrame()) Jump();"
+  },
+  {
+    "name": "UIDocument.rootVisualElement",
+    "namespace": "UnityEngine.UIElements",
+    "category": "ui",
+    "description": "The root VisualElement of a UI Toolkit document. Query it in OnEnable, since the tree is rebuilt when the UIDocument is enabled.",
+    "signature": "VisualElement UIDocument.rootVisualElement { get; }",
+    "example": "var root = GetComponent<UIDocument>().rootVisualElement;"
+  },
+  {
+    "name": "UQueryExtensions.Q",
+    "namespace": "UnityEngine.UIElements",
+    "category": "ui",
+    "description": "Returns the first descendant element matching the type, name, and/or USS class.",
+    "signature": "static T UQueryExtensions.Q<T>(this VisualElement e, string name = null, string className = null) where T : VisualElement",
+    "example": "var playButton = root.Q<Button>(\"play-button\");"
+  },
+  {
+    "name": "Button.clicked",
+    "namespace": "UnityEngine.UIElements",
+    "category": "ui",
+    "description": "Event raised when a UI Toolkit Button is clicked. Unsubscribe in OnDisable to avoid duplicate handlers.",
+    "signature": "event Action Button.clicked",
+    "example": "playButton.clicked += OnPlayClicked;"
+  },
+  {
+    "name": "VisualElement.SetBinding",
+    "namespace": "UnityEngine.UIElements",
+    "category": "ui",
+    "description": "Runtime data binding (Unity 6): binds an element property to a path on its dataSource.",
+    "signature": "void VisualElement.SetBinding(BindingId bindingId, Binding binding)",
+    "example": "label.dataSource = playerData; label.SetBinding(\"text\", new DataBinding { dataSourcePath = new PropertyPath(nameof(PlayerData.Name)) });"
+  },
+  {
+    "name": "NetworkManager.StartHost",
+    "namespace": "Unity.Netcode",
+    "category": "networking",
+    "description": "Starts a server and a local client (Netcode for GameObjects). Use StartServer or StartClient for dedicated roles.",
+    "signature": "bool NetworkManager.StartHost()",
+    "example": "NetworkManager.Singleton.StartHost();"
+  },
+  {
+    "name": "NetworkVariable",
+    "namespace": "Unity.Netcode",
+    "category": "networking",
+    "description": "A value synchronized from the server (or owner) to clients. Subscribe to OnValueChanged in OnNetworkSpawn.",
+    "signature": "NetworkVariable<T>(T value = default, NetworkVariableReadPermission readPerm = NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission writePerm = NetworkVariableWritePermission.Server)",
+    "example": "private readonly NetworkVariable<int> _health = new(100);"
+  },
+  {
+    "name": "RpcAttribute",
+    "namespace": "Unity.Netcode",
+    "category": "networking",
+    "description": "Universal RPC attribute (Netcode for GameObjects 1.8+ and 2.x) that replaces [ServerRpc] and [ClientRpc]. The method name must end in Rpc.",
+    "signature": "[Rpc(SendTo target)]",
+    "example": "[Rpc(SendTo.Server)] private void FireRpc(Vector3 direction) { /* runs on server */ }"
+  },
+  {
+    "name": "EditorWindow.GetWindow",
+    "namespace": "UnityEditor",
+    "category": "editor",
+    "description": "Returns the first open EditorWindow of type T, creating and showing one if none exists.",
+    "signature": "static T EditorWindow.GetWindow<T>(string title) where T : EditorWindow",
+    "example": "[MenuItem(\"Tools/Level Builder\")] static void Open() => GetWindow<LevelBuilderWindow>(\"Level Builder\");"
+  },
+  {
+    "name": "Editor.CreateInspectorGUI",
+    "namespace": "UnityEditor",
+    "category": "editor",
+    "description": "Override to build a custom inspector with UI Toolkit. Return a VisualElement; use InspectorElement.FillDefaultInspector to include the default fields.",
+    "signature": "virtual VisualElement Editor.CreateInspectorGUI()",
+    "example": "public override VisualElement CreateInspectorGUI() { var root = new VisualElement(); InspectorElement.FillDefaultInspector(root, serializedObject, this); return root; }"
+  },
+  {
+    "name": "PrefabUtility.InstantiatePrefab",
+    "namespace": "UnityEditor",
+    "category": "editor",
+    "description": "Instantiates a prefab asset in the scene while keeping the prefab connection. Returns null if passed a scene object instead of an asset.",
+    "signature": "static Object PrefabUtility.InstantiatePrefab(Object assetComponentOrGameObject)",
+    "example": "var go = (GameObject)PrefabUtility.InstantiatePrefab(prefab); Undo.RegisterCreatedObjectUndo(go, \"Place Prefab\");"
+  },
+  {
+    "name": "Undo.RegisterCreatedObjectUndo",
+    "namespace": "UnityEditor",
+    "category": "editor",
+    "description": "Registers a newly created object so the creation can be undone with Ctrl+Z.",
+    "signature": "static void Undo.RegisterCreatedObjectUndo(Object objectToUndo, string name)",
+    "example": "Undo.RegisterCreatedObjectUndo(go, \"Create Enemy\");"
   }
 ]

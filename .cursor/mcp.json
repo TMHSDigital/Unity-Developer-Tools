@@ -2,10 +2,7 @@
   "mcpServers": {
     "unity-dev-tools": {
       "command": "python",
-      "args": ["mcp-server/server.py"],
-      "env": {
-        "UNITY_DATA_PATH": "./mcp-server/data"
-      }
+      "args": ["mcp-server/server.py"]
     }
   }
 }
