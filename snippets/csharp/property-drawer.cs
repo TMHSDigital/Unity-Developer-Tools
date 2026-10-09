@@ -1,11 +1,15 @@
 // Custom Property Drawer
 // Custom rendering for a serializable type in the inspector.
-// Place in an Editor/ folder.
+// Keep this file in a runtime folder (not Editor/) so game code can use MinMaxRange.
+// The drawer is wrapped in UNITY_EDITOR so it is stripped from player builds.
+// For larger projects, move the drawer into its own file under an Editor/ folder instead.
 
 using System;
-using UnityEditor;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
 using UnityEngine.UIElements;
+#endif
 
 namespace MyGame
 {
@@ -25,6 +29,7 @@ namespace MyGame
     }
 }
 
+#if UNITY_EDITOR
 namespace MyGame.Editor
 {
     [CustomPropertyDrawer(typeof(MinMaxRange))]
@@ -41,14 +46,14 @@ namespace MyGame.Editor
 
             var minField = new FloatField("Min")
             {
-                bindingPath = property.FindPropertyRelative("Min").propertyPath,
+                bindingPath = property.FindPropertyRelative(nameof(MinMaxRange.Min)).propertyPath,
                 style = { flexGrow = 1 }
             };
             container.Add(minField);
 
             var maxField = new FloatField("Max")
             {
-                bindingPath = property.FindPropertyRelative("Max").propertyPath,
+                bindingPath = property.FindPropertyRelative(nameof(MinMaxRange.Max)).propertyPath,
                 style = { flexGrow = 1 }
             };
             container.Add(maxField);
@@ -57,3 +62,4 @@ namespace MyGame.Editor
         }
     }
 }
+#endif

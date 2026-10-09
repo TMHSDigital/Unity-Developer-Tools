@@ -55,15 +55,16 @@ namespace MyGame
     // Usage example
     public class GameSaveManager : MonoBehaviour
     {
+        [SerializeField] private Transform _player;
+
         public void SaveGame()
         {
-            var player = FindFirstObjectByType<PlayerController>();
             var data = new SaveData
             {
                 PlayerName = "Player1",
                 Level = 5,
                 PlayTime = Time.time,
-                PlayerPosition = player ? player.transform.position : Vector3.zero,
+                PlayerPosition = _player ? _player.position : Vector3.zero,
                 InventoryItemIds = new[] { 1, 3, 7, 12 }
             };
             SaveSystem.Save(data);
@@ -74,6 +75,7 @@ namespace MyGame
             if (!SaveSystem.SaveExists()) return;
 
             SaveData data = SaveSystem.Load();
+            if (_player) _player.position = data.PlayerPosition;
             Debug.Log($"Loaded: {data.PlayerName}, Level {data.Level}");
         }
     }

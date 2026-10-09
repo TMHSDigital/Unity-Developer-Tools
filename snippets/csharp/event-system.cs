@@ -4,6 +4,7 @@
 
 using System;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace MyGame
 {
@@ -27,13 +28,16 @@ namespace MyGame
             => OnItemCollected?.Invoke(itemName, quantity);
     }
 
-    // Example subscriber
+    // Example subscriber (UI Toolkit label named "score" in the UIDocument)
     public class ScoreDisplay : MonoBehaviour
     {
-        [SerializeField] private TMPro.TMP_Text _scoreText;
+        [SerializeField] private UIDocument _document;
+
+        private Label _scoreLabel;
 
         private void OnEnable()
         {
+            _scoreLabel = _document.rootVisualElement.Q<Label>("score");
             GameEvents.OnScoreChanged += UpdateScore;
         }
 
@@ -44,7 +48,7 @@ namespace MyGame
 
         private void UpdateScore(int score)
         {
-            _scoreText.SetText("Score: {0}", score);
+            _scoreLabel.text = $"Score: {score}";
         }
     }
 }

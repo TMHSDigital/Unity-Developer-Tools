@@ -1,13 +1,17 @@
 // Custom Inspector using UI Toolkit
 // Override the default inspector for a MonoBehaviour or ScriptableObject.
-// Place in an Editor/ folder.
+// Save as EnemyConfig.cs in a runtime folder (the file name must match the MonoBehaviour).
+// The editor class is wrapped in UNITY_EDITOR so it is stripped from player builds.
+// For larger projects, move the editor class into its own file under an Editor/ folder instead.
 
+using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.UIElements;
-using UnityEngine;
 using UnityEngine.UIElements;
+#endif
 
-namespace MyGame.Editor
+namespace MyGame
 {
     // The target component
     public class EnemyConfig : MonoBehaviour
@@ -16,8 +20,17 @@ namespace MyGame.Editor
         [SerializeField] [Range(1, 1000)] private int _maxHealth = 100;
         [SerializeField] private float _moveSpeed = 3f;
         [SerializeField] private Color _debugColor = Color.red;
-    }
 
+        public string EnemyName => _enemyName;
+        public int MaxHealth => _maxHealth;
+        public float MoveSpeed => _moveSpeed;
+        public Color DebugColor => _debugColor;
+    }
+}
+
+#if UNITY_EDITOR
+namespace MyGame.Editor
+{
     [CustomEditor(typeof(EnemyConfig))]
     public class EnemyConfigEditor : UnityEditor.Editor
     {
@@ -28,18 +41,19 @@ namespace MyGame.Editor
             // Draw default fields
             InspectorElement.FillDefaultInspector(root, serializedObject, this);
 
-            // Add a preview section
-            var previewLabel = new Label("--- Preview ---");
+            // Add a preview section that follows the serialized value
+            var previewLabel = new Label("Preview");
             previewLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
             previewLabel.style.marginTop = 10;
             root.Add(previewLabel);
 
-            var config = (EnemyConfig)target;
-            var infoLabel = new Label($"Enemy: {serializedObject.FindProperty("_enemyName").stringValue}");
+            var nameProperty = serializedObject.FindProperty("_enemyName");
+            var infoLabel = new Label($"Enemy: {nameProperty.stringValue}");
+            infoLabel.TrackPropertyValue(nameProperty, p => infoLabel.text = $"Enemy: {p.stringValue}");
             root.Add(infoLabel);
 
             // Add a utility button
-            var testButton = new Button(() => Debug.Log("Testing enemy config..."))
+            var testButton = new Button(() => Debug.Log($"Testing {((EnemyConfig)target).EnemyName}"))
             {
                 text = "Test Configuration"
             };
@@ -50,3 +64,4 @@ namespace MyGame.Editor
         }
     }
 }
+#endif

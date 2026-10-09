@@ -405,3 +405,42 @@ jobs:
 
       - name: Run MCP server tests
         run: python -m pytest mcp-server/tests -v
+
+  compile-csharp:
+    name: Compile C# against Unity 6
+    runs-on: ubuntu-latest
+    env:
+      # Bump together when moving to a newer Unity 6 LTS or Input System release
+      UNITY_VERSION: 6000.0.84f1
+      INPUTSYSTEM_VERSION: 1.20.1
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Cache Unity reference assemblies
+        id: unity-refs
+        uses: actions/cache@v6
+        with:
+          path: .unity-refs
+          key: unity-refs-${{ env.UNITY_VERSION }}-inputsystem-${{ env.INPUTSYSTEM_VERSION }}
+
+      - name: Download Unity reference assemblies
+        if: steps.unity-refs.outputs.cache-hit != 'true'
+        run: >-
+          python .github/scripts/fetch_unity_refs.py
+          --unity-version "$UNITY_VERSION"
+          --inputsystem-version "$INPUTSYSTEM_VERSION"
+          --out .unity-refs
+
+      - name: Compile snippets and templates (player and editor passes)
+        run: >-
+          python .github/scripts/compile_csharp.py
+          --unity .unity-refs/Editor/Data
+          --inputsystem .unity-refs/inputsystem/package

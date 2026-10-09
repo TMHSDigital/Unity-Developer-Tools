@@ -53,3 +53,6 @@ RESEARCH.md
 
 # DTD#27: release-doc-sync v1 migration verification
 
+
+# Unity reference assemblies for the C# compile check
+.unity-refs/

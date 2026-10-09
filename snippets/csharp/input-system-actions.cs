@@ -1,6 +1,7 @@
 // Input System Actions
-// Modern input handling with the Input System package.
-// Uses direct C# API with composite bindings for efficient input reading.
+// Modern input handling with the Input System package (1.8+) and project-wide actions.
+// Unity 6 projects ship a default actions asset with "Player/Move" and "Player/Jump";
+// assign your own under Project Settings > Input System Package if you use different names.
 
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -13,7 +14,8 @@ namespace MyGame
         [SerializeField] private float _moveSpeed = 6f;
         [SerializeField] private float _jumpForce = 8f;
 
-        private PlayerInputActions _input;
+        private InputAction _moveAction;
+        private InputAction _jumpAction;
         private Rigidbody _rb;
         private Vector2 _moveInput;
         private bool _jumpRequested;
@@ -21,24 +23,19 @@ namespace MyGame
         private void Awake()
         {
             _rb = GetComponent<Rigidbody>();
-            _input = new PlayerInputActions();
-        }
-
-        private void OnEnable()
-        {
-            _input.Player.Enable();
-            _input.Player.Jump.performed += OnJump;
-        }
-
-        private void OnDisable()
-        {
-            _input.Player.Jump.performed -= OnJump;
-            _input.Player.Disable();
+            _moveAction = InputSystem.actions.FindAction("Player/Move", throwIfNotFound: true);
+            _jumpAction = InputSystem.actions.FindAction("Player/Jump", throwIfNotFound: true);
         }
 
         private void Update()
         {
-            _moveInput = _input.Player.Move.ReadValue<Vector2>();
+            _moveInput = _moveAction.ReadValue<Vector2>();
+
+            // Latch the press here; FixedUpdate may not run on the frame it happens
+            if (_jumpAction.WasPressedThisFrame())
+            {
+                _jumpRequested = true;
+            }
         }
 
         private void FixedUpdate()
@@ -51,11 +48,6 @@ namespace MyGame
                 _rb.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
                 _jumpRequested = false;
             }
-        }
-
-        private void OnJump(InputAction.CallbackContext ctx)
-        {
-            _jumpRequested = true;
         }
     }
 }

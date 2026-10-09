@@ -35,7 +35,10 @@ Use conventional commits:
 
 1. Add the file to `snippets/<language>/`
 2. Include a header comment explaining what the snippet does and when to use it
-3. Update the snippets count in README.md
+3. Wrap editor-only code in `#if UNITY_EDITOR`
+4. Update the snippets count in README.md
+
+CI compiles every C# snippet and template against Unity 6 reference assemblies (player and editor builds). See the root `CONTRIBUTING.md` for running it locally.
 
 ## Adding a Template
 

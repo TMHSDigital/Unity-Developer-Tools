@@ -107,7 +107,15 @@ Keep rules focused; prefer linking to a skill for long workflows.
 
 1. Snippets live under `snippets/` grouped by language (`csharp/`, `shaders/`, `visual-scripting/`). Each file should be self-contained, target Unity 6.x APIs (Awaitable, `FindFirstObjectByType`, UI Toolkit), and free of hardcoded credentials.
 2. Templates live under `templates/`. A new template needs at least a top-level `README.md` describing usage, the canonical scripts, and any project setup notes (assembly definitions, package dependencies, scripting defines).
-3. Run the validators before opening a PR; CI checks JSON validity, plugin manifest completeness, file count consistency, em/en dash detection, and credential scanning.
+3. Editor-only code (`UnityEditor`, custom inspectors, drawers, windows) goes inside `#if UNITY_EDITOR` so the file is safe in any folder.
+4. CI compiles every C# snippet (one file at a time) and every template folder against Unity 6 reference assemblies, once as a player build and once as an editor build, with C# 9 and with obsolete APIs treated as errors. To run it locally (needs Python 3.12 and the .NET SDK; the first download streams the Unity editor archive, several GB):
+
+   ```bash
+   python .github/scripts/fetch_unity_refs.py --unity-version 6000.0.84f1 --inputsystem-version 1.20.1 --out .unity-refs
+   python .github/scripts/compile_csharp.py --unity .unity-refs/Editor/Data --inputsystem .unity-refs/inputsystem/package
+   ```
+
+5. Run the validators before opening a PR; CI checks JSON validity, plugin manifest completeness, file count consistency, em/en dash detection, and credential scanning.
 
 ## Pull Request Process
 

@@ -1,8 +1,10 @@
 // Editor Window using UI Toolkit
 // Custom tool window accessible from the Tools menu.
-// Place in an Editor/ folder.
+// Place in an Editor/ folder. The UNITY_EDITOR guard keeps player builds safe if it is not.
 
+#if UNITY_EDITOR
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -10,10 +12,6 @@ namespace MyGame.Editor
 {
     public class QuickPlacer : EditorWindow
     {
-        [SerializeField] private VisualTreeAsset _layout;
-
-        private ObjectField _prefabField;
-
         [MenuItem("Tools/Quick Placer")]
         public static void ShowWindow()
         {
@@ -30,14 +28,12 @@ namespace MyGame.Editor
                 style = { fontSize = 16, unityFontStyleAndWeight = FontStyle.Bold, marginBottom = 10 }
             });
 
-            var prefabField = new UnityEditor.UIElements.ObjectField("Prefab to Place")
+            var prefabField = new ObjectField("Prefab to Place")
             {
-                objectType = typeof(GameObject)
+                objectType = typeof(GameObject),
+                allowSceneObjects = false
             };
             root.Add(prefabField);
-
-            var spacing = new FloatField("Grid Spacing") { value = 2f };
-            root.Add(spacing);
 
             var placeButton = new Button(() =>
             {
@@ -53,8 +49,8 @@ namespace MyGame.Editor
 
                 var instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
                 instance.transform.position = sceneView.pivot;
-                Selection.activeGameObject = instance;
                 Undo.RegisterCreatedObjectUndo(instance, "Place Prefab");
+                Selection.activeGameObject = instance;
             })
             {
                 text = "Place at Scene View Center"
@@ -64,3 +60,4 @@ namespace MyGame.Editor
         }
     }
 }
+#endif
