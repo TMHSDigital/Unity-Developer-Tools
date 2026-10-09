@@ -8,19 +8,41 @@
 
 ## Installation
 
-1. Clone this repository:
+The plugin is installed once into Cursor's local plugins folder. You then open **your own Unity project** in Cursor, not this repository.
+
+1. Clone the plugin into Cursor's local plugins folder:
+
+   **macOS / Linux:**
    ```bash
-   git clone https://github.com/TMHSDigital/Unity-Developer-Tools.git
+   git clone https://github.com/TMHSDigital/Unity-Developer-Tools.git ~/.cursor/plugins/local/unity-developer-tools
    ```
 
-2. Open the cloned folder in Cursor IDE
-
-3. The plugin loads automatically. You should see skills and rules activate when editing C# or shader files.
-
-4. (Optional) Install MCP server dependencies for tool access:
-   ```bash
-   pip install -r mcp-server/requirements.txt
+   **Windows (PowerShell):**
+   ```powershell
+   git clone https://github.com/TMHSDigital/Unity-Developer-Tools.git "$env:USERPROFILE\.cursor\plugins\local\unity-developer-tools"
    ```
+
+   Or download the zip from the [latest release](https://github.com/TMHSDigital/Unity-Developer-Tools/releases/latest) and extract it into that same folder, so that `.cursor-plugin/plugin.json` sits directly inside `unity-developer-tools/`. Do not extract it into a Unity project.
+
+2. Install the MCP server dependencies with the same Python that `python` runs:
+   ```bash
+   python -m pip install -r ~/.cursor/plugins/local/unity-developer-tools/mcp-server/requirements.txt
+   ```
+   On Windows, use `"$env:USERPROFILE\.cursor\plugins\local\unity-developer-tools\mcp-server\requirements.txt"`.
+
+3. Restart Cursor, or run **Developer: Reload Window** from the command palette.
+
+4. Open your Unity project folder (the one containing `Assets/` and `ProjectSettings/`) with **File > Open Folder**.
+
+### Verify it works
+
+1. Open **Customize** in the Cursor sidebar. Unity Developer Tools should be listed with its skills, rules, and the `unity-dev-tools` MCP server.
+2. Open any `.cs` file in your project. The C# rules apply to it automatically.
+3. Ask the agent: *"What are the scripting defines for WebGL?"* It should call the `platform_info` tool and answer with `UNITY_WEBGL`.
+
+### Updating
+
+Run `git pull` inside `~/.cursor/plugins/local/unity-developer-tools`, then reload Cursor. If you installed from a zip, replace the folder with the new release.
 
 ## Using Skills
 
@@ -61,6 +83,25 @@ Ask the AI to use MCP tools naturally:
 - "Look up the Rigidbody API"
 - "Show me shader properties for a dissolve effect"
 - "What are the platform limitations for WebGL?"
+
+## Troubleshooting
+
+**The plugin does not appear in Customize**
+- Check the path: `.cursor-plugin/plugin.json` must be at `~/.cursor/plugins/local/unity-developer-tools/.cursor-plugin/plugin.json`. A zip extracted into an extra nested folder will not load.
+- Symlinks are skipped when they point to a folder outside `~/.cursor/plugins/local`. Clone or copy the plugin into that folder instead.
+- On Cursor Teams or Enterprise, an admin must enable **Allow Local Plugin Imports** (Dashboard > Settings > Security & Identity > Marketplace and Plugins).
+- Reload the window after installing.
+
+**The `unity-dev-tools` MCP server shows an error or no tools**
+- `python` must be on your PATH. Run `python --version`; it must report 3.10 or newer. On macOS, if only `python3` exists, install Python from python.org or a package manager that provides `python`.
+- `ModuleNotFoundError: No module named 'mcp'`: install the requirements with the same interpreter, using `python -m pip install -r .../mcp-server/requirements.txt`.
+- `Missing data file`: the plugin folder is incomplete. Re-clone it or extract the release zip again.
+
+**Rules do not apply to my scripts**
+- Make sure the Cursor workspace is your Unity project, not the plugin repository. Rules are matched against files in the open workspace (for example, `**/*.cs`).
+
+**Unity reports compile errors after copying files**
+- Copy individual snippets or a single template folder into `Assets/`, never the whole plugin. Each template README lists the packages it needs, such as the Input System.
 
 ## Next Steps
 

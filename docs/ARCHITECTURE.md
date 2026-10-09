@@ -6,7 +6,7 @@ This is a single Cursor IDE plugin following the standard plugin specification. 
 
 ```
 .cursor-plugin/plugin.json    <- Plugin manifest (name, version, skills, rules)
-.cursor/mcp.json              <- MCP server configuration
+mcp.json                      <- MCP server registration (uses ${CURSOR_PLUGIN_ROOT})
 skills/                       <- AI context files (SKILL.md with YAML frontmatter)
 rules/                        <- Convention enforcement (.mdc with frontmatter)
 snippets/                     <- Production-ready code patterns

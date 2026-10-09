@@ -2,7 +2,7 @@
   "mcpServers": {
     "unity-dev-tools": {
       "command": "python",
-      "args": ["mcp-server/server.py"]
+      "args": ["${CURSOR_PLUGIN_ROOT}/mcp-server/server.py"]
     }
   }
 }

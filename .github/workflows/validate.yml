@@ -20,7 +20,7 @@ jobs:
         run: python3 -c "import json; json.load(open('.cursor-plugin/plugin.json'))"
 
       - name: Validate mcp.json
-        run: python3 -c "import json; json.load(open('.cursor/mcp.json'))"
+        run: python3 -c "import json; json.load(open('mcp.json'))"
 
       - name: Validate MCP data file schemas
         run: |
@@ -131,6 +131,24 @@ jobs:
           for rule in m.get('rules', []):
               assert os.path.exists(rule), f'Rule not found: {rule}'
           print(f'All {len(m["rules"])} rule files exist')
+          PYEOF
+
+      - name: Check MCP server registration
+        run: |
+          python3 << 'PYEOF'
+          import json, os
+          m = json.load(open('.cursor-plugin/plugin.json'))
+          config = m.get('mcpServers')
+          assert isinstance(config, str) and os.path.exists(config), f'mcpServers must point to an existing file, got {config!r}'
+          servers = json.load(open(config))['mcpServers']
+          assert servers, 'No MCP servers registered'
+          for name, server in servers.items():
+              for arg in server.get('args', []):
+                  if arg.startswith('${CURSOR_PLUGIN_ROOT}/'):
+                      path = arg[len('${CURSOR_PLUGIN_ROOT}/'):]
+                      assert os.path.exists(path), f'{name}: {path} not found'
+                  assert not os.path.isabs(arg), f'{name}: absolute path {arg} breaks other installs'
+          print(f'MCP servers registered: {", ".join(servers)}')
           PYEOF
 
   validate-skills:

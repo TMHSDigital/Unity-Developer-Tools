@@ -143,7 +143,7 @@ Marks issues/PRs as stale after inactivity and closes them after further inactiv
 - Data: `mcp-server/data/` (JSON reference databases)
 - Dependencies: `mcp-server/requirements.txt`
 
-The MCP server is configured in `.cursor/mcp.json` and starts automatically when Cursor invokes a tool.
+The MCP server is registered by the plugin in `mcp.json` (referenced from `.cursor-plugin/plugin.json`) and starts automatically when Cursor invokes a tool.
 
 ## Key technical facts
 

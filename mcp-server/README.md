@@ -27,7 +27,7 @@ Get platform-specific scripting defines, capabilities, and build recommendations
 
 ## Running
 
-The server is started automatically by Cursor via the configuration in `.cursor/mcp.json`.
+The plugin registers the server in `mcp.json` at the plugin root, and Cursor starts it automatically once the plugin is installed.
 
 Manual start:
 ```bash

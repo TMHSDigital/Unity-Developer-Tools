@@ -49,5 +49,6 @@
     "rules/shader-conventions.mdc",
     "rules/visual-scripting-conventions.mdc",
     "rules/security-and-builds.mdc"
-  ]
+  ],
+  "mcpServers": "mcp.json"
 }

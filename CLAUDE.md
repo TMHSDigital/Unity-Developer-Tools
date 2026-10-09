@@ -90,17 +90,21 @@ The companion MCP server is Python-based (FastMCP). It exposes Unity-aware tools
 
 ## Development Workflow
 
-### Plugin development (symlink)
+### Plugin development (local plugin folder)
+
+Cursor loads local plugins from `~/.cursor/plugins/local/<name>` and skips symlinks that point outside that folder, so clone the repo there and work in that clone:
 
 **macOS / Linux:**
 ```bash
-ln -s "$(pwd)" ~/.cursor/plugins/unity-developer-tools
+git clone https://github.com/TMHSDigital/Unity-Developer-Tools.git ~/.cursor/plugins/local/unity-developer-tools
 ```
 
-**Windows (PowerShell as Admin):**
+**Windows (PowerShell):**
 ```powershell
-New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.cursor\plugins\unity-developer-tools" -Target (Get-Location)
+git clone https://github.com/TMHSDigital/Unity-Developer-Tools.git "$env:USERPROFILE\.cursor\plugins\local\unity-developer-tools"
 ```
+
+Run **Developer: Reload Window** after changing the manifest, rules, skills, or `mcp.json`.
 
 ### MCP server development
 

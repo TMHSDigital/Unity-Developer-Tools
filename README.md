@@ -57,15 +57,14 @@ flowchart LR
 
 ## Quick Start
 
-Already have Git, Python 3.10+, and Cursor installed? Here's the short version:
+Already have Git, Python 3.10+, and Cursor installed? Here's the short version (macOS / Linux; see the guide for Windows):
 
 ```bash
-git clone https://github.com/TMHSDigital/Unity-Developer-Tools.git
-# Open Unity-Developer-Tools folder in Cursor (File > Open Folder)
-cd mcp-server && pip install -r requirements.txt
+git clone https://github.com/TMHSDigital/Unity-Developer-Tools.git ~/.cursor/plugins/local/unity-developer-tools
+python -m pip install -r ~/.cursor/plugins/local/unity-developer-tools/mcp-server/requirements.txt
 ```
 
-Then ask the AI agent to scaffold a MonoBehaviour, look up an API, or generate a shader effect.
+Restart Cursor, then open **your Unity project** (not this repository) and ask the agent to scaffold a MonoBehaviour, look up an API, or generate a shader effect.
 
 > **Need more detail?** The **[Getting Started guide](docs/GETTING-STARTED.md)** covers installing prerequisites, troubleshooting, and building your first project step by step.
 
@@ -225,16 +224,15 @@ Then ask the AI agent to scaffold a MonoBehaviour, look up an API, or generate a
 
 ## MCP Server
 
-The companion MCP server provides programmatic tools that Cursor's AI agent can call directly. Configuration lives in `.cursor/mcp.json`.
+The companion MCP server provides programmatic tools that Cursor's AI agent can call directly. The plugin registers it through `mcp.json` at the plugin root, so it is available in any workspace once the plugin is installed.
 
-**Prerequisites:** Python 3.10+
+**Prerequisites:** Python 3.10+ available as `python`
 
 ```bash
-cd mcp-server
-pip install -r requirements.txt
+python -m pip install -r ~/.cursor/plugins/local/unity-developer-tools/mcp-server/requirements.txt
 ```
 
-The server starts automatically when Cursor invokes an MCP tool.
+Cursor starts the server automatically. Other MCP clients can run `python <plugin folder>/mcp-server/server.py` over stdio.
 
 <details>
 <summary><strong>Available Tools (4)</strong></summary>
@@ -282,7 +280,7 @@ What are the WebGL limitations and recommended settings?
 ```
 Unity-Developer-Tools/
   .cursor-plugin/      Plugin manifest
-  .cursor/             MCP server configuration
+  mcp.json             MCP server registration for the plugin
   skills/              AI skill files (18 skills)
   rules/               Coding convention rules (8 rules)
   snippets/            Code snippets -- C#, shaders (20 files)
