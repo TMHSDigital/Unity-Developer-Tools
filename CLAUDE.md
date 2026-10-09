@@ -6,7 +6,7 @@ Project documentation for Claude Code and AI assistants working on this reposito
 
 ## Project Overview
 
-Unity Developer Tools is a Cursor IDE plugin for Unity game development. It includes 18 skills, 8 rules, 20 code snippets across C# / HLSL / Visual Scripting, 5 starter templates, and a companion Python MCP server with 4 tools for script scaffolding, Unity API lookup, shader patterns, and platform information.
+Unity Developer Tools is a Cursor IDE plugin for Unity game development. It includes 18 skills, 8 rules, 20 code snippets across C# / HLSL / Visual Scripting, 5 starter templates, and a companion Python MCP server with 5 tools for script scaffolding, Unity API lookup, shader patterns, platform information, and project analysis.
 
 **Works with:** Cursor (plugin), Claude Code (terminal and in-editor), and any MCP-compatible client.
 
@@ -77,7 +77,7 @@ Unity-Developer-Tools/
 | `visual-scripting-conventions.mdc` | `**/*.asset` | Best practices for Unity Visual Scripting graphs |
 | `security-and-builds.mdc` | `**/*.cs`, `**/*.json`, `**/*.asset` | Security and build configuration rules (no hardcoded secrets, build target hygiene) |
 
-## MCP Server (4 tools)
+## MCP Server (5 tools)
 
 The companion MCP server is Python-based (FastMCP). It exposes Unity-aware tools that read from local data files (`mcp-server/data/`) and accept agent-supplied parameters.
 
@@ -87,6 +87,7 @@ The companion MCP server is Python-based (FastMCP). It exposes Unity-aware tools
 | `lookup_api` | Search the Unity API reference (name, namespace, signature, examples) with optional category filter and deprecated-pattern warnings |
 | `shader_helper` | Fetch shader patterns and property setups for common effects (dissolve, outline, toon, water, hologram, fresnel) per render pipeline |
 | `platform_info` | Get platform-specific scripting defines, capabilities, limitations, and recommendations (Windows, macOS, Linux, Android, iOS, WebGL, PS5, Xbox, Switch) |
+| `analyze_project` | Read a Unity project from disk (editor version, render pipeline, packages, input handling, scripting backend, define symbols, asmdefs) so advice matches the actual project |
 
 ## Development Workflow
 

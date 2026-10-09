@@ -46,11 +46,12 @@ Complete starter project scaffolds. Each template is a self-contained directory 
 
 ### MCP Server (mcp-server/)
 
-A Python FastAPI server implementing the Model Context Protocol. Provides 4 tools:
+A Python FastMCP server implementing the Model Context Protocol. Provides 5 tools:
 - `scaffold_script` - Generate scripts from templates
 - `lookup_api` - Search Unity API reference data
 - `shader_helper` - Get shader effect patterns
 - `platform_info` - Get platform-specific information
+- `analyze_project` - Read a Unity project's version, render pipeline, packages, and settings from disk
 
 Data files in `mcp-server/data/` provide the reference databases:
 - `unity_api_common.json` - Common Unity API entries

@@ -25,6 +25,12 @@ Get shader code patterns and property setups for common effects. Hand-written HL
 Get platform-specific scripting defines, capabilities, and build recommendations.
 - **platform**: Target platform (windows, macos, linux, android, ios, webgl, ps5, xbox, switch)
 
+### analyze_project
+Summarize a Unity project from its files, without Unity running: editor version, render pipeline (resolved from the pipeline asset assigned in Graphics or Quality settings), notable packages, active input handling, scripting backend, API compatibility, scripting define symbols, and assembly definitions.
+- **project_path**: Path to the Unity project root (contains `Assets/`, `Packages/`, `ProjectSettings/`)
+
+Settings must use text serialization (the Unity default, **Force Text**) for full detection.
+
 ## Running
 
 The plugin registers the server in `mcp.json` at the plugin root, and Cursor starts it automatically once the plugin is installed.

@@ -7,6 +7,10 @@ standards-version: 1.10.0
 
 # Render Pipeline Detection
 
+## Check the Project First
+
+Before giving pipeline-specific advice, call the `analyze_project` MCP tool with the Unity project root. It reports the pipeline actually in use (resolved from the asset assigned in Graphics or Quality settings), the URP/HDRP package version, and the `pipeline` value to pass to `shader_helper`. Only fall back to asking the user, or to the runtime checks below, when the tool is unavailable.
+
 ## Current Pipeline Landscape (2026)
 
 - **URP (Universal Render Pipeline)**: The default and actively developed pipeline. Use for all new projects.

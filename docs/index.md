@@ -2,7 +2,7 @@
 
 **AI-powered development toolkit for Unity game development in Cursor IDE.**
 
-18 skills -- 8 rules -- 4 MCP tools -- 20 snippets -- 5 templates
+18 skills -- 8 rules -- 5 MCP tools -- 20 snippets -- 5 templates
 
 ---
 
@@ -62,7 +62,7 @@ For a detailed walkthrough, see the [Getting Started guide](GETTING-STARTED.md).
 flowchart LR
     A["You ask Cursor\na Unity question"] --> B["Cursor loads\na Skill"]
     B --> C{"MCP server\navailable?"}
-    C -- Yes --> D["Unity MCP Server\n(4 tools)"]
+    C -- Yes --> D["Unity MCP Server\n(5 tools)"]
     C -- No --> E["Skill guidance\nonly"]
     D --> F["Scaffold, lookup,\nshader help,\nplatform info"]
     E --> G["AI-assisted answer\nin Cursor chat"]

@@ -7,6 +7,10 @@ standards-version: 1.10.0
 
 # Input Systems
 
+## Check the Project First
+
+Call the `analyze_project` MCP tool with the Unity project root before writing input code. Its **Active input handling** line says whether the project uses the Input Manager (old), the Input System package (new), or both, and the package list shows the installed `com.unity.inputsystem` version. Write code for what the project actually uses: `UnityEngine.Input` calls throw at runtime when only the new Input System is active.
+
 ## New Input System (Recommended)
 
 The Input System package (com.unity.inputsystem 1.7+) is the modern standard for all new Unity projects. It provides an event-driven model, unified device support, and built-in rebinding.

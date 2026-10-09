@@ -1,7 +1,7 @@
 """Unity Developer Tools MCP Server.
 
-Provides scaffold_script, lookup_api, shader_helper, and platform_info tools
-for Unity game development in the Cursor IDE.
+Provides scaffold_script, lookup_api, shader_helper, platform_info, and
+analyze_project tools for Unity game development in the Cursor IDE.
 """
 
 import json
@@ -535,6 +535,272 @@ def platform_info(
 
     valid = [e.get("platform", "") for e in platform_data]
     return f"Unknown platform: {platform}. Valid: {', '.join(valid)}"
+
+
+# ---------- Tool: analyze_project ----------
+
+# Script GUIDs of the render pipeline asset classes (from the URP/HDRP .cs.meta files)
+_PIPELINE_SCRIPT_GUIDS = {
+    "bf2edee5c58d82540a51f03df9d42094": "urp",
+    "0cf1dab834d4ec34195b920ea7bbf9ec": "hdrp",
+}
+_PIPELINE_PACKAGES = {
+    "com.unity.render-pipelines.universal": "urp",
+    "com.unity.render-pipelines.high-definition": "hdrp",
+}
+_PIPELINE_NAMES = {"urp": "URP", "hdrp": "HDRP", "builtin": "Built-in"}
+
+# Packages worth calling out because they change which APIs and patterns apply
+_NOTABLE_PACKAGES = {
+    "com.unity.inputsystem": "Input System",
+    "com.unity.netcode.gameobjects": "Netcode for GameObjects",
+    "com.unity.netcode": "Netcode for Entities",
+    "com.unity.entities": "Entities (ECS)",
+    "com.unity.addressables": "Addressables",
+    "com.unity.cinemachine": "Cinemachine",
+    "com.unity.ugui": "uGUI / TextMeshPro",
+    "com.unity.visualscripting": "Visual Scripting",
+    "com.unity.test-framework": "Test Framework",
+    "com.unity.ai.navigation": "AI Navigation",
+    "com.unity.timeline": "Timeline",
+    "com.unity.shadergraph": "Shader Graph",
+    "com.unity.visualeffectgraph": "VFX Graph",
+    "com.unity.burst": "Burst",
+    "com.unity.collections": "Collections",
+    "com.unity.localization": "Localization",
+    "com.unity.xr.interaction.toolkit": "XR Interaction Toolkit",
+}
+
+_INPUT_HANDLING = {"0": "Input Manager (old)", "1": "Input System Package (new)", "2": "Both"}
+_SCRIPTING_BACKEND = {"0": "Mono", "1": "IL2CPP"}
+_API_LEVEL = {"3": ".NET Framework", "6": ".NET Standard 2.1"}
+_MAX_ASMDEFS = 50
+_MAX_META_SCAN = 20000
+
+
+def _read_text(path: Path) -> str | None:
+    try:
+        return path.read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        return None
+
+
+def _is_text_yaml(text: str) -> bool:
+    return text.startswith("%YAML")
+
+
+def _yaml_scalar(text: str, key: str) -> str | None:
+    match = re.search(rf"^[ \t]*{re.escape(key)}:[ \t]*(.*?)\r?$", text, re.M)
+    return match.group(1).strip() if match else None
+
+
+def _yaml_platform_map(text: str, key: str) -> dict:
+    """Read a Unity per-platform map such as scriptingBackend: {Standalone: 1}."""
+    match = re.search(rf"^([ \t]*){re.escape(key)}:[ \t]*\r?\n((?:\1[ \t]+.*\n?)*)", text, re.M)
+    if not match:
+        return {}
+    result = {}
+    for line in match.group(2).splitlines():
+        name, sep, value = line.strip().partition(":")
+        if sep:
+            result[name.strip() or "Default"] = value.strip()
+    return result
+
+
+def _pipeline_refs(text: str, key: str) -> list:
+    """GUIDs referenced by m_CustomRenderPipeline / customRenderPipeline entries."""
+    return re.findall(rf"{key}: \{{fileID: \d+, guid: ([0-9a-f]{{32}})", text)
+
+
+def _find_assets_by_guid(project: Path, guids: set) -> dict:
+    """Map asset GUIDs to asset paths by scanning .meta files under Assets/."""
+    found = {}
+    assets = project / "Assets"
+    if not guids or not assets.is_dir():
+        return found
+    for count, meta in enumerate(assets.rglob("*.asset.meta")):
+        if count >= _MAX_META_SCAN or len(found) == len(guids):
+            break
+        text = _read_text(meta) or ""
+        match = re.search(r"^guid: ([0-9a-f]{32})", text, re.M)
+        if match and match.group(1) in guids:
+            found[match.group(1)] = meta.with_suffix("")
+    return found
+
+
+def _classify_pipeline_asset(path: Path) -> str | None:
+    text = _read_text(path) or ""
+    match = re.search(r"m_Script: \{fileID: \d+, guid: ([0-9a-f]{32})", text)
+    if match and match.group(1) in _PIPELINE_SCRIPT_GUIDS:
+        return _PIPELINE_SCRIPT_GUIDS[match.group(1)]
+    if "m_RendererDataList:" in text:
+        return "urp"
+    if "m_RenderPipelineSettings:" in text:
+        return "hdrp"
+    return None
+
+
+@mcp.tool()
+def analyze_project(
+    project_path: str,
+) -> str:
+    """Summarize a Unity project: editor version, render pipeline, packages,
+    input handling, scripting backend, define symbols, and assembly definitions.
+
+    Reads project files only; Unity does not need to be running. Call this
+    before giving version-, pipeline-, or package-specific advice.
+
+    Args:
+        project_path: Path to the Unity project root (the folder that contains
+                      Assets/, Packages/, and ProjectSettings/)
+    """
+    project = Path(project_path).expanduser()
+    settings = project / "ProjectSettings"
+    if not project.is_dir():
+        return f"Not a directory: {project_path}"
+    if not settings.is_dir() or not (project / "Assets").is_dir():
+        return (
+            f"{project_path} does not look like a Unity project "
+            "(expected Assets/ and ProjectSettings/ folders)."
+        )
+
+    output = [f"## Unity project: {project.name}"]
+    notes = []
+
+    # Editor version
+    version_text = _read_text(settings / "ProjectVersion.txt") or ""
+    editor_version = _yaml_scalar(version_text, "m_EditorVersion")
+    output.append(f"**Editor version**: {editor_version or 'unknown'}")
+
+    # Packages
+    packages = {}
+    manifest_text = _read_text(project / "Packages" / "manifest.json")
+    if manifest_text:
+        try:
+            packages = json.loads(manifest_text).get("dependencies", {})
+        except json.JSONDecodeError:
+            notes.append("Packages/manifest.json is not valid JSON.")
+    else:
+        notes.append("Packages/manifest.json not found.")
+
+    lock_versions = {}
+    lock_text = _read_text(project / "Packages" / "packages-lock.json")
+    if lock_text:
+        try:
+            for name, info in json.loads(lock_text).get("dependencies", {}).items():
+                lock_versions[name] = info.get("version")
+        except json.JSONDecodeError:
+            pass
+
+    def package_version(name: str) -> str | None:
+        version = lock_versions.get(name) or packages.get(name)
+        return str(version) if version is not None else None
+
+    # Render pipeline: Graphics default, then per-quality-level overrides
+    graphics_text = _read_text(settings / "GraphicsSettings.asset") or ""
+    quality_text = _read_text(settings / "QualitySettings.asset") or ""
+    if graphics_text and not _is_text_yaml(graphics_text):
+        notes.append("Settings are not text-serialized; set Asset Serialization to Force Text for full detection.")
+
+    default_guids = _pipeline_refs(graphics_text, "m_CustomRenderPipeline")
+    quality_guids = _pipeline_refs(quality_text, "customRenderPipeline")
+    assets_by_guid = _find_assets_by_guid(project, set(default_guids + quality_guids))
+
+    detected = []
+    for guid in default_guids + quality_guids:
+        path = assets_by_guid.get(guid)
+        kind = _classify_pipeline_asset(path) if path else None
+        if kind:
+            detected.append((kind, path.relative_to(project).as_posix()))
+
+    installed_pipelines = [p for pkg, p in _PIPELINE_PACKAGES.items() if pkg in packages or pkg in lock_versions]
+
+    if detected:
+        pipeline = detected[0][0]
+        source = f"pipeline asset `{detected[0][1]}`"
+    elif default_guids or quality_guids:
+        pipeline = installed_pipelines[0] if len(installed_pipelines) == 1 else "unknown"
+        source = "a pipeline asset is assigned but could not be read; inferred from installed packages"
+    elif installed_pipelines:
+        pipeline = "builtin"
+        source = "no pipeline asset is assigned in Graphics or Quality settings"
+        notes.append(
+            f"{_PIPELINE_NAMES[installed_pipelines[0]]} is installed but no pipeline asset is assigned, "
+            "so the project renders with the Built-in pipeline."
+        )
+    else:
+        pipeline = "builtin"
+        source = "no SRP package or pipeline asset found"
+
+    kinds = {kind for kind, _ in detected}
+    if len(kinds) > 1:
+        notes.append("Quality levels use different pipelines: " + ", ".join(sorted(_PIPELINE_NAMES[k] for k in kinds)))
+
+    pipeline_line = f"**Render pipeline**: {_PIPELINE_NAMES.get(pipeline, 'Unknown')}"
+    for pkg, kind in _PIPELINE_PACKAGES.items():
+        if kind == pipeline and package_version(pkg):
+            pipeline_line += f" ({pkg} {package_version(pkg)})"
+    output.append(pipeline_line)
+    output.append(f"  - Detected from {source}")
+    if pipeline in ("urp", "hdrp", "builtin"):
+        output.append(f"  - Use `pipeline=\"{pipeline}\"` with shader_helper")
+
+    # Player settings
+    player_text = _read_text(settings / "ProjectSettings.asset") or ""
+    input_value = _yaml_scalar(player_text, "activeInputHandler")
+    output.append(f"**Active input handling**: {_INPUT_HANDLING.get(input_value or '', 'unknown')}")
+    if input_value in ("1", "2") and "com.unity.inputsystem" not in packages and "com.unity.inputsystem" not in lock_versions:
+        notes.append("Input handling uses the Input System but com.unity.inputsystem is not installed.")
+
+    backends = _yaml_platform_map(player_text, "scriptingBackend")
+    if backends:
+        output.append("**Scripting backend**: " + ", ".join(
+            f"{platform} {_SCRIPTING_BACKEND.get(value, value)}" for platform, value in backends.items()
+        ))
+    api_levels = _yaml_platform_map(player_text, "apiCompatibilityLevelPerPlatform")
+    if api_levels:
+        output.append("**API compatibility**: " + ", ".join(
+            f"{platform} {_API_LEVEL.get(value, value)}" for platform, value in api_levels.items()
+        ))
+    defines = {p: v for p, v in _yaml_platform_map(player_text, "scriptingDefineSymbols").items() if v}
+    if defines:
+        output.append("**Scripting define symbols**:")
+        output.extend(f"  - {platform}: `{value}`" for platform, value in defines.items())
+
+    # Packages summary
+    if packages:
+        notable = [
+            f"{label} {package_version(name)}"
+            for name, label in _NOTABLE_PACKAGES.items()
+            if name in packages or name in lock_versions
+        ]
+        output.append(f"\n**Packages** ({len(packages)} in manifest)")
+        output.append("  - Notable: " + (", ".join(notable) if notable else "none"))
+
+    # Assembly definitions
+    asmdefs = []
+    for count, path in enumerate(sorted((project / "Assets").rglob("*.asmdef"))):
+        if count >= _MAX_ASMDEFS:
+            break
+        try:
+            data = json.loads(_read_text(path) or "{}")
+        except json.JSONDecodeError:
+            continue
+        editor_only = data.get("includePlatforms") == ["Editor"]
+        tests = "UNITY_INCLUDE_TESTS" in data.get("defineConstraints", [])
+        tags = [t for t, on in (("editor", editor_only), ("tests", tests)) if on]
+        root_ns = data.get("rootNamespace")
+        detail = ", ".join(tags + ([f"namespace {root_ns}"] if root_ns else []))
+        rel = path.relative_to(project).as_posix()
+        asmdefs.append(f"  - {data.get('name', path.stem)} (`{rel}`" + (f"; {detail})" if detail else ")"))
+    output.append(f"\n**Assembly definitions** ({len(asmdefs)})")
+    output.extend(asmdefs or ["  - none (all scripts compile into Assembly-CSharp)"])
+
+    if notes:
+        output.append("\n**Notes**:")
+        output.extend(f"- {note}" for note in notes)
+
+    return "\n".join(output)
 
 
 if __name__ == "__main__":

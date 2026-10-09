@@ -7,6 +7,10 @@ standards-version: 1.10.0
 
 # Platform Targeting
 
+## Check the Project First
+
+Call the `analyze_project` MCP tool with the Unity project root to see the scripting backend and API compatibility per platform and the scripting define symbols already set, then use `platform_info` for the target platform's defines and limitations.
+
 ## Scripting Defines
 
 Use preprocessor directives for platform-specific code:

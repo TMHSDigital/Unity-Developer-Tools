@@ -13,7 +13,7 @@ This is a Cursor IDE plugin for Unity game development. It contains:
 - **`rules/`** - 8 .mdc rule files enforcing coding conventions
 - **`snippets/`** - 20 code snippet files (C#, shaders, visual scripting guide)
 - **`templates/`** - 5 starter project templates (2D platformer, 3D FPS, UI menu, SO architecture, editor tool)
-- **`mcp-server/`** - Python MCP server with 4 tools and JSON data files
+- **`mcp-server/`** - Python MCP server with 5 tools and JSON data files
 - **`docs/`** - ARCHITECTURE.md, ROADMAP.md, CONTRIBUTING.md, GETTING-STARTED.md
 - **`CHANGELOG.md`** - manually maintained release history
 - **`.github/workflows/`** - CI/CD automation
@@ -153,7 +153,7 @@ The MCP server is registered by the plugin in `mcp.json` (referenced from `.curs
 - ECS/DOTS is now a core engine package (Entities 1.4+), not experimental.
 - FindObjectOfType is deprecated; use FindFirstObjectByType.
 - CGPROGRAM is deprecated; use HLSLPROGRAM for URP/HDRP shaders.
-- The MCP server uses Python FastMCP with 4 tools and 5 JSON data files.
+- The MCP server uses Python FastMCP with 5 tools and 5 JSON data files.
 
 ## License
 

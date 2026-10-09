@@ -7,7 +7,7 @@ You are working on Unity Developer Tools, a Cursor IDE plugin for Unity game dev
 - `rules/` - 8 .mdc rule files (C# conventions, lifecycle, performance, naming, serialization, shaders, visual scripting, security)
 - `snippets/` - 20 code snippets organized by type (csharp, shaders, visual-scripting)
 - `templates/` - 5 starter templates (2d-platformer, 3d-fps, ui-menu-system, scriptableobject-architecture, editor-tool)
-- `mcp-server/` - Python FastMCP server with 4 tools and JSON data files
+- `mcp-server/` - Python FastMCP server with 5 tools and JSON data files
 - `docs/` - architecture, roadmap, contributing, getting started
 - `.github/workflows/` - validate, release, deploy-docs, label-sync, update-unity-api, stale
 - `mkdocs.yml` - MkDocs Material documentation site configuration

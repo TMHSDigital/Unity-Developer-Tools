@@ -229,5 +229,5 @@ def test_stdio_server_lists_and_calls_tools(tmp_path):
                 return names, result.content[0].text
 
     names, text = asyncio.run(asyncio.wait_for(run(), timeout=60))
-    assert names == {"scaffold_script", "lookup_api", "shader_helper", "platform_info"}
+    assert names == {"scaffold_script", "lookup_api", "shader_helper", "platform_info", "analyze_project"}
     assert "UNITY_IOS" in text

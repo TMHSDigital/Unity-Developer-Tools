@@ -29,7 +29,7 @@
 ---
 
 <p align="center">
-  18 skills &nbsp;&bull;&nbsp; 8 rules &nbsp;&bull;&nbsp; 4 MCP tools &nbsp;&bull;&nbsp; 20 snippets &nbsp;&bull;&nbsp; 5 templates
+  18 skills &nbsp;&bull;&nbsp; 8 rules &nbsp;&bull;&nbsp; 5 MCP tools &nbsp;&bull;&nbsp; 20 snippets &nbsp;&bull;&nbsp; 5 templates
 </p>
 
 Scaffold Unity scripts, look up APIs, generate shader patterns, detect render pipelines, and write optimized C# -- all from within Cursor's AI chat. Covers the full Unity development lifecycle from project setup to platform deployment.
@@ -46,7 +46,7 @@ Scaffold Unity scripts, look up APIs, generate shader patterns, detect render pi
 flowchart LR
     A["You ask Cursor\na Unity question"] --> B["Cursor loads\na Skill"]
     B --> C{"MCP server\navailable?"}
-    C -- Yes --> D["Unity MCP Server\n(4 tools)"]
+    C -- Yes --> D["Unity MCP Server\n(5 tools)"]
     C -- No --> E["Skill guidance\nonly"]
     D --> F["Scaffold, lookup,\nshader help,\nplatform info"]
     E --> G["AI-assisted answer\nin Cursor chat"]
@@ -235,7 +235,7 @@ python -m pip install -r ~/.cursor/plugins/local/unity-developer-tools/mcp-serve
 Cursor starts the server automatically. Other MCP clients can run `python <plugin folder>/mcp-server/server.py` over stdio.
 
 <details>
-<summary><strong>Available Tools (4)</strong></summary>
+<summary><strong>Available Tools (5)</strong></summary>
 
 &nbsp;
 
@@ -245,6 +245,7 @@ Cursor starts the server automatically. Other MCP clients can run `python <plugi
 | `lookup_api` | Search the Unity API reference database by name, namespace, or category. Returns signatures, descriptions, and examples. |
 | `shader_helper` | Get shader code patterns for common effects (dissolve, outline, hologram, etc.) with HLSL and Shader Graph guidance. |
 | `platform_info` | Get platform-specific defines, capabilities, limitations, and build recommendations. |
+| `analyze_project` | Read a Unity project's editor version, render pipeline, packages, input handling, scripting backend, define symbols, and assembly definitions. Unity does not need to be running. |
 
 </details>
 
@@ -285,7 +286,7 @@ Unity-Developer-Tools/
   rules/               Coding convention rules (8 rules)
   snippets/            Code snippets -- C#, shaders (20 files)
   templates/           Starter project templates (5 sets)
-  mcp-server/          Python MCP server (4 tools) and data files
+  mcp-server/          Python MCP server (5 tools) and data files
   docs/                Architecture, roadmap, contributing guide
   assets/              Logo and images
   .github/             CI/CD workflows (5 workflows)
