@@ -168,7 +168,7 @@ jobs:
 
             echo "---"
             echo ""
-            echo "**Install:** Download \`unity-developer-tools-v${{ steps.new.outputs.version }}.zip\` and extract into your project, or clone the repo and open in Cursor."
+            echo "**Install:** Extract \`unity-developer-tools-v${{ steps.new.outputs.version }}.zip\` into \`~/.cursor/plugins/unity-developer-tools\` (Windows: \`%USERPROFILE%\.cursor\plugins\unity-developer-tools\`), restart Cursor, then open your Unity project. Do not extract it into a Unity project: the snippets and templates are references, and Unity would compile them. See [Getting Started](https://github.com/${{ github.repository }}/blob/main/docs/GETTING-STARTED.md)."
             echo ""
             echo "**Full Changelog**: https://github.com/${{ github.repository }}/compare/${last_tag:-initial}...v${{ steps.new.outputs.version }}"
             echo "RELEASE_EOF"

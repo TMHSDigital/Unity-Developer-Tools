@@ -198,7 +198,7 @@ Then ask the AI agent to scaffold a MonoBehaviour, look up an API, or generate a
 | `unlit-basic.shader` | Basic unlit shader for URP (HLSLPROGRAM) |
 | `urp-lit-template.shader` | PBR lit shader template for URP |
 | `hlsl-vertex-fragment.shader` | Custom vertex/fragment with URP lighting |
-| `surface-basic.shader` | Legacy surface shader (Built-in only) |
+| `legacy/surface-basic.shader` | Legacy surface shader (Built-in only; renders pink in URP/HDRP) |
 
 </details>
 
