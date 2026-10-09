@@ -100,5 +100,23 @@
     "replacement": "JSON serialization to Application.persistentDataPath or a save system",
     "reason": "PlayerPrefs is stored in the registry on Windows and has size limits. It is not encrypted, not portable, and not suitable for structured save data.",
     "since_version": "N/A (best practice)"
+  },
+  {
+    "legacy": "Rigidbody.velocity / Rigidbody2D.velocity",
+    "replacement": "Rigidbody.linearVelocity / Rigidbody2D.linearVelocity",
+    "reason": "Renamed in Unity 6 to distinguish linear from angular velocity. The old property is obsolete.",
+    "since_version": "6000.0"
+  },
+  {
+    "legacy": "Rigidbody.drag / Rigidbody.angularDrag",
+    "replacement": "Rigidbody.linearDamping / Rigidbody.angularDamping",
+    "reason": "Renamed in Unity 6 to match physics terminology. The old properties are obsolete.",
+    "since_version": "6000.0"
+  },
+  {
+    "legacy": "[ServerRpc] / [ClientRpc]",
+    "replacement": "[Rpc(SendTo.Server)] / [Rpc(SendTo.ClientsAndHost)]",
+    "reason": "Netcode for GameObjects universal RPCs replace the separate ServerRpc and ClientRpc attributes and support more send targets.",
+    "since_version": "NGO 1.8"
   }
 ]

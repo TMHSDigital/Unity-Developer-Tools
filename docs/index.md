@@ -10,7 +10,7 @@
 
 Unity Developer Tools is a plugin for [Cursor](https://www.cursor.com/) that teaches its AI assistant how to build Unity games and tools. Once installed, you can ask the AI to:
 
-- Scaffold MonoBehaviours, ScriptableObjects, Editor windows, and ECS systems
+- Scaffold MonoBehaviours, ScriptableObjects, Editor windows, inspectors, and tests
 - Look up Unity APIs by name, namespace, or category
 - Generate shader patterns for common effects (dissolve, outline, hologram, etc.)
 - Get platform-specific defines, capabilities, and build recommendations
@@ -29,7 +29,7 @@ For a detailed walkthrough, see the [Getting Started guide](GETTING-STARTED.md).
 
 ## Features
 
-- **Script scaffolding** -- Generate MonoBehaviours, ScriptableObjects, Editor windows, and ECS systems following Unity 6 conventions
+- **Script scaffolding** -- Generate MonoBehaviours, ScriptableObjects, Editor windows, inspectors, state machines, and tests following Unity 6 conventions
 - **API lookup** -- Search common Unity APIs by name, namespace, or category via MCP tools
 - **Shader patterns** -- Get HLSL code and Shader Graph node setups for common effects
 - **Performance-aware coding rules** -- Catch deprecated APIs, allocation-heavy patterns, and common mistakes

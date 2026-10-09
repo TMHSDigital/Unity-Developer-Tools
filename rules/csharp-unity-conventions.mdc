@@ -20,5 +20,5 @@ standards-version: 1.10.0
 - Prefer async/await with Awaitable (Unity 6+) over IEnumerator coroutines for new code
 - An Awaitable instance must never be awaited more than once (it is pooled)
 - Use `FindFirstObjectByType<T>()` instead of the deprecated `FindObjectOfType<T>()`
-- Use file-scoped namespaces to reduce nesting
-- Prefer primary constructors for simple data types
+- Unity 6 compiles C# 9: use block-scoped namespaces (`namespace MyGame { ... }`)
+- Do not use C# 10+ features: file-scoped namespaces, primary constructors on classes or structs, `required` members, raw string literals, collection expressions

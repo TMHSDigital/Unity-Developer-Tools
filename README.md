@@ -71,7 +71,7 @@ Then ask the AI agent to scaffold a MonoBehaviour, look up an API, or generate a
 
 ## Features
 
-- **Script scaffolding** -- Generate MonoBehaviours, ScriptableObjects, Editor windows, and ECS systems following Unity 6 conventions
+- **Script scaffolding** -- Generate MonoBehaviours, ScriptableObjects, Editor windows, inspectors, state machines, and tests following Unity 6 conventions
 - **API lookup** -- Search common Unity APIs by name, namespace, or category via MCP tools
 - **Shader patterns** -- Get HLSL code and Shader Graph node setups for common effects (dissolve, outline, hologram, etc.)
 - **Performance-aware coding rules** -- Catch deprecated APIs, allocation-heavy patterns, and common mistakes
@@ -243,7 +243,7 @@ The server starts automatically when Cursor invokes an MCP tool.
 
 | Tool | Description |
 |:-----|:------------|
-| `scaffold_script` | Generate C# scripts following Unity 6 conventions. Supports MonoBehaviour, ScriptableObject, Editor, and ECS templates. |
+| `scaffold_script` | Generate C# scripts following Unity 6 conventions. Supports MonoBehaviour, ScriptableObject, Editor window, custom inspector, property drawer, interface, state machine, and test templates. |
 | `lookup_api` | Search the Unity API reference database by name, namespace, or category. Returns signatures, descriptions, and examples. |
 | `shader_helper` | Get shader code patterns for common effects (dissolve, outline, hologram, etc.) with HLSL and Shader Graph guidance. |
 | `platform_info` | Get platform-specific defines, capabilities, limitations, and build recommendations. |
