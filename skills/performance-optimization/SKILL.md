@@ -103,16 +103,14 @@ private void Awake()
 
 ### Cache Camera.main
 
-`Camera.main` calls `FindGameObjectWithTag("MainCamera")` internally:
+Since Unity 2020.2 the engine caches the main camera, so `Camera.main` no longer searches by tag on every call. It is still a native call, so in code that runs many times per frame keep a field:
 
 ```csharp
-// BAD
-void Update() { Camera.main.ScreenToWorldPoint(...); }
-
-// GOOD
 private Camera _mainCam;
 void Awake() => _mainCam = Camera.main;
 ```
+
+Refresh the field if the main camera can change (scene loads, camera switching).
 
 ### Burst Compiler and Jobs
 

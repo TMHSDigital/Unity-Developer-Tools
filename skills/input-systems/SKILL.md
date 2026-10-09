@@ -112,22 +112,34 @@ Each action has three phases:
 
 ### Runtime Rebinding
 
+The rebinding operation is callback based, so the method does not need to be `async`. Keep a reference so you can dispose it when it finishes, is canceled, or the object is destroyed:
+
 ```csharp
-public async void StartRebinding(InputAction action)
+private InputActionRebindingExtensions.RebindingOperation _rebind;
+
+public void StartRebinding(InputAction action, int bindingIndex)
 {
     action.Disable();
-
-    var operation = action.PerformInteractiveRebinding()
-        .WithControlsExcluding("Mouse/position")
-        .OnComplete(op =>
-        {
-            op.Dispose();
-            action.Enable();
-            SaveBindings();
-        })
+    _rebind = action.PerformInteractiveRebinding(bindingIndex)
+        .WithControlsExcluding("<Mouse>/position")
+        .WithCancelingThrough("<Keyboard>/escape")
+        .OnComplete(_ => FinishRebinding(action))
+        .OnCancel(_ => FinishRebinding(action))
         .Start();
 }
+
+private void FinishRebinding(InputAction action)
+{
+    _rebind.Dispose();
+    _rebind = null;
+    action.Enable();
+    PlayerPrefs.SetString("rebinds", action.actionMap.asset.SaveBindingOverridesAsJson());
+}
+
+private void OnDestroy() => _rebind?.Dispose();
 ```
+
+Restore saved overrides at startup with `asset.LoadBindingOverridesFromJson(PlayerPrefs.GetString("rebinds"))`.
 
 ### Local Multiplayer
 

@@ -10,6 +10,8 @@ standards-version: 1.10.0
 
 - Unity serializes: public fields, [SerializeField] private fields
 - Unity does NOT serialize: properties, static fields, readonly fields, dictionaries
+- Auto-properties can be serialized through their backing field with [field: SerializeField]
+- Plain fields serialize by value, so polymorphism, interfaces, and null are lost; use [SerializeReference] for fields of an interface or abstract type and for shared or null references
 - Use [SerializeField] private over public for encapsulation
 - Use [HideInInspector] to serialize but hide from inspector
 - Use [NonSerialized] or [System.NonSerialized] to exclude public fields
@@ -17,5 +19,5 @@ standards-version: 1.10.0
 - Use [Tooltip("description")] for inspector documentation
 - Use [Range(min, max)] for numeric sliders
 - Nested serializable classes need [System.Serializable]
-- ScriptableObject references survive play mode; MonoBehaviour field values reset
+- In the Editor, changes made to ScriptableObject assets in Play Mode persist after exiting; changes to scene component values revert. In builds, nothing written at runtime persists unless you save it
 - For complex data: use JSON serialization (JsonUtility or Newtonsoft) for save/load

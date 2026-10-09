@@ -9,13 +9,13 @@ standards-version: 1.10.0
 # Unity performance rules
 
 - WARN: GetComponent<T>() called inside Update, FixedUpdate, or LateUpdate. Cache in Awake instead.
-- WARN: FindObjectOfType or FindObjectsOfType in any code. Use FindFirstObjectByType or FindObjectsByType instead.
-- WARN: Find, FindObjectOfType, or FindObjectsOfType in runtime code. Cache references or use events.
+- WARN: FindObjectOfType or FindObjectsOfType anywhere. They are obsolete in Unity 6; use FindFirstObjectByType, FindAnyObjectByType, or FindObjectsByType.
+- WARN: GameObject.Find or any Find*ObjectByType call in Update or other per-frame code. Look references up once (Awake or Start) and cache them, or use serialized references or events.
 - WARN: String concatenation with + in Update. Use StringBuilder or TextMeshPro.SetText.
 - WARN: new List, new Dictionary, or any heap allocation inside Update. Pre-allocate and reuse.
 - WARN: LINQ queries (Where, Select, OrderBy) in per-frame code. Use manual loops.
 - WARN: Instantiate/Destroy called frequently. Use object pooling instead.
-- WARN: Camera.main accessed repeatedly. Cache it: Camera.main uses FindGameObjectWithTag internally.
+- INFO: Camera.main is cached by the engine (since 2020.2), so it is cheap, but still cache it in a field when used many times per frame.
 - WARN: SendMessage or BroadcastMessage. Use direct references, events, or interfaces.
 - WARN: Resources.Load in runtime code. Use Addressables.LoadAssetAsync instead.
 - INFO: Use the Profiler to verify actual bottlenecks before optimizing.

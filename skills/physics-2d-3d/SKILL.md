@@ -18,6 +18,19 @@ standards-version: 1.10.0
 | Physics.Raycast | Physics2D.Raycast |
 | PhysicsMaterial | PhysicsMaterial2D |
 
+## Unity 6 API Renames
+
+Unity 6 renamed these Rigidbody and Rigidbody2D properties. The old names are obsolete (the API Updater rewrites them), so always generate the new ones:
+
+| Obsolete | Unity 6 |
+|----------|---------|
+| `velocity` | `linearVelocity` |
+| `drag` | `linearDamping` |
+| `angularDrag` | `angularDamping` |
+| `Rigidbody2D.isKinematic` | `Rigidbody2D.bodyType = RigidbodyType2D.Kinematic` |
+
+`Rigidbody.isKinematic` (3D) is still current.
+
 ## Rigidbody Types
 
 - **Dynamic**: Fully simulated. Responds to forces, gravity, and collisions. Use for players, projectiles, physics objects.
@@ -128,8 +141,8 @@ Bounce Combine: Average, Minimum, Maximum, Multiply
 
 ## Common Gotchas
 
-- A Collider without a Rigidbody is static. Moving it forces Unity to rebuild the physics world (expensive).
+- A Collider without a Rigidbody is static. Static colliders are cheap to move occasionally, but objects that move every frame should have a kinematic Rigidbody so the physics engine treats them as moving bodies (correct contacts and trigger events, and no per-move broadphase update of a static shape).
 - Triggers do not generate collision contacts. Use OnTriggerEnter, not OnCollisionEnter.
 - Scale affects collider size. Non-uniform scale on mesh colliders is especially problematic.
 - 2D and 3D physics are completely separate systems. A Rigidbody2D does not interact with a 3D Collider.
-- Rigidbody.isKinematic prevents all physics forces. Use it for scripted movement.
+- A kinematic body (`Rigidbody.isKinematic = true`, or `Rigidbody2D.bodyType = RigidbodyType2D.Kinematic`) ignores forces and gravity. Use it for scripted movement with `MovePosition` and `MoveRotation`.

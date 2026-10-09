@@ -90,19 +90,57 @@ public class MainMenuController : MonoBehaviour
 
 ### Runtime Data Binding (Unity 6)
 
-Bind game variables directly to UI elements without boilerplate:
+Runtime binding connects a property of a plain C# object (the data source) to a property of a visual element. Mark source members with `[CreateProperty]`, set the element's `dataSource`, and add a `DataBinding` with `SetBinding`. Implementing `INotifyBindablePropertyChanged` lets the binding system update only the bindings whose property changed:
 
 ```csharp
-[UxmlElement]
-public partial class HealthBar : VisualElement
-{
-    [UxmlAttribute]
-    public float CurrentHealth { get; set; }
+using System;
+using System.Runtime.CompilerServices;
+using Unity.Properties;
+using UnityEngine;
+using UnityEngine.UIElements;
 
-    [UxmlAttribute]
-    public float MaxHealth { get; set; }
+public class PlayerStats : INotifyBindablePropertyChanged
+{
+    float _health = 100f;
+
+    public event EventHandler<BindablePropertyChangedEventArgs> propertyChanged;
+
+    [CreateProperty]
+    public float Health
+    {
+        get => _health;
+        set
+        {
+            if (Mathf.Approximately(_health, value)) return;
+            _health = value;
+            Notify();
+        }
+    }
+
+    void Notify([CallerMemberName] string property = "") =>
+        propertyChanged?.Invoke(this, new BindablePropertyChangedEventArgs(property));
+}
+
+public class HealthHud : MonoBehaviour
+{
+    [SerializeField] UIDocument _document;
+
+    public PlayerStats Stats { get; } = new PlayerStats();
+
+    void OnEnable()
+    {
+        var bar = _document.rootVisualElement.Q<ProgressBar>("health-bar");
+        bar.dataSource = Stats;
+        bar.SetBinding(nameof(ProgressBar.value), new DataBinding
+        {
+            dataSourcePath = new PropertyPath(nameof(PlayerStats.Health)),
+            bindingMode = BindingMode.ToTarget
+        });
+    }
 }
 ```
+
+`dataSource` is inherited by child elements, so you can set it once on a container and bind many children. Bindings can also be authored in UI Builder or UXML. Use a ScriptableObject as the data source to share state between screens.
 
 ### Custom Controls with [UxmlElement]
 

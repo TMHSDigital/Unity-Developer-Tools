@@ -55,29 +55,30 @@ public class PlayerHealth : NetworkBehaviour
 
 ### RPCs
 
-Remote procedure calls for event-driven communication:
+Remote procedure calls for event-driven communication. NGO 2.x (the Unity 6 version) uses the universal `[Rpc]` attribute with a `SendTo` target; the method name must end in `Rpc`:
 
 ```csharp
-// Client requests the server to do something
-[ServerRpc]
-private void TakeDamageServerRpc(int amount)
+// Any client asks the server to apply damage; this body only runs on the server
+[Rpc(SendTo.Server)]
+private void TakeDamageRpc(int amount)
 {
-    if (!IsServer) return;
     _health.Value -= amount;
 
     if (_health.Value <= 0)
     {
-        DieClientRpc();
+        DieRpc();
     }
 }
 
-// Server tells all clients something happened
-[ClientRpc]
-private void DieClientRpc()
+// Server tells every client (and the host) that the player died
+[Rpc(SendTo.ClientsAndHost)]
+private void DieRpc()
 {
     PlayDeathAnimation();
 }
 ```
+
+The older `[ServerRpc]` / `[ClientRpc]` attributes still compile, but new code should use `[Rpc]`. Validate RPC arguments on the server, since any client can call a `SendTo.Server` RPC unless you check `RpcParams` or ownership.
 
 ### Ownership
 
@@ -100,7 +101,7 @@ Built on ECS/DOTS for massive-scale competitive games.
 - Client-side prediction out of the box
 - Interpolation and lag compensation
 - Ghost system for entity synchronization
-- Requires DOTS knowledge (IComponentData, SystemBase)
+- Requires DOTS knowledge (IComponentData, `ISystem`, and `SystemBase` where managed data is needed; see the ECS/DOTS skill)
 
 Best for: battle royales, MMO combat, large-scale simulations.
 
@@ -114,8 +115,11 @@ Third-party, cloud-based networking with excellent performance:
 - Excellent documentation and community
 
 ```csharp
+// NetworkInputData is your INetworkInput struct, filled in by the runner's OnInput callback
 public class NetworkedPlayer : NetworkBehaviour
 {
+    [SerializeField] private float _moveSpeed = 5f;
+
     [Networked] public float Health { get; set; }
     [Networked] public Vector3 Position { get; set; }
 

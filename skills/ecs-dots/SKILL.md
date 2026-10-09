@@ -65,14 +65,30 @@ public partial struct MoveSystem : ISystem
 
 #### SystemAPI.Query (Main Thread)
 
-Use for simple iteration on the main thread:
+Use for simple iteration on the main thread. Structural changes (creating or destroying entities, adding or removing components) are not allowed while a query is being iterated, so record them in an `EntityCommandBuffer` and let a command buffer system play them back:
 
 ```csharp
-foreach (var (health, entity) in SystemAPI.Query<RefRW<Health>>().WithEntityAccess())
+[BurstCompile]
+public partial struct DeathSystem : ISystem
 {
-    if (health.ValueRO.Current <= 0)
+    public void OnCreate(ref SystemState state)
     {
-        state.EntityManager.DestroyEntity(entity);
+        state.RequireForUpdate<EndSimulationEntityCommandBufferSystem.Singleton>();
+    }
+
+    [BurstCompile]
+    public void OnUpdate(ref SystemState state)
+    {
+        var ecb = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>()
+            .CreateCommandBuffer(state.WorldUnmanaged);
+
+        foreach (var (health, entity) in SystemAPI.Query<RefRO<Health>>().WithEntityAccess())
+        {
+            if (health.ValueRO.Current <= 0)
+            {
+                ecb.DestroyEntity(entity);
+            }
+        }
     }
 }
 ```
@@ -99,14 +115,14 @@ new DamageJob { DamageAmount = 10 }.ScheduleParallel();
 
 ## Deprecated ECS Patterns
 
-These patterns are deprecated and should not be used:
+Entities 1.3 marked these obsolete; they still work in 1.x but will be removed in a future major release:
 
 | Deprecated | Replacement |
 |-----------|-------------|
 | `Entities.ForEach` | `SystemAPI.Query` or `IJobEntity` |
-| `IAspect` | `ComponentLookup` and `EntityQuery` directly |
-| `SystemBase` (managed) | `ISystem` (unmanaged) for new code |
-| `ExclusiveEntityTransaction.EntityManager` | Use safe APIs instead |
+| `IAspect` | Components, `ComponentLookup`, and `EntityQuery` directly |
+
+`SystemBase` is not deprecated. Prefer `ISystem` for new code because it is unmanaged and can be Burst-compiled end to end; use `SystemBase` when a system needs managed data (managed components, class references, or main-thread UnityEngine APIs).
 
 ## Jobs System
 

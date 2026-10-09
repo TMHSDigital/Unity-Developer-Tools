@@ -78,9 +78,9 @@ public class PlayerMovementTests
 }
 ```
 
-### Async Tests with Awaitable
+### Async Tests
 
-Use async tests for modern Unity code:
+Test Framework 1.3 and later run `[Test]` methods declared `async Task`. The framework checks the task on each `Update` in Play Mode (or `EditorApplication.update` in Edit Mode), so the test body runs on the main thread and can await Unity code. Return `Task`, not `void`, or the runner cannot wait for the test. Failing log messages are only reported after the test completes.
 
 ```csharp
 [Test]

@@ -9,11 +9,11 @@ standards-version: 1.10.0
 # MonoBehaviour lifecycle rules
 
 - Awake: self-initialization only (cache own components, set defaults)
-- Start: cross-object initialization (find other objects, subscribe to events)
+- Start: cross-object initialization (resolve references to other objects, read their initial state)
 - Update: per-frame game logic (input polling, non-physics movement)
 - FixedUpdate: physics only (Rigidbody forces, velocity changes)
 - LateUpdate: post-Update logic (camera follow, UI updates after movement)
-- OnEnable/OnDisable: subscribe/unsubscribe from events
+- OnEnable/OnDisable: subscribe/unsubscribe from events, always as a pair, so disabled objects stop receiving them. If the event source is another object that may not exist yet in OnEnable, subscribe in Start and unsubscribe in OnDestroy instead
 - OnDestroy: final cleanup (unsubscribe static events, release resources)
 - NEVER put physics code in Update
 - NEVER put frame-dependent code in FixedUpdate
