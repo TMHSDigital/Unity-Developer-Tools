@@ -4,43 +4,23 @@ Thanks for helping improve this plugin. This document describes how to set up lo
 
 ## Getting Started
 
-1. **Fork** the repository on GitHub.
-2. **Clone** your fork:
-
-   ```bash
-   git clone https://github.com/<your-username>/Unity-Developer-Tools.git
-   cd Unity-Developer-Tools
-   ```
-
-3. **Create a branch** for your work:
-
-   ```bash
-   git checkout -b your-feature-name
-   ```
-
-## Local Development
-
-Install the plugin from your working copy so Cursor loads your changes.
-
-Symlink the repo into the local plugins directory: `~/.cursor/plugins/local/unity-developer-tools/` (create parent folders if needed).
-
-**Windows (PowerShell):**
-
-```powershell
-New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.cursor\plugins\local\unity-developer-tools" | Out-Null
-cmd /c mklink /J "$env:USERPROFILE\.cursor\plugins\local\unity-developer-tools\Unity-Developer-Tools" (Get-Location)
-```
-
-Adjust the final path if your clone lives elsewhere.
+Cursor loads local plugins from `~/.cursor/plugins/local/<name>` and skips symlinks that point outside that folder, so fork the repository and clone your fork straight into the local plugins folder:
 
 **macOS / Linux:**
 
 ```bash
-mkdir -p ~/.cursor/plugins/local/unity-developer-tools
-ln -s "$(pwd)" ~/.cursor/plugins/local/unity-developer-tools/Unity-Developer-Tools
+git clone https://github.com/<your-username>/Unity-Developer-Tools.git ~/.cursor/plugins/local/unity-developer-tools
+cd ~/.cursor/plugins/local/unity-developer-tools
 ```
 
-Restart Cursor after linking so it picks up the plugin.
+**Windows (PowerShell):**
+
+```powershell
+git clone https://github.com/<your-username>/Unity-Developer-Tools.git "$env:USERPROFILE\.cursor\plugins\local\unity-developer-tools"
+cd "$env:USERPROFILE\.cursor\plugins\local\unity-developer-tools"
+```
+
+Create a branch for your work (`git checkout -b feat/my-change`), then run **Developer: Reload Window** in Cursor after changing the manifest, rules, skills, or `mcp.json`.
 
 ## Plugin Structure
 
@@ -72,12 +52,12 @@ docs/
 - **`rules/`** - Cursor rules as `.mdc` files with YAML frontmatter.
 - **`snippets/`** - C#, HLSL/ShaderLab, and Visual Scripting examples organized by language.
 - **`templates/`** - starter project archetypes (2D platformer, 3D FPS, UI menu, ScriptableObject architecture, editor tool).
-- **`mcp-server/`** - Python MCP server exposing Unity-aware tools (script scaffolding, API lookup, shader patterns, platform info).
+- **`mcp-server/`** - Python MCP server exposing Unity-aware tools (script scaffolding, API lookup, shader patterns, platform info, project analysis), with tests in `mcp-server/tests/`.
 
 ## Adding a Skill
 
 1. Add a **kebab-case** directory under `skills/`, e.g. `skills/unity-example-flow/`.
-2. Create **`SKILL.md`** with YAML frontmatter including at least `title`, `description`, and `globs` (path-scoped patterns where applicable, e.g. `["**/*.cs"]`, `["**/*.shader", "**/*.hlsl"]`).
+2. Create **`SKILL.md`** with YAML frontmatter including `title`, `description`, `standards-version`, and `globs` (path-scoped patterns where applicable, e.g. `["**/*.cs"]`, `["**/*.shader", "**/*.hlsl"]`).
 3. In the body, include sections (use `##` headings) such as:
    - **Overview / Why** - when the skill applies and what problem it solves.
    - **Required Inputs** - what the agent or user must provide.
@@ -96,12 +76,14 @@ Match tone, formatting, and frontmatter style of existing skills in this repo.
 2. Start with YAML **frontmatter**:
    - `title` - one-line summary.
    - `description` - longer description for humans and tooling.
-   - `globs` - glob patterns scoping the rule (e.g. `["**/*.cs"]`, `["**/*.shader", "**/*.hlsl", "**/*.cginc", "**/*.shadergraph"]`).
-   - `alwaysApply` - `true` or `false` depending on whether the rule should apply globally.
+   - `globs` - glob patterns scoping the rule (e.g. `["**/*.cs"]`, `["**/*.shader", "**/*.hlsl", "**/*.cginc", "**/*.shadergraph"]`). Keep them narrow: `**/*.asset` matches every material, ScriptableObject, and settings file in a project.
+   - `alwaysApply: false`. Cursor ignores `globs` on `alwaysApply: true` rules and injects them into every conversation, so CI rejects that combination. Use `alwaysApply: true` only with `globs: []` for guidance that truly applies everywhere.
+   - `standards-version` - copy it from an existing rule.
 
 3. Below the frontmatter, write the rule content in Markdown (constraints, patterns, anti-patterns).
+4. Register the file under `rules` in `.cursor-plugin/plugin.json` and update the rule counts in the docs.
 
-Keep rules focused; prefer linking to a skill for long workflows.
+Keep rules focused; prefer linking to a skill for long workflows. Rules must not contradict the skills; if a skill covers the same topic, keep them in agreement.
 
 ## Adding a Snippet or Template
 
@@ -115,13 +97,43 @@ Keep rules focused; prefer linking to a skill for long workflows.
    python .github/scripts/compile_csharp.py --unity .unity-refs/Editor/Data --inputsystem .unity-refs/inputsystem/package
    ```
 
-5. Run the validators before opening a PR; CI checks JSON validity, plugin manifest completeness, file count consistency, em/en dash detection, and credential scanning.
+## Validation
+
+CI runs the same checks you can run locally:
+
+```bash
+# Manifest, data schemas, frontmatter and rule scoping, dashes, credentials, C# 9, templates, and counts
+python .github/scripts/validate_plugin.py
+# MCP server tests and lint
+pip install -r mcp-server/requirements-dev.txt
+python -m pytest mcp-server/tests
+ruff check mcp-server .github/scripts
+```
+
+`validate_plugin.py` also checks that every skill, rule, snippet, template, tool, and workflow count in `README.md`, `CLAUDE.md`, `AGENTS.md`, `.cursorrules`, and the docs matches the repo, so update those counts when you add or remove content.
+
+## Commit Conventions
+
+Releases are automated from commit messages on `main`:
+
+- `feat:` - new features (minor version bump)
+- `fix:`, `docs:`, `chore:`, `refactor:` - patch version bump
+- `feat!:` or a `BREAKING CHANGE` footer - major version bump
+
+Do not edit the `version` in `plugin.json`, the README version badge, or the `**Version:**` line in `CLAUDE.md`; the release workflow owns them.
+
+## Content Rules
+
+- No em dashes or en dashes; use hyphens or rewrite the sentence.
+- No hardcoded credentials, tokens, API keys, or passwords, including placeholders that look real.
+- Target Unity 6 (CI compiles against 6000.0 LTS) and modern APIs: Awaitable, `FindFirstObjectByType`, `HLSLPROGRAM`, UI Toolkit.
+- C# must compile as C# 9 (no file-scoped namespaces, no primary constructors).
 
 ## Pull Request Process
 
-1. **Update docs** if you change behavior, skill lists, snippet counts, or versioning (`README.md`, `CLAUDE.md`, `CHANGELOG.md`, `docs/ROADMAP.md` as appropriate).
-2. **Run validation** locally where possible. CI runs JSON schema checks, kebab-case enforcement, em/en dash detection, deprecated-API scans, and Python syntax checks for `mcp-server/`.
-3. **Open a PR** against `main` with a clear title and summary of changes. Use a conventional commit prefix (`feat:`, `fix:`, `docs:`, `chore:`).
+1. **Update docs** if you change behavior or content lists (`README.md`, `CLAUDE.md`, `AGENTS.md`, `docs/`).
+2. **Run validation** locally (see above).
+3. **Open a PR** against `main` with a clear title using a conventional commit prefix.
 4. **Respond to review** feedback; CI must pass before merge.
 
 ## Developer Certificate of Origin and Inbound License Grant

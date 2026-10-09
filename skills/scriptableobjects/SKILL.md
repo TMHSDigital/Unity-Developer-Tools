@@ -1,7 +1,7 @@
 ---
 title: ScriptableObject Architecture
 description: Data-driven design patterns using ScriptableObjects for events, variables, runtime sets, and configuration.
-globs: ["**/*.cs", "**/*.asset"]
+globs: ["**/*.cs", "**/ScriptableObjects/**/*.asset"]
 standards-version: 1.10.0
 ---
 

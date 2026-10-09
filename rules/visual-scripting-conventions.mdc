@@ -1,7 +1,7 @@
 ---
 title: Visual scripting conventions
 description: Best practices for Unity Visual Scripting
-globs: ["**/*.asset"]
+globs: ["**/*Script Graph*.asset", "**/*ScriptGraph*.asset", "**/*State Graph*.asset", "**/*StateGraph*.asset", "**/VisualScripting/**"]
 alwaysApply: false
 standards-version: 1.10.0
 ---

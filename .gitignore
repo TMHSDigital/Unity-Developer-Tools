@@ -49,10 +49,6 @@ RESEARCH.md
 
 # Release build artifacts (uploaded to GitHub Release assets, not committed to main; see DTD#55)
 *.zip
-# Phase 2c: release-doc-sync verification trigger (DTD#5)
-
-# DTD#27: release-doc-sync v1 migration verification
-
 
 # Unity reference assemblies for the C# compile check
 .unity-refs/

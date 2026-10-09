@@ -10,7 +10,6 @@ fetched data actually differs from what's on disk.
 """
 
 import json
-import os
 import sys
 import urllib.request
 import urllib.error

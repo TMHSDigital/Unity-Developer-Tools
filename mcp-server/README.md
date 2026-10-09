@@ -43,6 +43,29 @@ python server.py
 
 The server reads its data from `data/` next to `server.py`, so it can be started from any directory. Set `UNITY_DATA_PATH` to use a different data folder. If a data file is missing, the server exits with an error instead of returning empty results.
 
+### Other MCP clients
+
+The server speaks MCP over stdio, so any MCP client can run it. Install the requirements, then register `python <path-to-repo>/mcp-server/server.py` with an absolute path.
+
+Claude Code:
+```bash
+claude mcp add unity-dev-tools -- python /absolute/path/to/Unity-Developer-Tools/mcp-server/server.py
+```
+
+Clients configured with JSON (the same shape as the plugin's `mcp.json`):
+```json
+{
+  "mcpServers": {
+    "unity-dev-tools": {
+      "command": "python",
+      "args": ["/absolute/path/to/Unity-Developer-Tools/mcp-server/server.py"]
+    }
+  }
+}
+```
+
+Only the MCP tools carry over to other clients; the skills and rules are Cursor plugin content.
+
 ## Testing
 
 ```bash

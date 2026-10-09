@@ -29,7 +29,7 @@
 ---
 
 <p align="center">
-  18 skills &nbsp;&bull;&nbsp; 8 rules &nbsp;&bull;&nbsp; 5 MCP tools &nbsp;&bull;&nbsp; 20 snippets &nbsp;&bull;&nbsp; 5 templates
+  18 skills &nbsp;&bull;&nbsp; 8 rules &nbsp;&bull;&nbsp; 5 MCP tools &nbsp;&bull;&nbsp; 19 snippets &nbsp;&bull;&nbsp; 5 templates
 </p>
 
 Scaffold Unity scripts, look up APIs, generate shader patterns, detect render pipelines, and write optimized C# -- all from within Cursor's AI chat. Covers the full Unity development lifecycle from project setup to platform deployment.
@@ -158,9 +158,9 @@ Restart Cursor, then open **your Unity project** (not this repository) and ask t
 | **Serialization Rules** | Proper `[SerializeField]`, `[field: SerializeField]` for events |
 | **Shader Conventions** | HLSLPROGRAM over CGPROGRAM, URP-first shader patterns |
 | **Visual Scripting Conventions** | Graph naming, Subgraph usage, variable scoping |
-| **Security and Builds** | No credentials in code, IL2CPP stripping, signed packages |
+| **Security and Builds** | No secrets in code or shipped assets, IL2CPP and stripping for release, pinned packages |
 
-## Snippets (20)
+## Snippets (19)
 
 <details>
 <summary><strong>C# (15)</strong></summary>
@@ -170,7 +170,7 @@ Restart Cursor, then open **your Unity project** (not this repository) and ask t
 | Snippet | Description |
 |:--------|:------------|
 | `monobehaviour-template.cs` | Complete MonoBehaviour with lifecycle methods |
-| `singleton-pattern.cs` | Thread-safe singleton using FindFirstObjectByType |
+| `singleton-pattern.cs` | Lazy MonoBehaviour singleton using FindFirstObjectByType, safe with domain reload disabled |
 | `object-pool.cs` | Generic object pool with warm-up and auto-expand |
 | `scriptableobject-template.cs` | ScriptableObject with custom editor support |
 | `coroutine-pattern.cs` | Coroutine patterns with cancellation |
@@ -202,7 +202,7 @@ Restart Cursor, then open **your Unity project** (not this repository) and ask t
 </details>
 
 <details>
-<summary><strong>Visual Scripting (1)</strong></summary>
+<summary><strong>Visual Scripting (guide)</strong></summary>
 
 &nbsp;
 
@@ -284,12 +284,12 @@ Unity-Developer-Tools/
   mcp.json             MCP server registration for the plugin
   skills/              AI skill files (18 skills)
   rules/               Coding convention rules (8 rules)
-  snippets/            Code snippets -- C#, shaders (20 files)
+  snippets/            Code snippets -- C#, shaders, Visual Scripting guide
   templates/           Starter project templates (5 sets)
   mcp-server/          Python MCP server (5 tools) and data files
   docs/                Architecture, roadmap, contributing guide
   assets/              Logo and images
-  .github/             CI/CD workflows (5 workflows)
+  .github/             CI/CD workflows and validation scripts
 ```
 
 ## Roadmap

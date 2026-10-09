@@ -5,7 +5,7 @@ You are working on Unity Developer Tools, a Cursor IDE plugin for Unity game dev
 - `.cursor-plugin/plugin.json` - plugin manifest (version is auto-managed by CI)
 - `skills/` - 18 SKILL.md files (project setup, MonoBehaviour, ScriptableObjects, physics, UI, shaders, animation, audio, input, networking, editor scripting, performance, render pipelines, ECS/DOTS, visual scripting, testing, addressables, platform targeting)
 - `rules/` - 8 .mdc rule files (C# conventions, lifecycle, performance, naming, serialization, shaders, visual scripting, security)
-- `snippets/` - 20 code snippets organized by type (csharp, shaders, visual-scripting)
+- `snippets/` - 19 code snippets (csharp, shaders) plus a visual-scripting patterns guide
 - `templates/` - 5 starter templates (2d-platformer, 3d-fps, ui-menu-system, scriptableobject-architecture, editor-tool)
 - `mcp-server/` - Python FastMCP server with 5 tools and JSON data files
 - `docs/` - architecture, roadmap, contributing, getting started
@@ -47,7 +47,7 @@ Never manually edit the version in `plugin.json` or the README version badge. Th
 ## When editing the MCP server
 
 - All tool logic lives in `mcp-server/server.py`.
-- Placeholder modules in `mcp-server/tools/` maintain directory structure.
+- Tests live in `mcp-server/tests/` (pytest, including an MCP stdio smoke test).
 - Data files in `mcp-server/data/` provide reference databases.
 - Dependencies are listed in `mcp-server/requirements.txt`.
 

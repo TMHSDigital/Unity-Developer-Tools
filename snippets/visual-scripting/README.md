@@ -1,11 +1,11 @@
-# Visual Scripting Snippets
+# Visual Scripting Patterns
 
-Unity Visual Scripting uses graph-based assets (.asset files) that cannot be represented as text code snippets. This folder provides guidance on common graph patterns instead.
+Script Graphs and State Graphs are saved as Unity YAML assets (`.asset`) whose node data is serialized JSON. They are text, but not readable or hand-editable in any useful way, so this folder describes common graph patterns instead of shipping graph files. Build them in the graph editor from these outlines.
 
 ## Recommended Graph Patterns
 
 ### Movement Controller (Script Graph)
-- On Update event -> Get Input System Move value -> Multiply by speed -> Set Rigidbody velocity
+- On Update event -> Get Input System Move value -> Multiply by speed -> Set Rigidbody `linearVelocity` (Unity 6 renamed `velocity` to `linearVelocity`)
 - Use Object variables for component references (Rigidbody, Transform)
 
 ### Health System (Script Graph)
@@ -32,3 +32,4 @@ Unity Visual Scripting uses graph-based assets (.asset files) that cannot be rep
 - Keep each graph under 20-30 nodes; split large graphs into Subgraphs
 - Use Object variables instead of Find calls for component references
 - Create custom C# Units for math-heavy or performance-critical operations
+- Name graph assets with "Script Graph" or "State Graph" in the file name (Unity's default), or keep them under a `VisualScripting/` folder, so the plugin's visual scripting rule and skill attach to them

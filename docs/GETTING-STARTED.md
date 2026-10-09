@@ -56,8 +56,12 @@ Skills provide AI context when working with specific file types. For example:
 
 Rules are automatically applied based on file type:
 
-- **Always-on rules** (lifecycle, performance, naming): active on all `.cs` files
-- **Opt-in rules** (serialization, shaders, security): active when matching file globs
+- **C# rules** (conventions, lifecycle, performance, naming, serialization): attached when a `.cs` file is in context
+- **Shader rules**: attached for `.shader`, `.hlsl`, `.cginc`, and `.shadergraph` files
+- **Visual Scripting rules**: attached for Script Graph and State Graph assets
+- **Security and builds**: attached for `.cs` files, `Packages/manifest.json`, and `ProjectSettings.asset`
+
+No rule is always on, so non-Unity work in the same workspace does not pick up Unity guidance.
 
 ## Using Snippets
 

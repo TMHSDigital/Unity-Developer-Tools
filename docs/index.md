@@ -2,7 +2,7 @@
 
 **AI-powered development toolkit for Unity game development in Cursor IDE.**
 
-18 skills -- 8 rules -- 5 MCP tools -- 20 snippets -- 5 templates
+18 skills -- 8 rules -- 5 MCP tools -- 19 snippets -- 5 templates
 
 ---
 

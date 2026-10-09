@@ -31,18 +31,18 @@ This is a Cursor IDE plugin for Unity game development. It contains:
 
 ### `validate.yml` (runs on PR and push to main)
 
-8 parallel jobs:
+Each check job calls `.github/scripts/validate_plugin.py` (run it locally with no arguments to run every check):
 
 | Job | What it checks |
 |-----|----------------|
-| validate-json | JSON validity for plugin.json, mcp.json, and all MCP data files with full schema validation (required fields, types) |
-| validate-plugin-manifest | Required manifest fields, kebab-case name, semver version, author object, keywords array, skill/rule file existence |
-| validate-skills | SKILL.md YAML frontmatter (title, description, globs) and minimum body length |
-| validate-rules | .mdc YAML frontmatter (title, description, globs, alwaysApply) and minimum body length |
-| validate-content | Em/en dash detection, hardcoded credential scanning, snippet non-empty checks |
-| validate-templates | Each template directory has README.md and .cs files with minimum content |
-| validate-counts | Skill, rule, snippet, template counts in README match actual files on disk |
-| validate-python | pip install + py_compile for all MCP server Python files |
+| validate-json | `validate_plugin.py manifest data`: required manifest fields, kebab-case name, semver version, listed skills and rules exist (and every file on disk is listed), MCP registration, and schemas of all MCP data files |
+| validate-skills | `validate_plugin.py skills`: SKILL.md frontmatter (title, description, globs, standards-version) and minimum body length |
+| validate-rules | `validate_plugin.py rules`: .mdc frontmatter, and no `alwaysApply: true` combined with globs |
+| validate-content | `validate_plugin.py content`: em/en dashes, hardcoded credentials, C# 10+ syntax or advice, empty snippets |
+| validate-templates | `validate_plugin.py templates`: each template has README.md and .cs files |
+| validate-counts | `validate_plugin.py counts`: skill, rule, snippet, template, tool, and workflow counts in README, CLAUDE.md, AGENTS.md, .cursorrules, and docs |
+| validate-python | ruff lint and the pytest suite (including an MCP stdio smoke test) on Python 3.10 and 3.12 |
+| compile-csharp | Compiles every C# snippet and template against Unity 6 reference assemblies (player and editor passes) |
 
 ### `release.yml` (runs on push to main, ignores docs/md/github changes)
 
@@ -139,7 +139,7 @@ Marks issues/PRs as stale after inactivity and closes them after further inactiv
 ## MCP server
 
 - Entry point: `mcp-server/server.py`
-- Tool modules: `mcp-server/tools/` (placeholder modules)
+- Tests: `mcp-server/tests/` (`python -m pytest mcp-server/tests`)
 - Data: `mcp-server/data/` (JSON reference databases)
 - Dependencies: `mcp-server/requirements.txt`
 

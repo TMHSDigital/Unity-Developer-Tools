@@ -2,7 +2,7 @@
 title: Performance rules
 description: Performance optimization rules for Unity
 globs: ["**/*.cs"]
-alwaysApply: true
+alwaysApply: false
 standards-version: 1.10.0
 ---
 

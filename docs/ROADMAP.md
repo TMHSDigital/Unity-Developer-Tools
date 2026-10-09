@@ -1,6 +1,8 @@
 # Roadmap
 
-## Milestone 1 - Foundation (Current)
+Planned work is tracked in [GitHub issues](https://github.com/TMHSDigital/Unity-Developer-Tools/issues); this page groups it by theme.
+
+## Milestone 1 - Foundation (done, v1.0.0)
 
 - [x] Repository structure and plugin manifest
 - [x] All skill files (18 skills)
@@ -11,29 +13,31 @@
 - [x] Reference data (API, shaders, platforms, lifecycle, deprecated patterns)
 - [x] README and documentation
 
-## Milestone 2 - Intelligence
+## Milestone 2 - Correctness and project awareness (in progress)
 
-- [ ] Expand Unity API database to 500+ entries
-- [ ] Add Unity version detection and adaptation
-- [ ] Shader Graph-to-HLSL conversion guidance
-- [ ] Enhanced script scaffolding with project context awareness
-- [ ] Auto-detect render pipeline from project files
+- [x] Compile every C# snippet and template against Unity 6 in CI
+- [x] MCP server test suite with a stdio smoke test
+- [x] Plugin-relative MCP registration so the server works after install
+- [x] `analyze_project` tool: detect editor version, render pipeline, packages, and settings from project files
+- [x] Test Framework scaffolding (`scaffold_script` with `script_type="test"`)
+- [x] Rule scoping by file type, enforced in CI
+- [ ] Correct remaining skill examples and contradictions between skills and rules
+- [ ] Source or remove forward-looking Unity version claims
+- [ ] Use project context in `scaffold_script` and `shader_helper` (asmdef namespaces, active pipeline)
+- [ ] `check_code` tool for deprecated and anti-pattern Unity APIs
+- [ ] Version-accurate Unity API index for `lookup_api`
 
-## Milestone 3 - Advanced
+## Milestone 3 - Coverage
 
-- [ ] ECS/DOTS code generation patterns
-- [ ] Build pipeline automation helpers
-- [ ] Asset optimization recommendations
-- [ ] Cinemachine and Timeline skill files
-- [ ] VFX Graph skill file
-- [ ] AI/ML integration skill (Sentis, Muse)
+- [ ] Skill descriptions tuned for triggering, pointing at the MCP tools
+- [ ] New skills: Cinemachine 3, build automation and CI, save systems, AI Navigation, UGS multiplayer, VFX Graph, localization, XR
+- [ ] Snippet gaps: asmdefs, `.inputactions`, UXML/USS, Render Graph features, tests
+- [ ] Templates as a UPM package
+- [ ] Unity Editor bridge for compile errors, console, and tests (evaluate building vs integrating)
 
-## Milestone 4 - Polish
+## Milestone 4 - Distribution and community
 
-- [ ] Performance profiling integration
-- [ ] Unity Test Framework scaffolding
-- [ ] Package Manager recommendations engine
-- [ ] Cursor marketplace submission
-- [ ] Community template contributions
-- [ ] Localization skill file
-- [ ] Accessibility guidelines skill file
+- [ ] Publish the MCP server to PyPI and MCP registries
+- [ ] Cursor marketplace listing and a Claude Code plugin manifest
+- [ ] Community health files, issue and PR templates
+- [ ] README demo and before/after examples

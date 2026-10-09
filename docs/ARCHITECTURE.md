@@ -31,7 +31,7 @@ Rules enforce coding standards. Each .mdc file has:
 - Frontmatter: title, description, globs, alwaysApply
 - Body: specific do/don't rules
 
-Rules with `alwaysApply: true` are active on every matching file. Rules with `alwaysApply: false` are activated when the file matches the glob pattern.
+All rules use `alwaysApply: false` and are attached when a file in context matches their `globs`. Cursor ignores `globs` on `alwaysApply: true` rules and applies them everywhere, so CI rejects that combination.
 
 ### Snippets (snippets/*)
 

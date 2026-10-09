@@ -6,9 +6,9 @@ Project documentation for Claude Code and AI assistants working on this reposito
 
 ## Project Overview
 
-Unity Developer Tools is a Cursor IDE plugin for Unity game development. It includes 18 skills, 8 rules, 20 code snippets across C# / HLSL / Visual Scripting, 5 starter templates, and a companion Python MCP server with 5 tools for script scaffolding, Unity API lookup, shader patterns, platform information, and project analysis.
+Unity Developer Tools is a Cursor IDE plugin for Unity game development. It includes 18 skills, 8 rules, 19 code snippets across C# and HLSL, a Visual Scripting patterns guide, 5 starter templates, and a companion Python MCP server with 5 tools for script scaffolding, Unity API lookup, shader patterns, platform information, and project analysis.
 
-**Works with:** Cursor (plugin), Claude Code (terminal and in-editor), and any MCP-compatible client.
+**Works with:** Cursor (full plugin: skills, rules, and MCP server). The MCP server also runs in Claude Code and any other MCP client; see `mcp-server/README.md`.
 
 This is a monorepo. Skills, rules, snippets, templates, and the companion MCP server live in the same repository because Unity development crosses all of those layers in a single workflow.
 
@@ -74,8 +74,8 @@ Unity-Developer-Tools/
 | `naming-conventions.mdc` | `**/*.cs` | Naming conventions for Unity C# code |
 | `serialization-rules.mdc` | `**/*.cs` | Unity serialization best practices (`[SerializeField]`, ISerializationCallbackReceiver) |
 | `shader-conventions.mdc` | `**/*.shader`, `**/*.hlsl`, `**/*.cginc`, `**/*.shadergraph` | Conventions for Unity shader development (HLSLPROGRAM, SRP Batcher) |
-| `visual-scripting-conventions.mdc` | `**/*.asset` | Best practices for Unity Visual Scripting graphs |
-| `security-and-builds.mdc` | `**/*.cs`, `**/*.json`, `**/*.asset` | Security and build configuration rules (no hardcoded secrets, build target hygiene) |
+| `visual-scripting-conventions.mdc` | Script Graph and State Graph assets, `**/VisualScripting/**` | Best practices for Unity Visual Scripting graphs |
+| `security-and-builds.mdc` | `**/*.cs`, `Packages/manifest.json`, `ProjectSettings/ProjectSettings.asset` | Security and build configuration rules (no hardcoded secrets, build target hygiene) |
 
 ## MCP Server (5 tools)
 
@@ -118,9 +118,16 @@ python server.py
 ### Running validation
 
 ```bash
-# JSON schema and content-count checks (run by CI)
+# Everything the Validate workflow checks except the C# compile and Python tests
 python .github/scripts/validate_plugin.py
+# One or more checks: data, manifest, skills, rules, content, templates, counts
+python .github/scripts/validate_plugin.py rules counts
+# MCP server tests and lint
+python -m pytest mcp-server/tests
+ruff check mcp-server .github/scripts
 ```
+
+The C# compile check needs the Unity reference assemblies; see `CONTRIBUTING.md`.
 
 ## Release Workflow
 
@@ -139,7 +146,7 @@ Do not hand-edit `plugin.json` `version`, the README badge, or the `**Version:**
 - **No em dashes.** Use regular dashes (`-`) or rewrite the sentence. CI flags em and en dashes in markdown.
 - **No hardcoded credentials.** Use environment variables, `EditorUserSettings`, or a secrets store. CI flags suspicious patterns.
 - **Skill frontmatter:** `title`, `description`, `globs` (when path-scoped), and `standards-version`.
-- **Rule frontmatter:** `title`, `description`, `globs`, `alwaysApply`, and `standards-version`.
+- **Rule frontmatter:** `title`, `description`, `globs`, `alwaysApply`, and `standards-version`. Scope rules with `globs` and `alwaysApply: false`; Cursor ignores globs on `alwaysApply: true` rules, and CI rejects that combination.
 - **Snippets:** must compile against Unity 6.x and use modern APIs (Awaitable, `FindFirstObjectByType`, UI Toolkit). No placeholder credentials.
 - **Templates:** every template needs a top-level `README.md` describing usage, scripts, and any project setup notes (assembly definitions, package dependencies).
 - **MCP tool naming:** snake_case Python functions decorated with `@mcp.tool()`.

@@ -1,7 +1,7 @@
 ---
 title: Security and builds
 description: Security and build configuration rules
-globs: ["**/*.cs", "**/*.json", "**/*.asset"]
+globs: ["**/*.cs", "**/Packages/manifest.json", "**/ProjectSettings/ProjectSettings.asset"]
 alwaysApply: false
 standards-version: 1.10.0
 ---
@@ -9,12 +9,12 @@ standards-version: 1.10.0
 # Security and build rules
 
 - Never commit API keys, tokens, or secrets to the repository
-- Use ScriptableObjects or environment variables for configuration
+- Keep secrets out of the build: ScriptableObjects, Resources, and StreamingAssets ship inside the player and can be extracted. Fetch secrets from your backend at runtime; keep editor-only credentials in environment variables or `EditorUserSettings`
 - Strip debug symbols and logging in release builds
-- Use IL2CPP or CoreCLR for release builds (harder to reverse engineer than Mono)
+- Use IL2CPP for release builds (harder to reverse engineer than Mono, which ships readable IL)
 - Enable code stripping to reduce build size
 - Encrypt sensitive save data; never store plaintext passwords
 - Validate server-side in multiplayer; never trust client data
 - Use `Debug.unityLogger.logEnabled = false` in production or wrap in #if UNITY_EDITOR
 - Obfuscate sensitive strings if targeting platforms where decompilation is a risk
-- Verify package trust indicators for third-party packages (signed packages in Unity 6.3+)
+- Install third-party packages only from sources you trust, pin their versions in `Packages/manifest.json`, and review updates before accepting them
