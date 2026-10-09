@@ -185,6 +185,7 @@ DASH_EXTS = (".md", ".mdc", ".cs", ".json", ".py", ".shader", ".hlsl", ".uxml", 
 CREDENTIAL = re.compile(
     r"""password\s*=\s*["'][^"']+|api_key\s*=\s*["'][^"']+|token\s*=\s*["'][A-Za-z0-9]+""", re.IGNORECASE
 )
+DASHES = re.compile("[" + chr(0x2013) + chr(0x2014) + "]")  # en and em dash
 CREDENTIAL_ALLOW = ("example", "placeholder", "mock", "destroyCancellationToken")
 FILE_SCOPED_NAMESPACE = re.compile(r"^\s*namespace\s+[A-Za-z0-9_.]+\s*;", re.MULTILINE)
 CSHARP10_ADVICE = re.compile(r"\b(use|prefer)\s+(file-scoped namespaces|primary constructors)", re.IGNORECASE)
@@ -198,7 +199,7 @@ def check_content():
             continue
         text = read(rel)
         for n, line in enumerate(text.splitlines(), 1):
-            if "–" in line or "—" in line:
+            if DASHES.search(line):
                 errors.append(f"{rel}:{n}: em or en dash; use a hyphen or rewrite")
             if rel.endswith((".cs", ".py", ".json")) and CREDENTIAL.search(line):
                 if not any(word in line for word in CREDENTIAL_ALLOW):
