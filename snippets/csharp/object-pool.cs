@@ -1,6 +1,6 @@
 // Object Pool Pattern
 // Reuse objects instead of Instantiate/Destroy to reduce GC pressure.
-// Uses Unity's built-in ObjectPool<T> for thread-safe pooling.
+// Uses Unity's built-in ObjectPool<T>. Like most Unity APIs it is main-thread only (not thread-safe).
 
 using UnityEngine;
 using UnityEngine.Pool;

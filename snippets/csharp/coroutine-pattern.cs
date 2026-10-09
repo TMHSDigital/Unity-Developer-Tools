@@ -32,16 +32,23 @@ namespace MyGame
             }
         }
 
+        // Loop inside one coroutine so _spawnCoroutine always refers to the running routine.
+        // Starting a new coroutine per wave would leave StopSpawning() holding a stale handle.
         private IEnumerator SpawnWaveRoutine()
         {
-            for (int i = 0; i < _waveSize; i++)
-            {
-                SpawnEnemy();
-                yield return new WaitForSeconds(_spawnInterval);
-            }
+            var spawnDelay = new WaitForSeconds(_spawnInterval);
+            var waveDelay = new WaitForSeconds(3f);
 
-            yield return new WaitForSeconds(3f);
-            StartCoroutine(SpawnWaveRoutine());
+            while (true)
+            {
+                for (int i = 0; i < _waveSize; i++)
+                {
+                    SpawnEnemy();
+                    yield return spawnDelay;
+                }
+
+                yield return waveDelay;
+            }
         }
 
         private void SpawnEnemy()

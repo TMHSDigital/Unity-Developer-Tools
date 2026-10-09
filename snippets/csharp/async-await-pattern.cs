@@ -3,6 +3,7 @@
 // CRITICAL: An Awaitable instance must never be awaited more than once.
 // After the first await, the instance returns to the internal pool.
 
+using System.Threading;
 using UnityEngine;
 
 namespace MyGame
@@ -12,22 +13,27 @@ namespace MyGame
         [SerializeField] private float _fadeTime = 1f;
         [SerializeField] private CanvasGroup _canvasGroup;
 
-        // Basic delay
+        // Basic delay. async void is acceptable for Unity event methods; exceptions are still logged.
+        // The token stops the wait if this object is destroyed first.
         private async void Start()
         {
-            await Awaitable.WaitForSecondsAsync(2f);
+            await Awaitable.WaitForSecondsAsync(2f, destroyCancellationToken);
             Debug.Log("Two seconds passed");
         }
 
-        // Fade with cancellation support
-        public async Awaitable FadeOutAsync()
+        // Fade with cancellation support. Pass a token, or omit it to stop when this object is destroyed.
+        // Cancelling throws OperationCanceledException at the next await.
+        public async Awaitable FadeOutAsync(CancellationToken cancellationToken = default)
         {
+            if (!cancellationToken.CanBeCanceled)
+                cancellationToken = destroyCancellationToken;
+
             float elapsed = 0f;
             while (elapsed < _fadeTime)
             {
                 elapsed += Time.deltaTime;
                 _canvasGroup.alpha = 1f - (elapsed / _fadeTime);
-                await Awaitable.NextFrameAsync();
+                await Awaitable.NextFrameAsync(cancellationToken);
             }
             _canvasGroup.alpha = 0f;
         }

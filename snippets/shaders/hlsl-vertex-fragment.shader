@@ -57,7 +57,10 @@ Shader "Custom/VertexFragment"
 
             half4 frag(Varyings input) : SV_Target
             {
-                half fresnel = pow(1.0 - saturate(dot(input.normalWS, input.viewDirWS)), _FresnelPower);
+                // Interpolation shortens vectors, so renormalize per pixel
+                half3 normalWS = normalize(input.normalWS);
+                half3 viewDirWS = normalize(input.viewDirWS);
+                half fresnel = pow(1.0 - saturate(dot(normalWS, viewDirWS)), _FresnelPower);
                 half3 finalColor = lerp(_Color.rgb, half3(1, 1, 1), fresnel);
                 return half4(finalColor, 1.0);
             }

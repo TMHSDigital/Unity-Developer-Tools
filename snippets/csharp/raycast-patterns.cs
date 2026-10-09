@@ -8,6 +8,7 @@ namespace MyGame
     public class RaycastExamples : MonoBehaviour
     {
         [SerializeField] private LayerMask _interactableLayer;
+        [SerializeField] private LayerMask _groundLayer;
         [SerializeField] private float _interactRange = 3f;
         [SerializeField] private float _groundCheckDistance = 1.1f;
 
@@ -31,7 +32,7 @@ namespace MyGame
         {
             return Physics.Raycast(
                 transform.position, Vector3.down,
-                _groundCheckDistance, _interactableLayer
+                _groundCheckDistance, _groundLayer
             );
         }
 
