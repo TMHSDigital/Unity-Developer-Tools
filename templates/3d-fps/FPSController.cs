@@ -22,24 +22,29 @@ namespace FPS3D
         private Vector2 _lookInput;
         private float _verticalVelocity;
         private float _cameraPitch;
-        private bool _isSprinting;
+        private InputAction _sprintAction;
 
         private void Awake()
         {
             _controller = GetComponent<CharacterController>();
+
+            // Player Input's Send Messages mode does not report button releases,
+            // so held buttons are read directly from the project-wide actions
+            _sprintAction = InputSystem.actions.FindAction("Player/Sprint");
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
 
         private void Update()
         {
-            HandleLook();
+            // Mouse delta is not scaled by time, so skip look while the game is paused (timeScale 0)
+            if (Time.timeScale > 0f)
+                HandleLook();
             HandleMovement();
         }
 
         public void OnMove(InputValue value) => _moveInput = value.Get<Vector2>();
         public void OnLook(InputValue value) => _lookInput = value.Get<Vector2>();
-        public void OnSprint(InputValue value) => _isSprinting = value.isPressed;
 
         public void OnJump(InputValue value)
         {
@@ -63,7 +68,8 @@ namespace FPS3D
             if (_controller.isGrounded && _verticalVelocity < 0f)
                 _verticalVelocity = -2f;
 
-            float speed = _isSprinting ? _moveSpeed * _sprintMultiplier : _moveSpeed;
+            bool isSprinting = _sprintAction != null && _sprintAction.IsPressed();
+            float speed = isSprinting ? _moveSpeed * _sprintMultiplier : _moveSpeed;
             Vector3 move = transform.right * _moveInput.x + transform.forward * _moveInput.y;
             _controller.Move(move * speed * Time.deltaTime);
 

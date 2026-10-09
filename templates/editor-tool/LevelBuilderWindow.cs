@@ -43,7 +43,9 @@ namespace MyGame.Editor
             // Prefab selector
             _prefabField = new UnityEditor.UIElements.ObjectField("Prefab")
             {
-                objectType = typeof(GameObject)
+                objectType = typeof(GameObject),
+                // Scene objects are not prefabs; InstantiatePrefab would return null for them
+                allowSceneObjects = false
             };
             _prefabField.RegisterValueChangedCallback(e =>
             {
@@ -114,10 +116,15 @@ namespace MyGame.Editor
 
         private void PlacePrefab(Vector3 position)
         {
-            var instance = (GameObject)PrefabUtility.InstantiatePrefab(_selectedPrefab);
+            if (PrefabUtility.InstantiatePrefab(_selectedPrefab) is not GameObject instance)
+            {
+                Debug.LogWarning($"{_selectedPrefab.name} is not a prefab asset.");
+                return;
+            }
+
             instance.transform.position = position;
-            Selection.activeGameObject = instance;
             Undo.RegisterCreatedObjectUndo(instance, "Place Prefab");
+            Selection.activeGameObject = instance;
             UpdateStatus();
         }
 

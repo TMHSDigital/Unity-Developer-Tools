@@ -218,9 +218,9 @@ Restart Cursor, then open **your Unity project** (not this repository) and ask t
 |:---------|:------------|
 | **2D Platformer** | Player controller with new Input System, camera follow, game manager |
 | **3D FPS** | First-person controller, weapon system, game manager |
-| **UI Menu System** | UI Toolkit menus with settings persistence |
+| **UI Menu System** | UI Toolkit main menu and settings (UXML/USS included) with persistence |
 | **ScriptableObject Architecture** | Event system, float variables, runtime sets -- Ryan Hipple pattern |
-| **Editor Tool** | Level builder window with UI Toolkit and Scene View integration |
+| **Editor Tool** | UI Toolkit window that places prefabs at the Scene view center with grid snapping and Undo |
 
 ## MCP Server
 

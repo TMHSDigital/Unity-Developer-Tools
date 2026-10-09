@@ -14,11 +14,13 @@ namespace Platformer2D
         [SerializeField] private float _jumpBufferTime = 0.1f;
 
         [Header("Ground Check")]
+        [Tooltip("Optional child at the feet. If empty, the bottom of the collider is used.")]
         [SerializeField] private Transform _groundCheck;
         [SerializeField] private float _groundCheckRadius = 0.2f;
         [SerializeField] private LayerMask _groundLayer;
 
         private Rigidbody2D _rb;
+        private Collider2D _collider;
         private SpriteRenderer _sprite;
         private Animator _animator;
 
@@ -30,6 +32,7 @@ namespace Platformer2D
         private void Awake()
         {
             _rb = GetComponent<Rigidbody2D>();
+            _collider = GetComponent<Collider2D>();
             TryGetComponent(out _sprite);
             TryGetComponent(out _animator);
         }
@@ -63,9 +66,17 @@ namespace Platformer2D
 
         private void CheckGround()
         {
-            _isGrounded = Physics2D.OverlapCircle(
-                _groundCheck.position, _groundCheckRadius, _groundLayer
-            );
+            _isGrounded = Physics2D.OverlapCircle(GroundCheckPoint, _groundCheckRadius, _groundLayer);
+        }
+
+        private Vector2 GroundCheckPoint
+        {
+            get
+            {
+                if (_groundCheck) return _groundCheck.position;
+                Bounds bounds = _collider.bounds;
+                return new Vector2(bounds.center.x, bounds.min.y);
+            }
         }
 
         private void HandleCoyoteTime()
@@ -109,11 +120,9 @@ namespace Platformer2D
 
         private void OnDrawGizmosSelected()
         {
-            if (_groundCheck)
-            {
-                Gizmos.color = Color.green;
-                Gizmos.DrawWireSphere(_groundCheck.position, _groundCheckRadius);
-            }
+            if (!_groundCheck && !TryGetComponent(out _collider)) return;
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(GroundCheckPoint, _groundCheckRadius);
         }
     }
 }

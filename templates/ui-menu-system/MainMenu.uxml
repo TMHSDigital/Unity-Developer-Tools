@@ -1,0 +1,20 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <Style src="MainMenu.uss" />
+    <ui:VisualElement name="menu-root" class="menu-root">
+        <ui:VisualElement name="main-menu" class="panel">
+            <ui:Label text="My Game" class="title" />
+            <ui:Button name="play-button" text="Play" class="menu-button" />
+            <ui:Button name="settings-button" text="Settings" class="menu-button" />
+            <ui:Button name="quit-button" text="Quit" class="menu-button" />
+        </ui:VisualElement>
+        <ui:VisualElement name="settings-panel" class="panel">
+            <ui:Label text="Settings" class="title" />
+            <ui:Slider name="master-volume" label="Master Volume" low-value="0" high-value="1" value="0.8" />
+            <ui:Slider name="music-volume" label="Music Volume" low-value="0" high-value="1" value="0.8" />
+            <ui:Slider name="sfx-volume" label="SFX Volume" low-value="0" high-value="1" value="0.8" />
+            <ui:DropdownField name="quality-dropdown" label="Quality" />
+            <ui:Toggle name="fullscreen-toggle" label="Fullscreen" />
+            <ui:Button name="back-button" text="Back" class="menu-button" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

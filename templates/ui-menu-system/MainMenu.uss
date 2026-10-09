@@ -1,0 +1,27 @@
+.menu-root {
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.panel {
+    width: 420px;
+    padding: 24px;
+    border-radius: 8px;
+    background-color: rgb(32, 34, 40);
+}
+
+.title {
+    font-size: 32px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    color: rgb(240, 240, 240);
+    margin-bottom: 16px;
+}
+
+.menu-button {
+    height: 44px;
+    margin-top: 8px;
+    font-size: 18px;
+}

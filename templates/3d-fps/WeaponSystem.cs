@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -20,7 +21,7 @@ namespace FPS3D
         private int _currentAmmo;
         private float _nextFireTime;
         private bool _isReloading;
-        private bool _fireHeld;
+        private InputAction _attackAction;
         private Camera _mainCam;
 
         public int CurrentAmmo => _currentAmmo;
@@ -30,25 +31,28 @@ namespace FPS3D
         private void Awake()
         {
             _mainCam = Camera.main;
+
+            // Player Input's Send Messages mode does not report button releases,
+            // so the held fire button is read directly from the project-wide actions
+            _attackAction = InputSystem.actions.FindAction("Player/Attack", throwIfNotFound: true);
             _currentAmmo = _maxAmmo;
         }
 
         private void Update()
         {
-            if (_fireHeld && !_isReloading && Time.time >= _nextFireTime && _currentAmmo > 0)
+            if (Time.timeScale <= 0f) return;
+
+            if (_attackAction.IsPressed() && !_isReloading && Time.time >= _nextFireTime && _currentAmmo > 0)
             {
                 Fire();
             }
         }
 
-        public void OnFire(InputValue value) => _fireHeld = value.isPressed;
-
-        public async void OnReload(InputValue value)
+        // Needs a "Reload" action added to the Player action map (see README)
+        public void OnReload(InputValue value)
         {
-            if (value.isPressed && !_isReloading && _currentAmmo < _maxAmmo)
-            {
-                await ReloadAsync();
-            }
+            if (value.isPressed)
+                StartReload();
         }
 
         private void Fire()
@@ -70,16 +74,29 @@ namespace FPS3D
 
             if (_currentAmmo <= 0)
             {
-                _ = ReloadAsync();
+                StartReload();
             }
         }
 
-        private async Awaitable ReloadAsync()
+        // async void is the entry point so Unity logs any exception; cancellation is expected
+        private async void StartReload()
         {
+            if (_isReloading || _currentAmmo >= _maxAmmo) return;
+
             _isReloading = true;
-            await Awaitable.WaitForSecondsAsync(_reloadTime, destroyCancellationToken);
-            _currentAmmo = _maxAmmo;
-            _isReloading = false;
+            try
+            {
+                await Awaitable.WaitForSecondsAsync(_reloadTime, destroyCancellationToken);
+                _currentAmmo = _maxAmmo;
+            }
+            catch (OperationCanceledException)
+            {
+                // The weapon was destroyed mid-reload
+            }
+            finally
+            {
+                _isReloading = false;
+            }
         }
     }
 

@@ -8,8 +8,21 @@ namespace SOArchitecture
         [SerializeField] private GameEvent _event;
         [SerializeField] private UnityEvent _response;
 
-        private void OnEnable() => _event.RegisterListener(this);
-        private void OnDisable() => _event.UnregisterListener(this);
+        private void OnEnable()
+        {
+            if (_event == null)
+            {
+                Debug.LogWarning($"{name}: GameEventListener has no GameEvent assigned.", this);
+                return;
+            }
+            _event.RegisterListener(this);
+        }
+
+        private void OnDisable()
+        {
+            if (_event != null)
+                _event.UnregisterListener(this);
+        }
 
         public void OnEventRaised() => _response.Invoke();
     }
