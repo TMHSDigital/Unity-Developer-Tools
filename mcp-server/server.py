@@ -217,15 +217,7 @@ namespace {namespace}.Tests
 }
 
 
-CSHARP_KEYWORDS = frozenset("""
-abstract as base bool break byte case catch char checked class const continue
-decimal default delegate do double else enum event explicit extern false finally
-fixed float for foreach goto if implicit in int interface internal is lock long
-namespace new null object operator out override params private protected public
-readonly ref return sbyte sealed short sizeof stackalloc static string struct
-switch this throw true try typeof uint ulong unchecked unsafe ushort using
-virtual void volatile while
-""".split())
+CSHARP_KEYWORDS = frozenset(["abstract", "as", "base", "bool", "break", "byte", "case", "catch", "char", "checked", "class", "const", "continue", "decimal", "default", "delegate", "do", "double", "else", "enum", "event", "explicit", "extern", "false", "finally", "fixed", "float", "for", "foreach", "goto", "if", "implicit", "in", "int", "interface", "internal", "is", "lock", "long", "namespace", "new", "null", "object", "operator", "out", "override", "params", "private", "protected", "public", "readonly", "ref", "return", "sbyte", "sealed", "short", "sizeof", "stackalloc", "static", "string", "struct", "switch", "this", "throw", "true", "try", "typeof", "uint", "ulong", "unchecked", "unsafe", "ushort", "using", "virtual", "void", "volatile", "while"])
 
 _IDENTIFIER = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
 
@@ -443,9 +435,8 @@ def shader_helper(
     results = []
 
     for entry in shader_data:
-        if effect_lower in entry.get("effect", "").lower():
-            if pipeline in entry.get("pipelines", []):
-                results.append(entry)
+        if effect_lower in entry.get("effect", "").lower() and pipeline in entry.get("pipelines", []):
+            results.append(entry)
 
     if not results:
         effects = ", ".join(e.get("effect", "").lower() for e in shader_data)
@@ -590,13 +581,13 @@ def _is_text_yaml(text: str) -> bool:
 
 
 def _yaml_scalar(text: str, key: str) -> str | None:
-    match = re.search(rf"^[ \t]*{re.escape(key)}:[ \t]*(.*?)\r?$", text, re.M)
+    match = re.search(rf"^[ \t]*{re.escape(key)}:[ \t]*(.*?)\r?$", text, re.MULTILINE)
     return match.group(1).strip() if match else None
 
 
 def _yaml_platform_map(text: str, key: str) -> dict:
     """Read a Unity per-platform map such as scriptingBackend: {Standalone: 1}."""
-    match = re.search(rf"^([ \t]*){re.escape(key)}:[ \t]*\r?\n((?:\1[ \t]+.*\n?)*)", text, re.M)
+    match = re.search(rf"^([ \t]*){re.escape(key)}:[ \t]*\r?\n((?:\1[ \t]+.*\n?)*)", text, re.MULTILINE)
     if not match:
         return {}
     result = {}
@@ -622,7 +613,7 @@ def _find_assets_by_guid(project: Path, guids: set) -> dict:
         if count >= _MAX_META_SCAN or len(found) == len(guids):
             break
         text = _read_text(meta) or ""
-        match = re.search(r"^guid: ([0-9a-f]{32})", text, re.M)
+        match = re.search(r"^guid: ([0-9a-f]{32})", text, re.MULTILINE)
         if match and match.group(1) in guids:
             found[match.group(1)] = meta.with_suffix("")
     return found

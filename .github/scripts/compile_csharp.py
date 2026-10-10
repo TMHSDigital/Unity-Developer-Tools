@@ -71,7 +71,7 @@ def compile_unit(csc, name, sources, refs, defines, out_dir, extra=()) -> bool:
         *[str(s) for s in sources],
     ]
     rsp.write_text("\n".join(f'"{a}"' if " " in a else a for a in args), encoding="utf-8")
-    result = subprocess.run([*csc, f"@{rsp}"], capture_output=True, text=True)
+    result = subprocess.run([*csc, f"@{rsp}"], capture_output=True, text=True, check=False)
     if result.returncode != 0:
         print(f"FAIL {name}")
         for line in (result.stdout + result.stderr).splitlines():

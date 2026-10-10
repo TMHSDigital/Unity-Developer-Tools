@@ -6,7 +6,6 @@ import sys
 from pathlib import Path
 
 import pytest
-
 import server
 
 SERVER_DIR = Path(__file__).resolve().parent.parent
@@ -220,13 +219,12 @@ def test_stdio_server_lists_and_calls_tools(tmp_path):
     )
 
     async def run():
-        async with stdio_client(params) as (read, write):
-            async with ClientSession(read, write) as session:
-                await session.initialize()
-                tools = await session.list_tools()
-                names = {tool.name for tool in tools.tools}
-                result = await session.call_tool("platform_info", {"platform": "ios"})
-                return names, result.content[0].text
+        async with stdio_client(params) as (read, write), ClientSession(read, write) as session:
+            await session.initialize()
+            tools = await session.list_tools()
+            names = {tool.name for tool in tools.tools}
+            result = await session.call_tool("platform_info", {"platform": "ios"})
+            return names, result.content[0].text
 
     names, text = asyncio.run(asyncio.wait_for(run(), timeout=60))
     assert names == {"scaffold_script", "lookup_api", "shader_helper", "platform_info", "analyze_project"}

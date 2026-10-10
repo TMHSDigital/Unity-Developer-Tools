@@ -201,14 +201,20 @@ def check_content():
         for n, line in enumerate(text.splitlines(), 1):
             if DASHES.search(line):
                 errors.append(f"{rel}:{n}: em or en dash; use a hyphen or rewrite")
-            if rel.endswith((".cs", ".py", ".json")) and CREDENTIAL.search(line):
-                if not any(word in line for word in CREDENTIAL_ALLOW):
-                    errors.append(f"{rel}:{n}: possible hardcoded credential")
+            if (
+                rel.endswith((".cs", ".py", ".json"))
+                and CREDENTIAL.search(line)
+                and not any(word in line for word in CREDENTIAL_ALLOW)
+            ):
+                errors.append(f"{rel}:{n}: possible hardcoded credential")
         if rel.endswith(".cs") and FILE_SCOPED_NAMESPACE.search(text):
             errors.append(f"{rel}: file-scoped namespaces are C# 10; Unity 6 compiles C# 9")
-        if rel.endswith((".md", ".mdc")) and rel.split("/")[0] in ("skills", "rules", "snippets", "templates"):
-            if CSHARP10_ADVICE.search(text):
-                errors.append(f"{rel}: recommends C# 10+ features that Unity 6 cannot compile")
+        if (
+            rel.endswith((".md", ".mdc"))
+            and rel.split("/")[0] in ("skills", "rules", "snippets", "templates")
+            and CSHARP10_ADVICE.search(text)
+        ):
+            errors.append(f"{rel}: recommends C# 10+ features that Unity 6 cannot compile")
 
     snippets = [p for p in (ROOT / "snippets").rglob("*") if p.is_file() and p.name != "README.md"]
     for p in snippets:
