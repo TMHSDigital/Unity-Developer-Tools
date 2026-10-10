@@ -1,7 +1,7 @@
 // Basic Unlit Shader for URP
 // Renders a textured object with no lighting.
 // SRP Batcher compatible via CBUFFER.
-// Uses HLSLPROGRAM (not the deprecated CGPROGRAM).
+// Uses HLSLPROGRAM rather than CGPROGRAM so it stays SRP Batcher compatible.
 
 Shader "Custom/UnlitBasic"
 {

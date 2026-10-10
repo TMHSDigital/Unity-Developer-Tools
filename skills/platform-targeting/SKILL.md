@@ -64,7 +64,7 @@ Use preprocessor directives for platform-specific code:
 |---------|----------|-------------|------------|
 | **IL2CPP** | Production builds, all platforms | Excellent (AOT compiled) | Slower |
 | **Mono** | Editor iteration, quick testing | Good | Fast |
-| **CoreCLR** | Experimental (Unity 6.7 desktop) | Excellent (2-3x over Mono) | Moderate |
+| **CoreCLR** | Experimental desktop player in the Unity 6.7 alpha; not for production. Unity 7.0 plans to replace Mono with CoreCLR | Not yet published by Unity | Not yet published |
 
 IL2CPP is the recommended backend for all release builds. It compiles C# to C++ for native performance and makes reverse engineering harder.
 
@@ -159,3 +159,9 @@ if (ap != null && ap.ThermalStatus.ThermalMetrics.WarningLevel > WarningLevel.No
 ```
 
 Supports: Samsung (Android), PS4, PS5, Xbox. Adjusts rendering quality, framerate targets, and CPU/GPU workload based on device thermal state.
+
+## Sources
+
+Version-specific statements above were checked on 2026-10-10 against:
+
+- CoreCLR scripting and serialization update, June 2026 (Unity staff): <https://discussions.unity.com/t/coreclr-scripting-and-serialization-update-june-2026/1723299>

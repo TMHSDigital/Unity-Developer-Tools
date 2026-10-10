@@ -103,7 +103,7 @@ Restart Cursor, then open **your Unity project** (not this repository) and ask t
 |:---------|:-------|
 | **URP** (Universal) | Primary -- recommended for all new projects |
 | **HDRP** (High Definition) | Supported -- maintenance mode guidance |
-| **Built-in** (Legacy) | Migration guidance -- deprecated in Unity 6.5 |
+| **Built-in** (Legacy) | Migration guidance -- deprecated starting in Unity 6.5 |
 
 </details>
 
@@ -145,7 +145,7 @@ Restart Cursor, then open **your Unity project** (not this repository) and ask t
 | **Visual Scripting** | Script Graphs, State Graphs, Subgraphs, custom nodes |
 | **Testing** | Edit Mode and Play Mode tests with Unity Test Framework 2.x |
 | **Addressables** | Async asset loading, groups, labels, remote content delivery |
-| **Platform Targeting** | Platform defines, IL2CPP/CoreCLR backends, build settings |
+| **Platform Targeting** | Platform defines, IL2CPP and Mono backends (CoreCLR status), build settings |
 
 ## Rules (8)
 

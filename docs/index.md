@@ -54,7 +54,7 @@ For a detailed walkthrough, see the [Getting Started guide](GETTING-STARTED.md).
 |:---------|:-------|
 | **URP** (Universal) | Primary -- recommended for all new projects |
 | **HDRP** (High Definition) | Supported -- maintenance mode guidance |
-| **Built-in** (Legacy) | Migration guidance -- deprecated in Unity 6.5 |
+| **Built-in** (Legacy) | Migration guidance -- deprecated starting in Unity 6.5 |
 
 ## How it works
 

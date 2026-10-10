@@ -9,7 +9,7 @@ standards-version: 1.10.0
 
 ## Status in 2026
 
-The Data-Oriented Technology Stack (DOTS) is now a core part of the Unity engine, not an experimental package. As of Unity 6.4, the Entities package (1.4/1.7) is integrated into the core engine packages. ECS is production-ready for:
+The Data-Oriented Technology Stack (DOTS) is now a core part of the Unity engine, not an experimental package. In Unity 6.4, Entities, Collections, Mathematics, and Entities Graphics became core packages: they ship with the Editor and their version matches it (Entities 6.4 in Unity 6.4). On Unity 6.0 to 6.3, install the Entities 1.x package. ECS is production-ready for:
 
 - Massive entity counts (thousands to millions)
 - High-performance simulations and physics
@@ -182,7 +182,7 @@ Mix ECS with GameObjects for incremental adoption:
 
 - Use ECS for simulation-heavy systems (AI, pathfinding, particles)
 - Keep GameObjects for UI, cameras, and player controllers
-- Hierarchy V2 (Unity 6.5 opt-in) allows viewing GameObjects and Entities in the same window
+- The new Hierarchy window (opt in under Preferences > General) shows entities alongside GameObjects from Unity 6.5
 
 ## When to Use ECS
 
@@ -197,3 +197,10 @@ Mix ECS with GameObjects for incremental adoption:
 - UI-heavy applications
 - Rapid prototypes where iteration speed matters more than performance
 - Teams unfamiliar with data-oriented programming (learning curve is steep)
+
+## Sources
+
+Version-specific statements above were checked on 2026-10-10 against:
+
+- What's new in Unity 6.4 (core ECS packages): <https://docs.unity3d.com/6000.5/Documentation/Manual/WhatsNewUnity64.html>
+- What's new in Unity 6.5 (Hierarchy window): <https://docs.unity3d.com/6000.6/Documentation/Manual/WhatsNewUnity65.html>

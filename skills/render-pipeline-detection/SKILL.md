@@ -14,8 +14,8 @@ Before giving pipeline-specific advice, call the `analyze_project` MCP tool with
 ## Current Pipeline Landscape (2026)
 
 - **URP (Universal Render Pipeline)**: The default and actively developed pipeline. Use for all new projects.
-- **HDRP (High Definition Render Pipeline)**: In maintenance mode. No new features planned beyond Switch 2 support. Existing HDRP projects can continue, but new projects should prefer URP.
-- **Built-in Render Pipeline (BiRP)**: Officially deprecated as of Unity 6.5. Supported through Unity 6.7 LTS but not recommended for any new work.
+- **HDRP (High Definition Render Pipeline)**: Unity plans no new HDRP features and focuses its maintenance on stability, regressions, and critical issues; Switch 2 support is the one area in active work. Existing HDRP projects can continue, but new projects should prefer URP.
+- **Built-in Render Pipeline (BiRP)**: Deprecated starting in Unity 6.5. It is still available in Unity 6.7 LTS and Unity commits to supporting it until at least the end of 2028; no removal version has been announced. Not recommended for new work.
 
 ## Detection at Edit Time
 
@@ -102,7 +102,7 @@ Add custom scripting defines in Project Settings > Player > Scripting Define Sym
 ### Shader Program Blocks
 
 - URP/HDRP: Use `HLSLPROGRAM` / `ENDHLSL`
-- Built-in: Used `CGPROGRAM` / `ENDCG` (deprecated)
+- Built-in: Traditionally `CGPROGRAM` / `ENDCG`. Not formally deprecated, but CG shaders are not SRP Batcher compatible, so convert them when moving to URP or HDRP.
 
 ### Post-Processing
 
@@ -123,14 +123,14 @@ Add custom scripting defines in Project Settings > Player > Scripting Define Sym
 
 | Feature | URP | HDRP | Built-in |
 |---------|-----|------|----------|
-| Per-object light limit | Configurable (default 8) | Virtually unlimited | 8 (forward) |
+| Per-object light limit | Forward: 1 main + up to 8 additional. Forward+: no per-object limit (per-camera limits apply) | Virtually unlimited | Pixel Light Count (Quality settings) lit per pixel, up to 4 per vertex, the rest by spherical harmonics |
 | Area lights | Baked only | Real-time | Baked only |
 | Volumetric lighting | Light cookies/fog | Full volumetric | Third-party |
-| Global Illumination | SCGI (6.7), Lightmaps | Ray tracing, Path tracing | Lightmaps |
+| Global Illumination | Lightmaps, Adaptive Probe Volumes; Surface Cache GI in preview, planned for Unity 6.7 LTS | Ray tracing, Path tracing | Lightmaps |
 
 ### Render Graph Backend
 
-Both URP and HDRP use the Render Graph backend as of Unity 6.3. This enables:
+URP uses Render Graph by default from Unity 6.0. URP Compatibility Mode (the non-Render Graph path) was removed in Unity 6.3, so custom URP passes must use the Render Graph API. HDRP is also built on Render Graph. This enables:
 - Automatic render pass optimization
 - Dynamic resource allocation
 - Reduced CPU overhead for complex rendering setups
@@ -158,3 +158,13 @@ public override void RecordRenderGraph(RenderGraph renderGraph, ContextContainer
 ### HDRP to URP
 
 Consider this for projects that do not need HDRP-exclusive features. HDRP is in maintenance mode, while URP continues to receive new features. Conversion requires shader and material updates, as the two pipelines use different shader libraries.
+
+## Sources
+
+Version-specific statements above were checked on 2026-10-10 against:
+
+- Render pipelines strategy for 2026 (Unity staff): <https://discussions.unity.com/t/render-pipelines-strategy-for-2026/1710004>
+- Upgrade to Unity 6.3 (URP Compatibility Mode removal): <https://docs.unity3d.com/6000.3/Documentation/Manual/UpgradeGuideUnity63.html>
+- Light limits in URP: <https://docs.unity3d.com/6000.3/Documentation/Manual/urp/lighting/light-limits-in-urp.html>
+- Surface Cache GI preview (Unity staff): <https://discussions.unity.com/t/surface-cache-gi-preview/1720494>
+- Converting Built-in shaders to URP (CGPROGRAM and SRP Batcher): <https://docs.unity3d.com/6000.3/Documentation/Manual/urp/urp-shaders/birp-urp-custom-shader-upgrade-guide.html>

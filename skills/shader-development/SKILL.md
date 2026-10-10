@@ -35,7 +35,7 @@ Surface shaders (`#pragma surface`) are a Built-in Render Pipeline feature. Sinc
 
 ## HLSL Shader Structure for URP
 
-All modern Unity shaders use `HLSLPROGRAM` blocks. The legacy `CGPROGRAM` is deprecated for scriptable render pipelines.
+Write `HLSLPROGRAM` blocks for URP and HDRP. `CGPROGRAM` is not formally deprecated, but it pulls in Built-in include files and CG shaders are not SRP Batcher compatible, so Unity's URP upgrade guide says to convert them to HLSL.
 
 ```hlsl
 Shader "Custom/BasicUnlit"
@@ -202,3 +202,10 @@ UNITY_INSTANCING_BUFFER_START(Props)
     UNITY_DEFINE_INSTANCED_PROP(half4, _Color)
 UNITY_INSTANCING_BUFFER_END(Props)
 ```
+
+## Sources
+
+Version-specific statements above were checked on 2026-10-10 against:
+
+- Converting Built-in shaders to URP (CGPROGRAM and SRP Batcher): <https://docs.unity3d.com/6000.3/Documentation/Manual/urp/urp-shaders/birp-urp-custom-shader-upgrade-guide.html>
+- Render pipelines strategy for 2026 (Unity staff): <https://discussions.unity.com/t/render-pipelines-strategy-for-2026/1710004>

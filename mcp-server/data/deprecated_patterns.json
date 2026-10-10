@@ -20,7 +20,7 @@
   {
     "legacy": "CGPROGRAM / ENDCG",
     "replacement": "HLSLPROGRAM / ENDHLSL with URP or HDRP shader libraries",
-    "reason": "CG shaders use the legacy built-in pipeline surface shader compiler. HLSL is required for SRP (URP/HDRP) and gives access to modern shader features.",
+    "reason": "Not formally deprecated, but CG shaders pull in Built-in include files and are not SRP Batcher compatible. Unity's URP upgrade guide recommends converting them to HLSLPROGRAM with the URP or HDRP shader libraries.",
     "since_version": "2019.3"
   },
   {
@@ -44,7 +44,7 @@
   {
     "legacy": "Camera.main (called every frame)",
     "replacement": "Cache Camera.main in a field during Awake/Start",
-    "reason": "Camera.main performs FindGameObjectWithTag internally each call. In Unity 2020+, it is cached per frame, but caching it yourself is still clearer and avoids null-check overhead.",
+    "reason": "Since Unity 2020.2 the engine caches the main camera, so Camera.main no longer searches by tag. It is still a native call; cache it in a field for code that runs many times per frame, and refresh it when the main camera changes.",
     "since_version": "N/A (best practice)"
   },
   {
@@ -62,7 +62,7 @@
   {
     "legacy": "Mono scripting backend",
     "replacement": "IL2CPP scripting backend",
-    "reason": "Mono is being phased out. IL2CPP provides better performance, smaller builds on most platforms, and is the only backend available on consoles, iOS, and WebGL.",
+    "reason": "IL2CPP is the recommended backend for release builds: it is ahead-of-time compiled and is required on iOS, WebGL, and consoles. Mono stays useful for fast iteration. Unity plans to replace Mono with CoreCLR in Unity 7.0; the CoreCLR desktop player is experimental in the Unity 6.7 alpha.",
     "since_version": "2021.2"
   },
   {

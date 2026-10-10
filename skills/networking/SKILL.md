@@ -90,7 +90,7 @@ The older `[ServerRpc]` / `[ClientRpc]` attributes still compile, but new code s
 - Transfer ownership for player-controlled objects: `NetworkObject.ChangeOwnership(clientId)`
 - Check ownership: `IsOwner`, `IsServer`, `IsClient`, `IsLocalPlayer`
 
-### Distributed Authority (Unity 6.4)
+### Distributed Authority (NGO 2.0+, Unity 6)
 
 New mode for client-hosted games with shared authority:
 - No dedicated server required
@@ -173,3 +173,9 @@ public class PlayerCombat : NetworkBehaviour
 - **Interpolation**: Smooth remote player movement between network updates.
 - **Prediction**: Client predicts the result of its own input immediately. Server corrects if the prediction was wrong.
 - **Always validate on the server**: Never trust client data in competitive games.
+
+## Sources
+
+Version-specific statements above were checked on 2026-10-10 against:
+
+- Netcode for GameObjects 2.0 changelog (Distributed Authority): <https://docs.unity3d.com/Packages/com.unity.netcode.gameobjects@2.0/changelog/CHANGELOG.html>

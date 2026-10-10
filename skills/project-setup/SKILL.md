@@ -13,7 +13,7 @@ Call `analyze_project` with the project root to read the editor version, install
 
 ## Target Version
 
-Unity 6.3 LTS is the recommended baseline for new projects. Unity 6.4 adds opt-in features like Agentic AI tools and core Entities integration. Always use the Unity Hub to manage installations and create projects from verified templates.
+Unity 6.3 LTS (supported until December 2027) is the recommended baseline for new projects. Newer Tech Stream releases add features such as core ECS packages (Unity 6.4); Unity AI (Assistant, the Unity MCP server, and Generators) is in open beta for Unity 6 and later. Always use the Unity Hub to manage installations and create projects from verified templates.
 
 ## Recommended Folder Structure
 
@@ -84,7 +84,7 @@ Always commit `.meta` files. Unity uses them to track asset GUIDs, import settin
 
 - **URP (Universal Render Pipeline)**: Default choice for all new projects in 2026. Covers mobile through high-end console and PC. Active development with Render Graph backend, physical light units, and SCGI (Surface Caching Global Illumination).
 - **HDRP (High Definition Render Pipeline)**: Maintenance mode. Use only for existing projects that depend on HDRP-specific features like volumetric fog or area lights. No new major features planned.
-- **Built-in Render Pipeline**: Officially deprecated in Unity 6.5. Do not start new projects with Built-in. Migration to URP is recommended for all legacy projects.
+- **Built-in Render Pipeline**: Deprecated starting in Unity 6.5 and still available in Unity 6.7 LTS; Unity has not announced a removal version. Do not start new projects with Built-in, and plan a migration to URP for existing ones.
 
 ## Project Settings Recommendations
 
@@ -121,7 +121,7 @@ Install these packages for most projects:
 | Unity UI | `com.unity.ugui` | Legacy Canvas UI (still valid for world-space) |
 | UI Toolkit | (built-in) | Modern UI for menus, HUD, editor tools |
 
-As of Unity 6.3, packages must be signed for core standards compliance. The Package Manager shows trust indicators for verified packages. Prefer verified packages over unverified third-party sources.
+From Unity 6.3 the Package Manager checks signatures on tarball packages. Unsigned packages are not blocked; they show a "Signature: Missing" warning. A package with an invalid signature shows an error and should be removed. Prefer Unity-signed and verified packages, and pin third-party packages to a specific version or commit.
 
 ## Project Initialization Checklist
 
@@ -133,3 +133,11 @@ As of Unity 6.3, packages must be signed for core standards compliance. The Pack
 6. Configure Player Settings (scripting backend, input handling)
 7. Set up quality levels with per-level URP Render Pipeline Assets
 8. Create initial scene with proper lighting setup
+
+## Sources
+
+Version-specific statements above were checked on 2026-10-10 against:
+
+- Render pipelines strategy for 2026 (Unity staff): <https://discussions.unity.com/t/render-pipelines-strategy-for-2026/1710004>
+- Package signatures (Unity 6.3 manual): <https://docs.unity3d.com/6000.3/Documentation/Manual/upm-signature.html>
+- Unity 6 release and support dates: <https://unity.com/releases/unity-6/support>
