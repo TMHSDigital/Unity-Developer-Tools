@@ -1,0 +1,39 @@
+name: Inaccurate or outdated content
+description: A skill, rule, snippet, or MCP data entry gives wrong or outdated Unity advice
+labels: ["documentation"]
+body:
+  - type: input
+    id: location
+    attributes:
+      label: Where
+      description: File and line, for example skills/physics-2d-3d/SKILL.md:40
+    validations:
+      required: true
+  - type: textarea
+    id: wrong
+    attributes:
+      label: What is wrong
+      description: Quote the claim or paste the code
+    validations:
+      required: true
+  - type: textarea
+    id: correct
+    attributes:
+      label: What is correct
+      description: The correct behavior or API, with a link to the Unity docs, release notes, or changelog
+    validations:
+      required: true
+  - type: input
+    id: unity-version
+    attributes:
+      label: Unity version
+      placeholder: 6000.3.x
+  - type: dropdown
+    id: pipeline
+    attributes:
+      label: Render pipeline
+      options:
+        - Not pipeline specific
+        - URP
+        - HDRP
+        - Built-in

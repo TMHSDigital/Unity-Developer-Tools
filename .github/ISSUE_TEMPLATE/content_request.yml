@@ -1,0 +1,33 @@
+name: Skill, snippet, or tool request
+description: Suggest new coverage (a skill, rule, snippet, template, or MCP tool)
+labels: ["enhancement"]
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind
+      options:
+        - Skill
+        - Rule
+        - Snippet
+        - Template
+        - MCP tool
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you trying to do
+      description: The Unity task where the AI gave weak or wrong help, or the prompt you would type
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What should it cover
+      description: APIs, packages, pitfalls, and links to official docs
+  - type: input
+    id: unity-version
+    attributes:
+      label: Unity version
+      placeholder: 6000.3.x

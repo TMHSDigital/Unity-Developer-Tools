@@ -2,6 +2,8 @@
 
 Thanks for helping improve this plugin. This document describes how to set up locally, extend skills and rules, and submit changes.
 
+By participating you agree to the [Code of Conduct](https://github.com/TMHSDigital/Unity-Developer-Tools/blob/main/CODE_OF_CONDUCT.md). Report security problems privately as described in the [Security Policy](https://github.com/TMHSDigital/Unity-Developer-Tools/blob/main/SECURITY.md), not in a public issue. Questions and ideas go in [Discussions](https://github.com/TMHSDigital/Unity-Developer-Tools/discussions).
+
 ## Getting Started
 
 Cursor loads local plugins from `~/.cursor/plugins/local/<name>` and skips symlinks that point outside that folder, so fork the repository and clone your fork straight into the local plugins folder:

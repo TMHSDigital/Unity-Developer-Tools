@@ -52,3 +52,4 @@ RESEARCH.md
 
 # Unity reference assemblies for the C# compile check
 .unity-refs/
+site/
