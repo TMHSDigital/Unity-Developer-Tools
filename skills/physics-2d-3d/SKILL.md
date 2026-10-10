@@ -1,11 +1,15 @@
 ---
 title: Physics Systems (2D and 3D)
-description: Physics programming for both 2D and 3D Unity projects including collision, raycasting, layers, and rigidbody management.
+description: Use when the user works with Rigidbody or Rigidbody2D, colliders, triggers, OnCollisionEnter, raycasts, layers and collision matrices, character movement, or objects passing through walls. Covers 2D and 3D physics, Unity 6 API renames such as linearVelocity, FixedUpdate, and non-allocating queries.
 globs: ["**/*.cs"]
 standards-version: 1.10.0
 ---
 
 # Physics Systems (2D and 3D)
+
+## MCP Tools
+
+Call `lookup_api` with `category` set to `physics` to check physics APIs. It warns about Unity 6 renames such as `velocity` to `linearVelocity`. If the tools are unavailable, continue without them.
 
 ## Component Equivalents
 

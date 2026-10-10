@@ -1,11 +1,15 @@
 ---
 title: Multiplayer Networking
-description: Multiplayer networking patterns with Netcode for GameObjects, Netcode for Entities, Mirror, and Photon Fusion.
+description: Use when the user builds multiplayer, sets up a host or server, syncs state, writes RPCs or NetworkVariables, or chooses between Netcode for GameObjects, Netcode for Entities, Mirror, and Photon Fusion. Covers authority, ownership, RPCs, prediction, and solution tradeoffs.
 globs: ["**/*.cs"]
 standards-version: 1.10.0
 ---
 
 # Multiplayer Networking
+
+## MCP Tools
+
+Call `analyze_project` to see which networking package and version the project has installed before writing netcode, and `lookup_api` with `category` set to `networking` to check APIs. If the tools are unavailable, continue without them.
 
 ## Choosing a Solution
 

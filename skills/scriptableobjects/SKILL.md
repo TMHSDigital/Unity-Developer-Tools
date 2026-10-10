@@ -1,11 +1,15 @@
 ---
 title: ScriptableObject Architecture
-description: Data-driven design patterns using ScriptableObjects for events, variables, runtime sets, and configuration.
+description: Use when the user wants data-driven design, shared config assets, item or enemy databases, event channels, decoupling systems without singletons, or asks why ScriptableObject changes persist or reset. Covers ScriptableObject events, variables, runtime sets, and configuration assets.
 globs: ["**/*.cs", "**/ScriptableObjects/**/*.asset"]
 standards-version: 1.10.0
 ---
 
 # ScriptableObject Architecture
+
+## MCP Tools
+
+Call `scaffold_script` with `type` set to `scriptableobject` to generate a ScriptableObject with a `CreateAssetMenu` entry. If the tools are unavailable, continue without them.
 
 ## What Are ScriptableObjects
 

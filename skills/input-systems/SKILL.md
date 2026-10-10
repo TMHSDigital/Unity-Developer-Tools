@@ -1,6 +1,6 @@
 ---
 title: Input Systems
-description: Input handling with the New Input System package and legacy Input Manager migration guidance.
+description: Use when the user handles keyboard, mouse, gamepad, or touch input, sees errors from UnityEngine.Input, sets up PlayerInput or .inputactions assets, adds key rebinding, or adds local multiplayer. Covers the Input System package, action maps, callbacks, rebinding, and migrating from the legacy Input Manager.
 globs: ["**/*.cs", "**/*.inputactions"]
 standards-version: 1.10.0
 ---

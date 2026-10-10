@@ -1,11 +1,15 @@
 ---
 title: Performance Optimization
-description: Unity-specific performance best practices for CPU, GPU, memory, and profiling tools.
+description: Use when the game lags, stutters, drops FPS, has GC spikes, too many draw calls, long load times, or high memory use, or the user asks how to profile. Covers CPU and GC allocations, pooling, batching and the SRP Batcher, LOD and culling, memory, and the Profiler, Memory Profiler, and Frame Debugger.
 globs: ["**/*.cs"]
 standards-version: 1.10.0
 ---
 
 # Performance Optimization
+
+## MCP Tools
+
+Call `lookup_api` before recommending an API; it flags deprecated or slow patterns (for example `FindObjectOfType`) and names the replacement. Call `analyze_project` to check the render pipeline and scripting backend before giving GPU or IL2CPP advice. If the tools are unavailable, continue without them.
 
 ## CPU Optimization
 

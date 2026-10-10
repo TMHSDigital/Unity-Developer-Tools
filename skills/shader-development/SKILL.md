@@ -1,11 +1,15 @@
 ---
 title: Shader Development
-description: Shader creation with Shader Graph, HLSL, and ShaderLab for URP and HDRP projects.
+description: Use when the user writes or edits shaders, Shader Graph, HLSL, ShaderLab, materials, or effects such as dissolve, outline, toon, water, hologram, or fresnel, or a shader breaks SRP Batcher compatibility. Covers Shader Graph, HLSLPROGRAM for URP and HDRP, keywords and variants, and pipeline-specific setup.
 globs: ["**/*.shader", "**/*.hlsl", "**/*.cginc", "**/*.shadergraph"]
 standards-version: 1.10.0
 ---
 
 # Shader Development
+
+## MCP Tools
+
+Call `analyze_project` first to learn which render pipeline the project uses, then `shader_helper` with the effect name and that `pipeline` value (`urp`, `hdrp`, or `builtin`) to get the property setup and code pattern for dissolve, outline, toon, water, hologram, or fresnel effects. If the tools are unavailable, continue without them.
 
 ## Choosing a Shader Workflow
 

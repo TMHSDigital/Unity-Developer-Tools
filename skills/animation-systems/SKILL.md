@@ -1,11 +1,15 @@
 ---
 title: Animation Systems
-description: Unity animation workflows including Animator Controller, Timeline, DOTween, and sprite animation for 2D.
+description: Use when the user works on character or UI animation, Animator Controllers, blend trees, state transitions, root motion, Timeline cutscenes, tweens, or 2D sprite animation. Covers Animator parameters and hashing, Timeline, DOTween, and sprite animation.
 globs: ["**/*.cs", "**/*.controller", "**/*.anim", "**/*.playable"]
 standards-version: 1.10.0
 ---
 
 # Animation Systems
+
+## MCP Tools
+
+Call `lookup_api` with `category` set to `animation` to check Animator and Timeline APIs. If the tools are unavailable, continue without them.
 
 ## Animator Controller
 

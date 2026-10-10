@@ -1,11 +1,15 @@
 ---
 title: Editor Scripting
-description: Extending the Unity Editor with custom inspectors, editor windows, property drawers, gizmos, and Scene View overlays using UI Toolkit.
+description: Use when the user wants to extend the Unity Editor with a custom inspector, editor window, property drawer, menu item, gizmo, Scene View overlay, or tooling under an Editor folder. Covers UI Toolkit inspectors, SerializedProperty, Undo, and editor-only assemblies.
 globs: ["**/Editor/**/*.cs"]
 standards-version: 1.10.0
 ---
 
 # Editor Scripting
+
+## MCP Tools
+
+Call `scaffold_script` with `type` set to `editor-window`, `custom-inspector`, or `property-drawer` to generate editor code that already lives in an Editor folder. Use `lookup_api` with `category` set to `editor` to check editor APIs. If the tools are unavailable, continue without them.
 
 ## Overview
 

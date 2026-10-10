@@ -1,6 +1,6 @@
 ---
 title: Visual Scripting
-description: Unity Visual Scripting guidance for Script Graphs, State Graphs, Subgraphs, and custom units.
+description: Use when the user works with Unity Visual Scripting (formerly Bolt), Script Graphs, State Graphs, Subgraphs, nodes or units, graph variables, or wants to write a custom node in C#. Covers graph organization, variables, events, and custom units.
 globs: ["**/*Script Graph*.asset", "**/*ScriptGraph*.asset", "**/*State Graph*.asset", "**/*StateGraph*.asset", "**/VisualScripting/**"]
 standards-version: 1.10.0
 ---

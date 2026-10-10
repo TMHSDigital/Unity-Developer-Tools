@@ -1,6 +1,6 @@
 ---
 title: Addressables and Asset Management
-description: Managing assets with the Addressables system for async loading, memory management, and remote content delivery.
+description: Use when loading assets at runtime, replacing Resources.Load, shrinking build size, fixing memory that never frees after scene changes, or shipping DLC and remote content. Covers Addressables async loading, handles and Release, labels, groups, and remote catalogs.
 globs: ["**/*.cs", "**/AddressableAssetsData/**"]
 standards-version: 1.10.0
 ---

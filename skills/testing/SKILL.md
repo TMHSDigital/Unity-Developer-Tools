@@ -1,11 +1,15 @@
 ---
 title: Unity Testing
-description: Unity Test Framework usage for Edit Mode and Play Mode tests with async Awaitable support.
+description: Use when the user writes or runs tests, sets up the Test Runner, needs Edit Mode or Play Mode tests, test assembly definitions, mocks, or async tests, or runs tests in CI. Covers Unity Test Framework, NUnit assertions, UnityTest coroutines, async Task tests, and test asmdef setup.
 globs: ["**/Tests/**/*.cs", "**/*Tests*.cs", "**/*Test*.cs"]
 standards-version: 1.10.0
 ---
 
 # Unity Testing
+
+## MCP Tools
+
+Call `scaffold_script` with `type` set to `test` to generate a test fixture, and `analyze_project` to see whether the project already has test assembly definitions. If the tools are unavailable, continue without them.
 
 ## Unity Test Framework (UTF) 2.x
 

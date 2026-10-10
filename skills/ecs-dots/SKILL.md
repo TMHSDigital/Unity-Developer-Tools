@@ -1,6 +1,6 @@
 ---
 title: ECS and DOTS
-description: Entity Component System development with Unity Entities, Jobs, and Burst for high-performance simulation.
+description: Use when the user works with DOTS, ECS, Entities, ISystem or SystemBase, IComponentData, Bakers, SubScenes, the Job System, or Burst, or needs to simulate thousands of objects. Covers entity queries, baking, entity command buffers, jobs, and Burst constraints.
 globs: ["**/*.cs"]
 standards-version: 1.10.0
 ---

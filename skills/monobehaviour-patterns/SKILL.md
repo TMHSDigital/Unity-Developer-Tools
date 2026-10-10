@@ -1,11 +1,15 @@
 ---
 title: MonoBehaviour Patterns
-description: Comprehensive guide to MonoBehaviour lifecycle, async patterns with Awaitable, and common Unity design patterns.
+description: Use when the user writes or debugs MonoBehaviour scripts, asks about Awake vs Start vs OnEnable, execution order, coroutines vs async, Awaitable, singletons, events, or object pooling. Covers lifecycle order, Awaitable async patterns, and common gameplay architecture patterns.
 globs: ["**/*.cs"]
 standards-version: 1.10.0
 ---
 
 # MonoBehaviour Patterns
+
+## MCP Tools
+
+Call `scaffold_script` with `type` set to `monobehaviour`, `state-machine`, or `interface` to generate a new script in the project's namespace, and `lookup_api` to check a Unity API and see deprecation warnings before suggesting it. If the tools are unavailable, continue without them.
 
 ## Lifecycle Execution Order
 

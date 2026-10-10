@@ -1,11 +1,15 @@
 ---
 title: Unity Project Setup
-description: Guide for creating and configuring Unity projects with recommended folder structure, assembly definitions, version control, and package management.
+description: Use when the user starts a new Unity project, organizes folders, adds assembly definitions, sets up Git or Unity Version Control, writes a .gitignore, or adds and pins packages. Covers folder layout, asmdefs, version control settings, and Package Manager hygiene.
 globs: ["**/*.asmdef", "**/*.asmref", "**/ProjectSettings/**"]
 standards-version: 1.10.0
 ---
 
 # Unity Project Setup
+
+## MCP Tools
+
+Call `analyze_project` with the project root to read the editor version, installed packages, input handling, scripting backend, and existing assembly definitions before recommending changes. If the tools are unavailable, continue without them.
 
 ## Target Version
 

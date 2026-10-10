@@ -1,6 +1,6 @@
 ---
 title: Platform Targeting
-description: Platform-specific compilation, scripting defines, build settings, and cross-platform considerations.
+description: Use when the user builds for or ports to Android, iOS, WebGL, consoles, or desktop, uses UNITY_ platform defines, hits a platform-only bug, or changes build or player settings. Covers scripting define symbols, IL2CPP and Mono, per-platform limits, and build configuration.
 globs: ["**/*.cs"]
 standards-version: 1.10.0
 ---

@@ -1,11 +1,15 @@
 ---
 title: Audio Systems
-description: Audio implementation patterns including AudioSource, AudioMixer, spatial audio, and audio management.
+description: Use when the user adds sound effects or music, hears clipping or missing sounds, needs volume sliders, 3D positional audio, or an audio manager. Covers AudioSource, AudioMixer groups and exposed parameters, spatial audio, pooling, and audio import settings.
 globs: ["**/*.cs", "**/*.mixer"]
 standards-version: 1.10.0
 ---
 
 # Audio Systems
+
+## MCP Tools
+
+Call `lookup_api` with `category` set to `audio` to check AudioSource and AudioMixer APIs. If the tools are unavailable, continue without them.
 
 ## Core Components
 

@@ -1,6 +1,6 @@
 ---
 title: Render Pipeline Detection
-description: Detecting the active render pipeline (URP, HDRP, or Built-in) and adapting code, shaders, and settings accordingly.
+description: Use when advice depends on URP, HDRP, or Built-in, materials turn pink or magenta, a shader or effect works in one pipeline but not another, or the user is migrating pipelines. Covers detecting the active pipeline and adapting code, shaders, lighting, and post-processing to it.
 globs: ["**/*.cs", "**/*.shader", "**/*.shadergraph"]
 standards-version: 1.10.0
 ---

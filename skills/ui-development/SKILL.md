@@ -1,11 +1,15 @@
 ---
 title: UI Development
-description: Building user interfaces with UI Toolkit (primary) and Canvas/UGUI, including data binding, styling, and responsive layouts.
+description: Use when the user builds menus, HUDs, health bars, inventories, or settings screens, works with UXML, USS, UI Builder, Canvas, or TextMeshPro, or needs data binding or responsive layouts. Covers UI Toolkit (preferred) and Canvas/UGUI, runtime data binding, styling, and UI performance.
 globs: ["**/*.cs", "**/*.uxml", "**/*.uss", "**/*.tss"]
 standards-version: 1.10.0
 ---
 
 # UI Development
+
+## MCP Tools
+
+Call `lookup_api` with `category` set to `ui` to check UI Toolkit and UGUI APIs, and `analyze_project` to see whether the project has UI Toolkit, UGUI, or TextMeshPro installed. If the tools are unavailable, continue without them.
 
 ## Choosing a UI System
 

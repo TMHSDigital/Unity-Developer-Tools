@@ -148,9 +148,16 @@ def check_skills():
                 errors.append(f"{rel}: frontmatter missing {field}")
         if "globs" in fields and parse_globs(fields["globs"]) is None:
             errors.append(f"{rel}: globs must be a JSON-style list of strings")
+        if not fields.get("description", "").startswith("Use when"):
+            errors.append(f"{rel}: description should start with 'Use when' and name what the user asks or sees")
         if len(body) < 100:
             errors.append(f"{rel}: body too short ({len(body)} chars, minimum 100)")
-    print(f"Checked {len(dirs)} skills")
+    skill_text = "".join(read(f"skills/{d.name}/SKILL.md") for d in dirs if (d / "SKILL.md").exists())
+    tools = re.findall(r"^@mcp\.tool\(\)\s+def (\w+)", read("mcp-server/server.py"), re.MULTILINE)
+    for tool in tools:
+        if f"`{tool}`" not in skill_text:
+            errors.append(f"MCP tool {tool} is not mentioned by any skill; tell the agent when to call it")
+    print(f"Checked {len(dirs)} skills and {len(tools)} MCP tool references")
     return errors
 
 
